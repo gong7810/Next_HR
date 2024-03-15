@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.mapper.EmpEvalMapper">
+
+
+    <resultMap type="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpEvalTO" id="empEvalResult">
+        <result property="empCode" column="EMP_CODE"/>
+        <result property="empName" column="EMP_NAME"/>
+        <result property="applyDay" column="APPLY_DAY"/>
+        <result property="deptName" column="DEPT_CODE"/>
+        <result property="position" column="POSITION_CODE"/>
+        <result property="approvalStatus" column="APPROVAL_STATUS"/>
+        <result property="achievement" column="ACHIEVEMENT"/>
+        <result property="ability" column="ABILITY"/>
+        <result property="attitude" column="ATTITUDE"/>
+        <result property="grade" column="GRADE"/>
+        <result property="lastSchool" column="LAST_SCHOOL"/>
+        <result property="numberOfCertificate" column="NUMBER_OF_CERTIFICATION"/>
+        <result property="durationOfTraining" column="DURATION_OF_TRAINING"/>
+    </resultMap>
+
+    <resultMap type="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpEvalTO" id="empEvalDeptResult">
+        <result property="empCode" column="EMP_CODE"/>
+        <result property="empName" column="EMP_NAME"/>
+        <result property="applyDay" column="APPLY_DAY"/>
+        <result property="deptName" column="DEPT_CODE"/>
+        <result property="position" column="POSITION_CODE"/>
+        <result property="achievement" column="ACHIEVEMENT"/>
+        <result property="ability" column="ABILITY"/>
+        <result property="attitude" column="ATTITUDE"/>
+        <result property="approvalStatus" column="APPROVAL_STATUS"/>
+        <result property="grade" column="GRADE"/>
+    </resultMap>
+
+    <select id="selectEmpEval" resultMap="empEvalResult">
+        select EMP_CODE
+             , EMP_NAME
+             , APPLY_DAY
+             , DEPT_CODE
+             , POSITION_CODE
+             , ACHIEVEMENT
+             , ABILITY
+             , ATTITUDE
+             , APPROVAL_STATUS
+             , GRADE
+        from emp_eval
+    </select>
+
+
+    <!--  EMP_EVAL 테이블 에서 APPROVAL_STATUS 가 반려 이거나 EMP 테이블에 정보는 있지만 아직 사원 고과가 진행되진 않은 사원들의 정보를 출력하는 쿼리문   -->
+    <!--    사원 고과 등록 페이지에서 사용하는 쿼리문 입니다. -->
+    <select id="selectValidEmpEvalList" resultType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpEvalTO">
+
+        select e.EMP_NAME   as empName
+             , e.EMP_CODE   as empCode
+             , e.DEPT_CODE  as deptCode
+             , ev.APPLY_DAY as applyDay
+             , p.POSITION as position
+     ,ev.APPROVAL_STATUS as approvalStatus
+     ,d.DEPT_NAME    as deptName
+     ,ev.GRADE    as grade
+        from EMP e, EMP_EVAL ev, DEPT d, POSITION p
+        where e.EMP_CODE = ev.EMP_CODE(+)
+          and e.POSITION_CODE = p.POSITION_CODE
+          and e.DEPT_CODE = d.DEPT_CODE
+          and ev.APPROVAL_STATUS ='반려'
+        union
+        select e.EMP_NAME   as empName
+             , e.EMP_CODE   as empCode
+             , e.DEPT_CODE  as deptCode
+             , ev.APPLY_DAY as applyDay
+             , p.POSITION as position
+     ,ev.APPROVAL_STATUS as approvalStatus
+     ,d.DEPT_NAME    as deptName
+     ,ev.GRADE    as grade
+        from EMP e, EMP_EVAL ev, DEPT d, POSITION p
+        where e.EMP_CODE = ev.EMP_CODE(+)
+          and e.POSITION_CODE = p.POSITION_CODE
+          and e.DEPT_CODE = d.DEPT_CODE
+          and ev.APPROVAL_STATUS is null
+
+    </select>
+
+
+    <!--    사원고과 관리 페이지에서 사용하는 쿼리문 입니다. -->
+    <!--    사원고과 관리의 승인상태가 '대기'인 사원의 정보를 가져오는 쿼리문 입니다. -->
+    <select id="selectEmpEvalListByApprovalStatus" resultType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpEvalTO">
+
+        select e.EMP_NAME   as empName
+             , e.EMP_CODE   as empCode
+             , e.DEPT_CODE  as deptCode
+             , ev.APPLY_DAY as applyDay
+             , p.POSITION as position
+     ,ev.APPROVAL_STATUS as approvalStatus
+     ,d.DEPT_NAME    as deptName
+     ,ev.GRADE    as grade
+        from EMP e, EMP_EVAL ev, DEPT d, POSITION p
+        where e.EMP_CODE = ev.EMP_CODE(+)
+          and e.POSITION_CODE = p.POSITION_CODE
+          and e.DEPT_CODE = d.DEPT_CODE
+          and ev.APPROVAL_STATUS = '대기'
+    </select>
+
+
+    <!--   사원고과 관리 페이지에서 사용하는 쿼리문 입니다. -->
+    <select id="selectEmpEvalByApprovalStatusCondition" parameterType="string"
+            resultType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpEvalTO">
+
+        select e.EMP_NAME   as empName
+             , e.EMP_CODE   as empCode
+             , e.DEPT_CODE  as deptCode
+             , ev.APPLY_DAY as applyDay
+             , p.POSITION as position
+     ,ev.APPROVAL_STATUS as approvalStatus
+     ,d.DEPT_NAME    as deptName
+     ,ev.GRADE    as grade
+        from EMP e, EMP_EVAL ev, DEPT d, POSITION p
+        where e.EMP_CODE = ev.EMP_CODE(+)
+          and e.POSITION_CODE = p.POSITION_CODE
+          and e.DEPT_CODE = d.DEPT_CODE
+          and ev.APPROVAL_STATUS =#{approvalStatus}
+    </select>
+
+
+    <!--    사원고과 결과 페이지에서 사용하는 쿼리문 입니다.-->
+    <!--     승인, 대기, 반려 상태인 사원고과 데이터를 한번에 가져오는 쿼리문 입니다. -->
+
+    <select id="selectEmpEvalList" resultType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpEvalTO">
+
+
+        select e.EMP_NAME   as empName
+             , e.EMP_CODE   as empCode
+             , e.DEPT_CODE  as deptCode
+             , ev.APPLY_DAY as applyDay
+             , p.POSITION as position
+     ,ev.APPROVAL_STATUS as approvalStatus
+     ,d.DEPT_NAME    as deptName
+     ,ev.GRADE    as grade
+        from EMP e, EMP_EVAL ev, DEPT d, POSITION p
+        where e.EMP_CODE = ev.EMP_CODE(+)
+          and e.POSITION_CODE = p.POSITION_CODE
+          and e.DEPT_CODE = d.DEPT_CODE
+          and ev.APPROVAL_STATUS = '대기'
+        union
+        select e.EMP_NAME   as empName
+             , e.EMP_CODE   as empCode
+             , e.DEPT_CODE  as deptCode
+             , ev.APPLY_DAY as applyDay
+             , p.POSITION as position
+     ,ev.APPROVAL_STATUS as approvalStatus
+     ,d.DEPT_NAME    as deptName
+     ,ev.GRADE    as grade
+        from EMP e, EMP_EVAL ev, DEPT d, POSITION p
+        where e.EMP_CODE = ev.EMP_CODE(+)
+          and e.POSITION_CODE = p.POSITION_CODE
+          and e.DEPT_CODE = d.DEPT_CODE
+          and ev.APPROVAL_STATUS ='반려'
+        union
+        select e.EMP_NAME   as empName
+             , e.EMP_CODE   as empCode
+             , e.DEPT_CODE  as deptCode
+             , ev.APPLY_DAY as applyDay
+             , p.POSITION as position
+     ,ev.APPROVAL_STATUS as approvalStatus
+     ,d.DEPT_NAME    as deptName
+     ,ev.GRADE    as grade
+        from EMP e, EMP_EVAL ev, DEPT d, POSITION p
+        where e.EMP_CODE = ev.EMP_CODE(+)
+          and e.POSITION_CODE = p.POSITION_CODE
+          and e.DEPT_CODE = d.DEPT_CODE
+          and ev.APPROVAL_STATUS ='승인'
+
+
+    </select>
+
+
+    <select id="selectEmpEvalDept" parameterType="map" resultMap="empEvalDeptResult">
+        SELECT *
+        FROM EMP_EVAL
+        WHERE DEPT_CODE = #{deptName}
+          AND APPLY_DAY = #{apply_day}
+    </select>
+
+
+    <select id="selectEmpEvalByEmpCode" parameterType="string" resultType="string">
+
+        select EMP_CODE
+        from EMP_EVAL
+        where EMP_CODE = #{empCode}
+
+    </select>
+
+
+    <!--	아래의 쿼리문은 인사고과 등록 및 인사고과 관리 페이지에서 사용합니다.-->
+    <update id="updateEmpEval" parameterType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpEvalTO">
+
+        update EMP_EVAL
+        set APPROVAL_STATUS = #{approvalStatus},
+            GRADE           = #{grade,jdbcType=VARCHAR}
+        where EMP_CODE = #{empCode}
+
+    </update>
+
+
+    <delete id="deleteEmpEval" parameterType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpEvalTO">
+        DELETE
+        FROM EMP_EVAL
+        WHERE EMP_CODE = #{empCode}
+          AND APPLY_DAY = #{applyDay}
+    </delete>
+
+
+<!--    empEval은 update를 하지 않습니다. 인사고과 로직은 프론트단에 있습니다. -->
+
+<!--        <update id="updateEmpEval" parameterType="map" statementType="CALLABLE">-->
+<!--    		<![CDATA[-->
+<!--            {call P_UPDATE_EMP_EVAL(-->
+<!--                    #{applyYearMonth, jdbcType=VARCHAR, javaType=java.lang.String, mode=IN},-->
+<!--                    #{empCode, jdbcType=VARCHAR, javaType=java.lang.String, mode=IN},-->
+<!--                    #{result, jdbcType=CURSOR, javaType=java.sql.ResultSet, mode=OUT , resultMap=empEval},-->
+<!--                    #{errorCode, jdbcType=VARCHAR, javaType=java.lang.String, mode=OUT},-->
+<!--                    #{errorMsg, jdbcType=VARCHAR, javaType=java.lang.String, mode=OUT}-->
+<!--                )}-->
+<!--            ]]>-->
+<!--    	</update>-->
+
+
+    <!--	아래의 코드는 정상 작동한다.   -->
+    <insert id="insertEmpEval" parameterType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpEvalTO">
+        INSERT INTO EMP_EVAL
+        VALUES (#{empCode},
+                #{empName},
+                TO_CHAR(SYSDATE, 'YYYY'),
+                #{deptName,jdbcType=VARCHAR},
+                #{position ,jdbcType=VARCHAR},
+                #{achievement,jdbcType=NUMERIC},
+                #{ability,jdbcType=NUMERIC},
+                #{attitude,jdbcType=NUMERIC},
+                #{approvalStatus,jdbcType=VARCHAR},
+                #{grade,jdbcType=VARCHAR})
+    </insert>
+
+
+</mapper>

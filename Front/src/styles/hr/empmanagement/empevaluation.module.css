@@ -1,0 +1,177 @@
+.main_card {
+  background-color: white;
+}
+
+.main {
+  /* position: relative; */
+  background-color: white;
+  border-radius: 5px;
+  height: 600px;
+  width: 1000px;
+  transform: translateX(20px);
+  text-align: center;
+  /* border: 3px solid black; */
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.first_div {
+  position: relative;
+  /* border: 2px solid black; */
+  margin-top: 20px;
+  transform: translateY(50px);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  /* border: 1px solid orange; */
+}
+.second_div {
+  /* position: relative; */
+  transform: translateY(50px);
+  margin-top: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  /* border: 1px solid orange; */
+}
+.third_div {
+  transform: translateY(50px);
+  margin-top: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  /* border: 1px solid orange; */
+}
+
+.empList_select {
+  display: inline-block;
+  height: 36px;
+  width: 430px;
+  border-radius: 3px;
+  margin-right: 15px;
+}
+
+.empList_select:focus {
+  border: 2px solid rgb(61, 179, 209);
+}
+
+.empBreak_select {
+  display: inline-block;
+  margin-left: 15px;
+  border-radius: 3px;
+  height: 36px;
+  width: 430px;
+}
+
+.empBreak_select:focus {
+  border: 2px solid rgb(61, 179, 209);
+}
+
+.empCertification_select {
+  display: inline-block;
+  border-radius: 3px;
+  margin-right: 15px;
+  height: 36px;
+  width: 430px;
+}
+
+.empCertification_select:focus {
+  border: 2px solid rgb(61, 179, 209);
+}
+
+.hourofcompanyeducation_select {
+  display: inline-block;
+  border-radius: 3px;
+  margin-left: 15px;
+  height: 36px;
+  width: 430px;
+}
+
+.hourofcompanyeducation_select:focus {
+  border: 2px solid rgb(61, 179, 209);
+}
+
+.schoolCertificate_select {
+  display: inline-block;
+  border-radius: 3px;
+  margin-right: 15px;
+  height: 36px;
+  width: 430px;
+}
+
+.schoolCertificate_select:focus {
+  border: 2px solid rgb(61, 179, 209);
+}
+
+.validationForPromotion_select {
+  display: inline-block;
+  border-radius: 3px;
+  margin-left: 15px;
+  height: 36px;
+  width: 430px;
+}
+
+.validationForPromotion_select:focus {
+  border: 2px solid rgb(61, 179, 209);
+}
+
+.result_input_div {
+  transform: translateY(50px);
+  /* border: 3px solid red; */
+}
+
+.predictatepPromotion_input {
+  display: block;
+  border-radius: 3px;
+  height: 36px;
+  margin: auto;
+  width: 890px;
+  /* border: 1px solid orange; */
+}
+
+.calculate_button {
+  width: 120px;
+  height: 36px;
+  float: left;
+  margin-top: 50px;
+  transform: translateX(250px);
+  border-radius: 3px;
+  background-color: rgb(93, 181, 225);
+  border: none;
+}
+
+.calculate_button:hover {
+  background-color: rgb(55, 157, 209);
+}
+
+.result_button {
+  width: 120px;
+  height: 36px;
+  margin-top: 50px;
+  float: right;
+  transform: translateX(-250px);
+  border-radius: 3px;
+  background-color: rgb(93, 181, 225);
+}
+
+.result_button:hover {
+  background-color: rgb(55, 157, 209);
+}
+
+.button_div {
+  margin-top: -80px;
+  transform: translateY(50px);
+  height: 100px;
+}
+
+.info_modal {
+  transform: translate(-50px, 50px);
+  text-align: end;
+}
+
+.modal_button {
+  transform: translateX(-20px);
+  border: none;
+  background-color: inherit;
+}
+
+.modal_button:hover {
+  color: rgb(55, 157, 209);
+}

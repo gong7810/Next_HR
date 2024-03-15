@@ -1,0 +1,105 @@
+// third-party
+import { createSlice } from '@reduxjs/toolkit';
+import { FormikValues } from 'formik';
+
+// project imports
+import axios from '../../utils/axios';
+import { dispatch } from '../index';
+
+// types
+import { DefaultRootStateProps } from '../../types';
+import { string } from 'yup';
+
+// ----------------------------------------------------------------------
+
+const initialState: DefaultRootStateProps['calendar'] = {
+  holidayList:[],
+  error: null,
+  events: []
+};
+
+const slice = createSlice({
+  name: 'calendar',
+  initialState,
+  reducers: {
+    // HAS ERROR
+    hasError(state, action) {
+      state.error = action.payload;
+    },
+
+    // GET EVENTS
+    getEventsSuccess(state, action) {
+      state.holidayList = action.payload;
+    },
+
+    // ADD EVENT
+    addEventSuccess(state, action) {
+      state.events = action.payload;
+    },
+
+    // UPDATE EVENT
+    updateEventSuccess(state, action) {
+      state.events = action.payload;
+    },
+
+    // REMOVE EVENT
+    removeEventSuccess(state, action) {
+      state.events = action.payload;
+    }
+  }
+});
+
+// Reducer
+export default slice.reducer;
+
+// ----------------------------------------------------------------------
+
+export function getEvents() {
+  return async () => {
+    try {
+      const response = await axios.get('http://localhost:9101/foudinfomgmt/holiday');
+      dispatch(slice.actions.getEventsSuccess(response.data));
+      console.log("달력",response.data.holidayList)
+      // const response = await axios.get('/api/calendar/events');
+      // dispatch(slice.actions.getEventsSuccess(response.data.events));
+      // console.log("달력",response.data.events)
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function addEvent(event: FormikValues) {
+  return async () => {
+    try {
+      const response = await axios.post('/api/calendar/events/add', event);
+      dispatch(slice.actions.addEventSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function updateEvent(event: FormikValues) {
+  return async () => {
+    try {
+      const response = await axios.post('/api/calendar/events/update', event);
+      dispatch(slice.actions.updateEventSuccess(response.data.events));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function removeEvent(sendData: any) {
+  return async () => {
+    try {
+      const response = await axios.post('http://localhost:9101/foudinfomgmt/holiday',sendData);
+      dispatch(slice.actions.removeEventSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+

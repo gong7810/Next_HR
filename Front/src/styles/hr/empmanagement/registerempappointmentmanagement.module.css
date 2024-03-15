@@ -1,0 +1,13 @@
+.main {
+    position: relative;
+    background-color: cadetblue;
+    border-radius: 5px;
+    height: 600px;
+    width: 1000px;
+    margin: auto;
+    text-align: center;
+    border: 3px solid black;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  

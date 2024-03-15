@@ -1,0 +1,89 @@
+.emp_info_table {
+    border: 1px solid black;
+    width: 1200px;
+    border-radius: 5px;
+    margin-left: 20px;
+    margin-bottom: 19px;
+    background-color: rgba(217, 225, 221, 0.937);
+  }
+  
+  .emp_info_table_tr_top {
+    border: none;
+    margin-bottom: 20px;
+    border-radius: 3px;
+  }
+  
+  .emp_info_table_td {
+    text-align: center;
+    font-size: 20px;
+    border: none;
+  }
+  
+  .emp_info_list_tr:nth-child(even) {
+    background-color: rgba(51, 56, 51, 0.097);
+  }
+  
+  .emp_info_list_tr {
+    border: none;
+    height: 40px;
+  }
+  
+  .emp_info_list_td {
+    border: 1px solid black;
+    border-right: none;
+    border-left: none;
+    text-align: center;
+  }
+  
+  .select {
+    width: 150px;
+    height: 30px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 20px;
+  }
+  
+  .option {
+    text-align: center;
+    font-size: 20px;
+  }
+  
+  /* option에 hover를 했을때 색깔이 react 프로젝트에서처럼 자연스러운 색깔이 나오도록 수정 필요 */
+  .option:nth-child(1):hover {
+    background-color: brown;
+    background: aqua;
+    color: yellow;
+  }
+  
+  .option:nth-child(even) {
+    background-color: rgb(240, 240, 249);
+    border-radius: 5px;
+  }
+  
+  /* .input_checkbox: */
+  .input_checkbox {
+    accent-color: rgb(122, 204, 231);
+  }
+  
+  .button {
+    border-style: none;
+    border-radius: 3px;
+    width: 80px;
+    height: 30px;
+    background-color: rgb(225, 213, 237);
+  }
+  
+  .button:hover {
+    font-size: 15px;
+    background-color: rgb(189, 161, 217);
+  
+  }
+  
+  
+  .table_head{
+  
+    border-top:3px black;
+    border-bottom:3px black;
+  
+  
+  }

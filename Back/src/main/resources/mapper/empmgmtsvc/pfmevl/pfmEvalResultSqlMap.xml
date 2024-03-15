@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.seoulit.insa.empmgmtsvc.pfmevl.mapper.PfmEvlMapper">
+
+
+    <resultMap type="kr.co.seoulit.insa.empmgmtsvc.pfmevl.to.PfmEvlTO" id="selectPfmDetailResult">
+        <result property="empCode" column="EMP_CODE" />
+        <result property="empName" column="EMP_NAME" />
+        <result property="deptCode" column="DEPT_CODE" />
+        <result property="score" column="SCORE" />
+        <result property="grade" column="GRADE" />
+    </resultMap>
+
+    <select id="selectPfmEvalDetail" parameterType="String" resultMap="selectPfmDetailResult">
+        <![CDATA[
+        SELECT
+            EMP_CODE,
+            EMP_NAME,
+            DEPT_CODE,
+            GRADE,
+            SCORE
+        FROM PFM_EVL p
+        WHERE p.EMP_CODE = #{empCode}
+        ]]>
+    </select>
+
+</mapper>

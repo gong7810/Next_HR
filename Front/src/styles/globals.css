@@ -1,0 +1,41 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+    sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+.selected {
+  background-color: lightgray; /* 선택된 행의 배경색을 변경 */
+  /* 다른 스타일을 여기에 추가할 수 있습니다. */
+}
+
+.loader-container {
+  position: fixed; /* 고정 위치로 설정 */
+  top: 50%; /* 화면 상단에서 절반 높이만큼 내립니다. */
+  left: 50%; /* 화면 왼쪽에서 절반 너비만큼 이동합니다. */
+  transform: translate(-50%, -50%); /* 중앙으로 이동합니다. */
+}
+
+/* 일요일 날짜: 빨간색 */
+.fc-day-sun a {
+  color: red;
+}
+
+/* 토요일 날짜: 파란색 */
+.fc-day-sat a {
+  color: blue;
+}
+
+.bold-header {
+  font-weight: bold;
+}
