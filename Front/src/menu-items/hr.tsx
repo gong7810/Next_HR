@@ -175,7 +175,7 @@ const hr: NavItemType = {
               id: 'restAttendanceRegist',
               title: <FormattedMessage id="restAttendanceRegist" />,
               type: 'item',
-              url: '/app/contact/c-list'
+              url: '/hr/attendance/RestAttendance/RestAttendanceRegistPage'
             },
             {
               id: 'dayoffRegist',
