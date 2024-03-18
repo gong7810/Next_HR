@@ -6,5 +6,5 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class RestAttdTO extends BaseTO {
+public class RestAttdManageTO extends BaseTO {
 }
