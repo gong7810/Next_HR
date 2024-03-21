@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 
 const hrApi: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:9101',
+  baseURL: 'http://localhost:9101/hr/',
   headers: {
     'Content-Type': 'application/json'
   }

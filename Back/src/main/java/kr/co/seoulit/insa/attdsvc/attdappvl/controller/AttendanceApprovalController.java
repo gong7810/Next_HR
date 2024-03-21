@@ -72,6 +72,7 @@ public class AttendanceApprovalController {
 		}
 		return map; 
 	}
+
 	@PutMapping("attnd-approval")
 	public ModelMap modifyRestAttdList(HttpServletRequest request, HttpServletResponse response){
 		System.out.println("근태외 확정 버튼 클릭시 요청");

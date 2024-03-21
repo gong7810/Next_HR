@@ -27,9 +27,24 @@ export interface RestAttdTO {
   requestDate: string;
   startDate: string;
   endDate: string;
-  startTime: string
+  startTime: string;
   endTime: string;
   numberOfDays: string;
   cause: string;
   applovalStatus: string;
+}
+
+export interface restAttdTO {
+  restAttdNo?: string;
+  empCode: string;
+  deptCode?: string;
+  attdCode: string;
+  attdType: string;
+  requestDate: string;
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+  cause: string;
+  approvalStatus?: string;
 }

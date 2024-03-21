@@ -3,11 +3,95 @@
 
 <mapper namespace="kr.co.seoulit.insa.attd.mapper.AttdMapper">
 
-    <select id="selectRestAttdList" resultType="kr.co.seoulit.insa.attd.to.RestAttdManageTO">
+    <resultMap id="restAttdResult" type="kr.co.seoulit.insa.attd.to.RestAttdManageTO">
+        <result property="restAttdNo" column="REST_ATTD_NO" />
+        <result property="empCode" column="EMP_CODE" />
+        <result property="deptCode" column="DEPT_CODE" />
+        <result property="attdCode" column="ATTD_CODE" />
+        <result property="attdType" column="ATTD_TYPE" />
+        <result property="requestDate" column="REQUEST_DATE" />
+        <result property="startDate" column="START_DATE" />
+        <result property="endDate" column="END_DATE" />
+        <result property="startTime" column="START_TIME" />
+        <result property="endTime" column="END_TIME" />
+        <result property="cause" column="CAUSE" />
+        <result property="approvalStatus" column="APPROVAL_STATUS" />
+    </resultMap>
+
+    <select id="findRestAttdList" parameterType="map" resultMap="restAttdResult">
         <![CDATA[
-            SELECT *
+            SELECT REST_ATTD_NO
+                 , EMP_CODE
+                 , DEPT_CODE
+                 , ATTD_CODE
+                 , ATTD_TYPE
+                 , TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD') AS REQUEST_DATE
+                 , TO_CHAR(START_DATE, 'YYYY-MM-DD') AS START_DATE
+                 , TO_CHAR(END_DATE, 'YYYY-MM-DD') AS END_DATE
+                 , SUBSTR(START_TIME, 1, 2)||':'||SUBSTR(START_TIME, 3, 2) AS START_TIME
+                 , SUBSTR(END_TIME, 1, 2)||':'||SUBSTR(END_TIME, 3, 2) AS END_TIME
+                 , CAUSE
+                 , APPROVAL_STATUS
             FROM REST_ATTD_MANAGE
+            WHERE DEPT_CODE = #{deptCode}
+              AND REQUEST_DATE BETWEEN #{startDate} AND #{endDate}
+              AND ATTD_TYPE IN ('공가', '병가', '출장', '교육', '외출', '조퇴', '초과근무')
         ]]>
     </select>
+
+    <select id="findRestAttdMaxNo" parameterType="String" resultType="String">
+        <![CDATA[
+            SELECT MAX(REST_ATTD_NO)
+            FROM REST_ATTD_MANAGE
+            WHERE REST_ATTD_NO LIKE '%'||#{requestDay}||'%'
+        ]]>
+    </select>
+
+    <insert id="registRestAttd" parameterType="kr.co.seoulit.insa.attd.to.RestAttdManageTO">
+        <![CDATA[
+            INSERT INTO REST_ATTD_MANAGE
+            ( REST_ATTD_NO
+            , EMP_CODE
+            , DEPT_CODE
+            , ATTD_CODE
+            , ATTD_TYPE
+            , REQUEST_DATE
+            , START_DATE
+            , END_DATE
+            , START_TIME
+            , END_TIME
+            , CAUSE
+            ) VALUES (
+                    #{restAttdNo}
+                  , #{empCode}
+                  , (SELECT DEPT_CODE
+                     FROM EMP
+                     WHERE EMP_CODE = #{empCode})
+                  , #{attdCode}
+                  , #{attdType}
+                  , #{requestDate}
+                  , #{startDate}
+                  , #{endDate}
+                  , #{startTime, jdbcType=NULL}
+                  , #{endTime, jdbcType=NULL}
+                  , #{cause, jdbcType=NULL}
+                   )
+        ]]>
+    </insert>
+
+    <update id="updateRestAttd" parameterType="kr.co.seoulit.insa.attd.to.RestAttdManageTO">
+        <![CDATA[
+            UPDATE REST_ATTD_MANAGE
+            SET APPROVAL_STATUS = #{approvalStatus}
+            WHERE REST_ATTD_NO = #{restAttdNo}
+        ]]>
+    </update>
+
+    <delete id="deleteRestAttd" parameterType="kr.co.seoulit.insa.attd.to.RestAttdManageTO">
+        <![CDATA[
+            DELETE FROM REST_ATTD_MANAGE
+            WHERE REST_ATTD_NO = #{restAttdNo}
+        ]]>
+    </delete>
 
 </mapper>

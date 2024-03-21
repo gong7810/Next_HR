@@ -16,7 +16,7 @@ import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.service.EmpInfoService;
 import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpTO;
 
 
-@RequestMapping("/empinfomgmt/*")
+@RequestMapping("/hr/empinfomgmt/*")
 @RestController
 @CrossOrigin
 public class EmpListController {
@@ -56,9 +56,6 @@ public class EmpListController {
 	public ModelMap emplist(HttpServletRequest request, HttpServletResponse response) {
 
 		map = new ModelMap();
-
-
-
 
 		try {
 

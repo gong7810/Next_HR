@@ -175,7 +175,7 @@ const hr: NavItemType = {
               id: 'restAttendanceRegist',
               title: <FormattedMessage id="restAttendanceRegist" />,
               type: 'item',
-              url: '/hr/attendance/RestAttendance/RestAttendanceRegistPage'
+              url: '/hr/attendance/RestAttendance/RestAttdRegistPage'
             },
             {
               id: 'dayoffRegist',
@@ -219,7 +219,7 @@ const hr: NavItemType = {
               id: 'restAttendanceApprovalManagement',
               title: <FormattedMessage id="restAttendanceApprovalManagement" />,
               type: 'item',
-              url: '/hr/attendance/AttdApproval/AttdApprovalPage'
+              url: '/hr/attendance/RestAttendance/RestAttdApprovalPage'
             },
             {
               id: 'dayoffManagement',
