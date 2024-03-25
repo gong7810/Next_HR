@@ -21,26 +21,27 @@ import MainCard from 'ui-component/cards/MainCard';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { gridSpacing } from 'store/constant';
 import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone';
-import axios from 'axios';
 import moment from 'moment';
-import { AnnualLeaveMgtTO } from '../types/types';
+import { AnnualLeaveMgtTO, restAttdTO } from '../types/types';
+import { useSelector } from 'react-redux';
+import { RootState, useDispatch } from 'store';
+import { attdActions } from 'store/redux-saga/reducer/attendance/attendanceReducer';
 
 // ==============================|| PROFILE 2 ||============================== //
 
 const BreakAttendancePage = () => {
-  // 당일 날짜
-  let today = moment().format('YYYY-MM-DD');
+  const dispatch = useDispatch();
+  const rawList = useSelector((state: RootState) => state.attdReducer.empList);
 
-  // 사원이름
-  const [empName, setEmpName] = useState('');
+  // 당일 날짜
+  const today = moment().format('YYYY-MM-DD');
+
   // 사원코드
   const [empCode, setEmpCode] = useState('');
   // 연차 구분 코드
-  const [restTypeCode, setRestTypeCode] = useState('');
+  const [attdCode, setAttdCode] = useState('');
   // 연차 구분 이름
-  const [restTypeName, setRestTypeName] = useState('');
-  // 당일 날짜
-  const [requestDate, setRequestDate] = useState(today);
+  const [attdType, setAttdType] = useState('');
   // 시작일
   const [startDate, setStartDate] = useState('');
   // 종료일
@@ -49,27 +50,23 @@ const BreakAttendancePage = () => {
   const [numberOfDays, setNumberOfDays] = useState(0);
   // 사유
   const [cause, setCause] = useState('');
-  // 상태
-  const [applovalStatus, setApplovalStatus] = useState('승인대기');
   // 시작 시간
   const [startTime, setStartTime] = useState('');
   // 종료 시간
-  const [endTime, setendTime] = useState('');
+  const [endTime, setEndTime] = useState('');
 
-  const [selectData, setSelectData] = useState<AnnualLeaveMgtTO[]>([]);
+  // 사원리스트
+  const [empList, setEmpList] = useState<AnnualLeaveMgtTO[]>([]);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:9101/empinfomgmt/empreallist')
-      .then((response) => {
-        setSelectData(response.data.list);
-      })
-      .catch((e) => {
-        console.log('직원 호출 오류 : ' + e);
-      });
+    dispatch(attdActions.getEmpListRequest());
   }, []);
 
-  const empList = selectData.map((e) => {
+  useEffect(() => {
+    setEmpList(rawList);
+  }, [rawList]);
+
+  const empLists = empList.map((e) => {
     return (
       <MenuItem value={e.empCode} key={e.empCode}>
         {e.empName}
@@ -78,7 +75,7 @@ const BreakAttendancePage = () => {
   });
   const insertEXAttd = () => {
     // 유효성 검사
-    if (!restTypeName) {
+    if (!attdType) {
       alert('근태구분을 선택 해주세요.');
       return;
     }
@@ -107,26 +104,21 @@ const BreakAttendancePage = () => {
       return;
     }
 
-    axios.post(
-      'http://localhost:9101/attdmgmt/excused-attnd',
-      {},
-      {
-        params: {
-          empCode: empCode,
-          restTypeCode: restTypeCode,
-          restTypeName: restTypeName,
-          requestDate: requestDate,
-          startDate: startDate,
-          endDate: endDate,
-          numberOfDays: numberOfDays,
-          cause: cause,
-          applovalStatus: applovalStatus,
-          startTime: startTime,
-          endTime: endTime
-        }
-      }
-    );
-    alert(' 신청이 완료 되었습니다.');
+    const restAttdTO: restAttdTO = {
+      empCode,
+      attdCode,
+      attdType,
+      requestDate: today,
+      startDate,
+      endDate,
+      startTime: startTime.replace(/:/g, ''),
+      endTime: endTime.replace(/:/g, ''),
+      cause
+    };
+
+    dispatch(attdActions.registBreakAttdRequest(restAttdTO));
+
+    alert('신청이 완료 되었습니다.');
     window.location.reload();
   };
 
@@ -134,18 +126,16 @@ const BreakAttendancePage = () => {
   function calculateNumberOfDays() {
     const startMs = Number(new Date(startDate).getTime());
     const endMs = Number(new Date(endDate).getTime());
-    if (restTypeName === '오전반차' || restTypeName === '오후반차') setNumberOfDays(0.5);
+    if (attdType === '오전반차' || attdType === '오후반차') setNumberOfDays(0.5);
     else setNumberOfDays((endMs - startMs) / (1000 * 60 * 60 * 24) + 1);
   }
 
   //사원코드 임시등록
-  sessionStorage.setItem('empCodeInfo_token', 'A490073');
-  sessionStorage.setItem('empNameInfo_token', '락창카이');
+  // sessionStorage.setItem('empCodeInfo_token', 'A490073');
+  // sessionStorage.setItem('empNameInfo_token', '락창카이');
 
-  const empCodeInfo = sessionStorage.getItem('empCodeInfo_token');
-  const empNameInfo = sessionStorage.getItem('empNameInfo_token');
-
-  console.log('사원코드 : ' + empCode);
+  // const empCodeInfo = sessionStorage.getItem('empCodeInfo_token');
+  // const empNameInfo = sessionStorage.getItem('empNameInfo_token');
 
   return (
     <Page title="연차신청">
@@ -184,28 +174,22 @@ const BreakAttendancePage = () => {
                           <InputLabel id="demo-simple-select-label">연차구분</InputLabel>
                           <Select
                             id="연차구분"
-                            value={restTypeName}
-                            label="restTypeName"
+                            value={attdType}
+                            label="atdType"
                             onChange={(event) => {
-                              setRestTypeName(event.target.value);
-                              if (event.target.value == '공가') {
-                                setRestTypeCode('ASC001');
-                              } else if (event.target.value == '오전반차') {
-                                setRestTypeCode('ASC006');
-                              } else if (event.target.value == '오후반차') {
-                                setRestTypeCode('ASC007');
-                              } else if (event.target.value == '연차') {
-                                setRestTypeCode('ASC005');
-                              } else if (event.target.value == '병가') {
-                                setRestTypeCode('ASC004');
+                              setAttdType(event.target.value);
+                              if (event.target.value === '오전반차') {
+                                setAttdCode('ASC006');
+                              } else if (event.target.value === '오후반차') {
+                                setAttdCode('ASC007');
+                              } else if (event.target.value === '연차') {
+                                setAttdCode('ASC005');
                               }
                             }}
                           >
-                            <MenuItem value={'공가'}>공가</MenuItem>
                             <MenuItem value={'오전반차'}>오전반차</MenuItem>
                             <MenuItem value={'오후반차'}>오후반차</MenuItem>
                             <MenuItem value={'연차'}>연차</MenuItem>
-                            <MenuItem value={'병가'}>병가</MenuItem>
                           </Select>
                         </FormControl>
                       </Box>
@@ -220,7 +204,7 @@ const BreakAttendancePage = () => {
                               setEmpCode(String(e.target.value));
                             }}
                           >
-                            {empList}
+                            {empLists}
                           </Select>
                         </FormControl>
                       </Box>
@@ -229,8 +213,7 @@ const BreakAttendancePage = () => {
                       <Grid item>
                         <TextField
                           fullWidth
-                          label="시작일"
-                          name="시작일"
+                          label="시작날짜"
                           type={'date'}
                           onChange={(event) => {
                             setStartDate(event.target.value);
@@ -243,8 +226,7 @@ const BreakAttendancePage = () => {
                       <Grid item>
                         <TextField
                           fullWidth
-                          label="종료일"
-                          name="종료일"
+                          label="종료날짜"
                           type={'date'}
                           onChange={(event) => {
                             setEndDate(event.target.value);
@@ -257,46 +239,34 @@ const BreakAttendancePage = () => {
                     <Grid item xs={12} sm={6}>
                       <Box sx={{ minWidth: 120 }}>
                         <FormControl fullWidth>
-                          <InputLabel>시작시간</InputLabel>
-                          <Select
+                          <TextField
+                            fullWidth
+                            value={startTime}
                             label="시작시간"
-                            onChange={(event) => {
-                              setStartTime(String(event.target.value).replace(':', ''));
+                            type={'time'}
+                            onChange={(e: any) => {
+                              setStartTime(e.target.value);
                             }}
-                          >
-                            <MenuItem value={'9:00'}>9:00</MenuItem>
-                            <MenuItem value={'10:00'}>10:00</MenuItem>
-                            <MenuItem value={'11:00'}>11:00</MenuItem>
-                            <MenuItem value={'12:00'}>12:00</MenuItem>
-                            <MenuItem value={'13:00'}>13:00</MenuItem>
-                            <MenuItem value={'14:00'}>14:00</MenuItem>
-                            <MenuItem value={'15:00'}>15:00</MenuItem>
-                            <MenuItem value={'16:00'}>16:00</MenuItem>
-                            <MenuItem value={'17:00'}>17:00</MenuItem>
-                          </Select>
+                            defaultValue="xx-xx"
+                            InputLabelProps={{ shrink: true }}
+                          />
                         </FormControl>
                       </Box>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Box sx={{ minWidth: 120 }}>
                         <FormControl fullWidth>
-                          <InputLabel>종료시간</InputLabel>
-                          <Select
+                          <TextField
+                            fullWidth
+                            value={endTime}
                             label="종료시간"
-                            onChange={(event) => {
-                              setendTime(String(event.target.value).replace(':', ''));
+                            type={'time'}
+                            onChange={(e: any) => {
+                              setEndTime(e.target.value);
                             }}
-                          >
-                            <MenuItem value={'10:00'}>10:00</MenuItem>
-                            <MenuItem value={'11:00'}>11:00</MenuItem>
-                            <MenuItem value={'12:00'}>12:00</MenuItem>
-                            <MenuItem value={'13:00'}>13:00</MenuItem>
-                            <MenuItem value={'14:00'}>14:00</MenuItem>
-                            <MenuItem value={'15:00'}>15:00</MenuItem>
-                            <MenuItem value={'16:00'}>16:00</MenuItem>
-                            <MenuItem value={'17:00'}>17:00</MenuItem>
-                            <MenuItem value={'18:00'}>18:00</MenuItem>
-                          </Select>
+                            defaultValue="xxxx-xx-xx"
+                            InputLabelProps={{ shrink: true }}
+                          />
                         </FormControl>
                       </Box>
                     </Grid>
@@ -306,7 +276,7 @@ const BreakAttendancePage = () => {
                     <Grid item xs={12} sm={6}>
                       <TextField
                         fullWidth
-                        label="신청사유"
+                        label="사유"
                         onChange={(event) => {
                           setCause(event.target.value);
                         }}

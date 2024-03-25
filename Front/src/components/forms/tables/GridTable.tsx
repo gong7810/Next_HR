@@ -9,14 +9,23 @@ import { useEffect, useState } from 'react';
 // table columns
 export const columns = [
   // 칼럼정의
-  { headerName: "사원명", field: "empName",key:'empName', width: 500, headerAlign: 'center', align: 'center', headerCheckboxSelection: true, checkboxSelection: true },
-  { headerName: "적용년월", field: "applyYearMonth",key:'applyYearMonth', width: 500, headerAlign: 'center', align: 'center' },
-  { headerName: "남은연차", field: "remainingHoliday" ,key:'remainingHoliday', width: 500, headerAlign: 'center', align: 'center' },
+  {
+    headerName: '사원명',
+    field: 'empName',
+    key: 'empName',
+    width: 300,
+    headerAlign: 'center',
+    align: 'center',
+    headerCheckboxSelection: true,
+    checkboxSelection: true
+  },
+  { headerName: '사용일자', field: 'applyYearMonth', key: 'applyYearMonth', width: 300, headerAlign: 'center', align: 'center' },
+  { headerName: '남은연차', field: 'remainBreakAttd', key: 'remainingHoliday', width: 300, headerAlign: 'center', align: 'center' }
 ];
 
 // ==============================|| TABLE - BASIC DATA GRID ||============================== //
 
-export default function TableDataGrid({ Selected, data }: { Selected: any, data: any }) {
+export default function TableDataGrid({ Selected, data }: { Selected: any; data: any }) {
   const theme = useTheme();
 
   const [rows, setRows] = useState([]);
@@ -49,7 +58,7 @@ export default function TableDataGrid({ Selected, data }: { Selected: any, data:
             borderColor: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200',
             display: 'flex',
             alignItems: 'center', // 텍스트 가운데 정렬
-            justifyContent: 'center', // 텍스트 가운데 정렬
+            justifyContent: 'center' // 텍스트 가운데 정렬
           },
           '& .MuiDataGrid-columnsContainer': {
             color: theme.palette.mode === 'dark' ? 'grey.600' : 'grey.900',
@@ -60,22 +69,17 @@ export default function TableDataGrid({ Selected, data }: { Selected: any, data:
             color: theme.palette.mode === 'dark' ? theme.palette.text.primary + 15 : 'grey.200',
             backgroundColor: '#E8D9FF'
           },
-          '& .MuiDataGrid-columnHeaderTitleContainer':{
+          '& .MuiDataGrid-columnHeaderTitleContainer': {
             backgroundColor: '#E8D9FF'
           },
-          '& .MuiDataGrid-columnHeaderTitle':{
-            fontWeight: 'bold', fontSize: 16 
+          '& .MuiDataGrid-columnHeaderTitle': {
+            fontWeight: 'bold',
+            fontSize: 16
           }
         }
       }}
     >
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        getRowId={(row)=>row.empName}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-      />
+      <DataGrid rows={rows} columns={columns} getRowId={(row) => row.empName} pageSize={5} rowsPerPageOptions={[5]} />
     </Box>
   );
 }

@@ -48,3 +48,14 @@ export interface restAttdTO {
   cause: string;
   approvalStatus?: string;
 }
+
+export interface breakAttdTO {
+  empName: string;
+  deptCode?: string;
+  attdType: string;
+  startDate: string;
+  endDate: string;
+  cause: string;
+  approvalStatus?: string;
+  remainBreakAttd: string;
+}

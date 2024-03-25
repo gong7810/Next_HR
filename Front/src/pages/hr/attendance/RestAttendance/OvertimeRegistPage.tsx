@@ -25,10 +25,10 @@ import { RootState, useDispatch } from 'store';
 import { attdActions } from 'store/redux-saga/reducer/attendance/attendanceReducer';
 import { useSelector } from 'react-redux';
 
-const RestAttdRegistPage = () => {
+const OvertimeRegistPage = () => {
   const dispatch = useDispatch();
   const rawList = useSelector((state: RootState) => state.attdReducer.empList);
-  
+
   const [empList, setEmpList] = useState<AnnualLeaveMgtTO[]>([]);
   const [empCode, setEmpCode] = useState<string>('');
   const [attdCode, setAttdCode] = useState<string>('');
@@ -77,10 +77,8 @@ const RestAttdRegistPage = () => {
   // 근태코드 세팅
   const attdTypeSetting = (e: any) => {
     setAttdCode(e.target.value);
-    if (e.target.value === 'ADC006') setAttdType('외출');
-    else if (e.target.value === 'DAC004') setAttdType('조퇴');
-    else if (e.target.value === 'ASC001') setAttdType('병가');
-    else if (e.target.value === 'ASC004') setAttdType('공가');
+    if (e.target.value === 'ASC008') setAttdType('초과근무');
+    else if (e.target.value === 'EXT003') setAttdType('휴일근무');
   };
 
   // 근태외 등록
@@ -122,8 +120,8 @@ const RestAttdRegistPage = () => {
   };
 
   return (
-    <Page title="근태외 신청">
-      <MainCard title="근태외 신청" secondary={<Stack direction="row" spacing={2} alignItems="center"></Stack>}>
+    <Page title="초과근무 신청">
+      <MainCard title="초과근무 신청" secondary={<Stack direction="row" spacing={2} alignItems="center"></Stack>}>
         <CardContent>
           <Grid container spacing={gridSpacing}>
             <Grid item xs={12} sm={6}>
@@ -146,10 +144,8 @@ const RestAttdRegistPage = () => {
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">근태구분</InputLabel>
                   <Select label="근태구분" onChange={(e: any) => attdTypeSetting(e)}>
-                    <MenuItem value={'ADC006'}>외출</MenuItem>
-                    <MenuItem value={'DAC004'}>조퇴</MenuItem>
-                    <MenuItem value={'ASC001'}>병가</MenuItem>
-                    <MenuItem value={'ASC004'}>공가</MenuItem>
+                    <MenuItem value={'ASC008'}>초과근무</MenuItem>
+                    <MenuItem value={'EXT003'}>휴일근무</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
@@ -248,14 +244,14 @@ const RestAttdRegistPage = () => {
         onClose={handleClose}
         autoHideDuration={3000}
       >
-        <Alert severity="success">근태외 신청완료</Alert>
+        <Alert severity="success">초과근무 신청완료</Alert>
       </Snackbar>
     </Page>
   );
 };
 
-RestAttdRegistPage.getLayout = function getLayout(page: ReactElement) {
+OvertimeRegistPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export default RestAttdRegistPage;
+export default OvertimeRegistPage;

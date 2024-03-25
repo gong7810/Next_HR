@@ -2,6 +2,7 @@ package kr.co.seoulit.insa.attd.controller;
 
 
 import kr.co.seoulit.insa.attd.service.AttdService;
+import kr.co.seoulit.insa.attd.to.BreakAttdTO;
 import kr.co.seoulit.insa.attd.to.RestAttdManageTO;
 import kr.co.seoulit.insa.attdsvc.attdmgmt.to.RestAttdTO;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,6 @@ public class AttdController {
             map.put("errorCode", "failed");
             map.put("errorMsg", e.getMessage());
         }
-
         return map;
     }
 
@@ -57,7 +57,6 @@ public class AttdController {
             map.put("errorCode", "failed");
             map.put("errorMsg", e.getMessage());
         }
-
         return map;
     }
 
@@ -94,8 +93,76 @@ public class AttdController {
             map.put("errorCode", "failed");
             map.put("errorMsg", e.getMessage());
         }
-
         return map;
+    }
 
+    // 연차 조회
+    @GetMapping("breakAttd")
+    public HashMap<String, Object> findBreakAttdList(@RequestParam("selectMonth") String selectMonth) {
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        try {
+            ArrayList<BreakAttdTO> breakAttdList = attdService.findBreakAttdList(selectMonth);
+            map.put("breakAttdList", breakAttdList);
+            map.put("errorCode", "조회 성공");
+        } catch (Exception e) {
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+    // 연차 신청
+    @PostMapping("breakAttd")
+    public HashMap<String, Object> registBreakAttd(@RequestBody RestAttdManageTO breakAttdTO) {
+
+        HashMap<String,Object> map = new HashMap<>();
+
+        try {
+            attdService.registBreakAttd(breakAttdTO);
+            map.put("errorMsg", "신청 성공");
+        } catch (Exception e) {
+            map.clear();
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+    // 연차 승인/반려
+    @PutMapping("/breakAttd")
+    public HashMap<String, Object> updateBreakAttdList(@RequestBody HashMap<String, ArrayList<BreakAttdTO>> breakAttdMap){
+
+        HashMap<String, Object> map = new HashMap<>();
+        ArrayList<BreakAttdTO> breakAttdList = breakAttdMap.get("data");
+
+        try {
+            attdService.updateBreakAttdList(breakAttdList);
+            map.put("errorMsg","승인/반려 성공");
+        } catch (Exception e){
+            map.clear();
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+    // 연차 삭제
+    @DeleteMapping("/breakAttd")
+    public HashMap<String, Object> deleteBreakAttdList(@RequestBody HashMap<String, ArrayList<BreakAttdTO>> breakAttdMap) {
+
+        HashMap<String, Object> map = new HashMap<>();
+        ArrayList<BreakAttdTO> breakAttdList = breakAttdMap.get("selectedRow");
+
+        try{
+            attdService.deleteBreakAttdList(breakAttdList);
+            map.put("errorMsg", "삭제 성공");
+        } catch (Exception e) {
+            map.clear();
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
     }
 }

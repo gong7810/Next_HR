@@ -178,22 +178,22 @@ const hr: NavItemType = {
               url: '/hr/attendance/RestAttendance/RestAttdRegistPage'
             },
             {
-              id: 'dayoffRegist',
-              title: <FormattedMessage id="dayoffRegist" />,
+              id: 'breakAttendanceRegist',
+              title: <FormattedMessage id="breakAttendanceRegist" />,
               type: 'item',
-              url: '/hr/attendance/BreakAttendance/BreakAttendancePage'
+              url: '/hr/attendance/BreakAttendance/BreakAttdRegistPage'
             },
             {
               id: 'businessRegist',
               title: <FormattedMessage id="businessRegist" />,
               type: 'item',
-              url: '/app/contact/c-list'
+              url: '/hr/attendance/RestAttendance/BusinessRegistPage'
             },
             {
               id: 'overtimeRegist',
               title: <FormattedMessage id="overtimeRegist" />,
               type: 'item',
-              url: '/app/contact/c-list'
+              url: '/hr/attendance/RestAttendance/OvertimeRegistPage'
             }
           ]
         },
@@ -222,10 +222,10 @@ const hr: NavItemType = {
               url: '/hr/attendance/RestAttendance/RestAttdApprovalPage'
             },
             {
-              id: 'dayoffManagement',
-              title: <FormattedMessage id="dayoffManagement" />,
+              id: 'breakAttendanceManagement',
+              title: <FormattedMessage id="breakAttendanceManagement" />,
               type: 'item',
-              url: '/hr/attendance/BreakAttendanceManage/BreakAttendanceManagePage'
+              url: '/hr/attendance/BreakAttendance/BreakAttdManagePage'
             }
           ]
         }
