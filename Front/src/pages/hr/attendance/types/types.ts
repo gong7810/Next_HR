@@ -33,3 +33,17 @@ export interface RestAttdTO {
   cause: string;
   applovalStatus: string;
 }
+
+export interface dailyAttdEntity {
+  empName: string;
+  deptName: string;
+  attendTime: string;
+  leaveTime: string;
+  briefLeaveTime: string;
+  workHour: string;
+  latenessStatus: string;
+  overWorkHour: string;
+  nightWorkHour:string;
+  finalizeStatus: string;
+  earlyLeaveTime: string;
+}

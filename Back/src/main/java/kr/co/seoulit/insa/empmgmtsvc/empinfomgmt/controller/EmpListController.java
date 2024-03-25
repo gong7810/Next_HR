@@ -58,8 +58,6 @@ public class EmpListController {
 		map = new ModelMap();
 
 
-
-
 		try {
 
 			ArrayList<EmpTO> list = empInfoService.findEmprealList();

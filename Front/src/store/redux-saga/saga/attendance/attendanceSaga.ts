@@ -18,6 +18,6 @@ export function* watchFetchReceiptList() {
   yield takeLatest(attdActions.getEmpListRequest, getEmpList);
 }
 
-export default function* attdSaga() {
-  yield all([fork(watchFetchReceiptList)]);
+export function* attdSaga() {
+  yield all([call(watchFetchReceiptList)]);
 }

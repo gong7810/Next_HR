@@ -169,7 +169,7 @@ const hr: NavItemType = {
               id: 'dayAttendance',
               title: <FormattedMessage id="dayAttendance" />,
               type: 'item',
-              url: '/app/contact/c-card'
+              url: '/hr/attendance/DailyAttdRegistration'
             },
             {
               id: 'restAttendanceRegist',
@@ -207,7 +207,7 @@ const hr: NavItemType = {
               id: 'dayAttendanceManagement',
               title: <FormattedMessage id="dayAttendanceManagement" />,
               type: 'item',
-              url: '/app/e-commerce/products'
+              url: '/hr/attendance/DailyAttdManage'
             },
             {
               id: 'monthAttendanceManagement',
