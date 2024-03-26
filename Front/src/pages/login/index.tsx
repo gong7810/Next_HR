@@ -1,9 +1,11 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Button, Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import Link from '../../Link';
+import { styled } from 'styled-components';
+import oc from 'open-color';
 
 // project imports
 import LAYOUT from 'constant';
@@ -22,6 +24,25 @@ const Login = () => {
   const theme = useTheme();
   const { isLoggedIn } = useAuth();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+
+  const [id, setId] = useState('');
+  const [pw, setPw] = useState('');
+
+  const StyledButton = styled(Button)`
+    color: white;
+  `;
+
+  const onChangeId = (e: any) => {
+    setId(e.target.value);
+  };
+
+  const onChangePw = (e: any) => {
+    setPw(e.target.value);
+  };
+
+  const login = () => {
+    console.log('로그인', id, pw);
+  };
 
   return (
     <Page title="Login">
@@ -52,7 +73,15 @@ const Login = () => {
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      <AuthLogin />
+                      {/* <AuthLogin /> */}
+                      <Wrapper>
+                        <Label>로그인</Label>
+                        <Input placeholder="아이디" value={id} onChange={(e: any) => onChangeId(e)} />
+                        <Input placeholder="비밀번호" type="password" value={pw} onChange={(e: any) => onChangePw(e)} />
+                      </Wrapper>
+                      <Wrapper2>
+                        <StyledButton onClick={() => login()}>로그인</StyledButton>
+                      </Wrapper2>
                     </Grid>
                     <Grid item xs={12}>
                       <Divider />
@@ -88,3 +117,50 @@ Login.getLayout = function getLayout(page: ReactElement) {
 };
 
 export default Login;
+
+const Wrapper = styled.div`
+  & + & {
+    margin-top: 1rem;
+  }
+`;
+
+const Label = styled.div`
+  font-size: 1rem;
+  color: ${oc.gray[6]};
+  margin-bottom: 0.25rem;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  border: 1px solid ${oc.gray[3]};
+  outline: none;
+  border-radius: 0px;
+  line-height: 2.5rem;
+  font-size: 1.2rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+`;
+
+const Wrapper2 = styled.div`
+  margin-top: 1rem;
+  padding-top: 0.6rem;
+  padding-bottom: 0.5rem;
+
+  background: ${oc.teal[6]};
+
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+
+  cursor: pointer;
+  user-select: none;
+  transition: 0.2s all;
+
+  &:hover {
+    background: ${oc.teal[5]};
+  }
+
+  &:active {
+    background: ${oc.teal[7]};
+  }
+`;

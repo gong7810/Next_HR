@@ -2,7 +2,7 @@ import { dailyAttendAction } from 'store/redux-saga/reducer/attendance/DailyAtte
 import { takeEvery, all, call, put } from 'redux-saga/effects';
 import * as api from 'store/redux-saga/api/attendance';
 import { typeAction } from 'types/attendance/types';
-type dailyAttendRequest = { dayAttdlist: []; errorMsg: ''; errorCode: 0; empList: []};
+type dailyAttendRequest = { dayAttdlist: []; errorMsg: ''; errorCode: 0; empList: [] };
 
 // generator 함수는 yield 안하면은 해당 라인의 코드 실행 안함
 // console.log()는 예외인거 같다.
@@ -20,7 +20,6 @@ export function* dailyAttendSearchSaga(action: typeAction) {
   const data: dailyAttendRequest = yield call(api.searchDailyAttend, action);
   console.log('data from dailyAttendSearchSaga:', data);
   yield put(dailyAttendAction.DAILY_ATTEND_SEARCH_FETCH_STATUS(data));
-
 }
 
 export function* dailyAttendModifySaga(action: typeAction) {
@@ -29,7 +28,6 @@ export function* dailyAttendModifySaga(action: typeAction) {
   const data: dailyAttendRequest = yield call(api.modifyDailyAttend, action);
   console.log('data from dailyAttendModifySaga:', data);
   yield put(dailyAttendAction.DAILY_ATTEND_MODIFY_FETCH_STATUS(data));
-
 }
 
 export function* dailyAttendSearchEmplistSaga(action: typeAction) {
@@ -38,7 +36,6 @@ export function* dailyAttendSearchEmplistSaga(action: typeAction) {
   const data: dailyAttendRequest = yield call(api.getEmpList, action);
   console.log('data from dailyAttendSearchEmplistSaga:', data);
   yield put(dailyAttendAction.DAILY_ATTEND_SEARCH_EMPLIST_FETCH_STATUS(data));
-
 }
 
 export function* dailyAttendFinalizeSaga(action: typeAction) {
@@ -47,7 +44,6 @@ export function* dailyAttendFinalizeSaga(action: typeAction) {
   const data: dailyAttendRequest = yield call(api.finalizeDailyAttend, action);
   console.log('data from dailyAttendSearchEmplistSaga:', data);
   yield put(dailyAttendAction.DAILY_ATTEND_FINALIZE_FETCH_STATUS(data));
-
 }
 
 // action과 api 요청을 보내주는 함수를 호출하는 saga를 연결해주는 saga
@@ -60,6 +56,6 @@ export function* onDailyAttendSaga() {
   yield takeEvery(dailyAttendAction.DAILY_ATTEND_FINALIZE_FETCH_REQUESTED, dailyAttendFinalizeSaga);
 }
 
-export function* dailyAttendSaga() {
+export default function* dailyAttendSaga() {
   yield all([call(onDailyAttendSaga)]);
 }
