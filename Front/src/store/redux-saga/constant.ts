@@ -1,1 +1,2 @@
 export const GET_EMPLIST = 'GET_EMPLIST ';
+export const GET_REST_ATTD_LIST = 'GET_REST_ATTD_LIST';

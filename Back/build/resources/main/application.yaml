@@ -30,6 +30,15 @@ spring:
       file-size-threshold: 215MB
       maxFileSize: 10MB
       maxRequestSize: 10MB
+  jpa:
+    database: oracle
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.Oracle10gDialect
+        ddl-auto: none
+        temp:
+          use_jdbc_metadata_defaults: false
+        flushMode: COMMIT
 tomcat:
   ajp:
     enabled: true
