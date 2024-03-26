@@ -26,7 +26,7 @@ public class AttendanceApprovalController {
 	@GetMapping("attnd-approval")
 	public ModelMap findRestAttdListByDept(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate,
 			@RequestParam("deptCode") String deptCode, HttpServletResponse response){
-		System.out.println(" 조회 도착");
+		System.out.println("근태외 조회 도착");
 		System.out.println(startDate);
 		System.out.println(endDate);
 		System.out.println(deptCode);
@@ -72,6 +72,7 @@ public class AttendanceApprovalController {
 		}
 		return map; 
 	}
+
 	@PutMapping("attnd-approval")
 	public ModelMap modifyRestAttdList(HttpServletRequest request, HttpServletResponse response){
 		System.out.println("근태외 확정 버튼 클릭시 요청");

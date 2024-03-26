@@ -25,7 +25,7 @@ public class AnnualLeaveMgtController {
    
    @GetMapping("/annual-leaveMgt")
    public ModelMap findAnnualVacationMgtList(@RequestParam("applyYearMonth") String applyYearMonth, HttpServletResponse response){
-       System.out.println("연차관리 조회 도착");
+       System.out.println("연차신청 조회 도착");
        System.out.println(applyYearMonth);
 
 	  map = new ModelMap();

@@ -7,7 +7,14 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 public class AppointmentTO extends BaseTO {
    
-   private String appointmentName;
+   String appointmentName;
 
+   public String getAppointmentName() {
+      return appointmentName;
+   }
+
+   public void setAppointmentName(String appointmentName) {
+      this.appointmentName = appointmentName;
+   }
 
 }

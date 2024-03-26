@@ -623,5 +623,14 @@ public class EmpInfoServiceImpl implements EmpInfoService {
         return detailAppointmentList;
     }
 
+    @Override
+    public String findEmpCode(String empName, String deptCode){
+        String empCode = null;
+        empCode = empMapper.selectEmpCode(empName, deptCode);
+        System.out.println(empCode);
+        return empCode;
+    }
+
+
 
 }

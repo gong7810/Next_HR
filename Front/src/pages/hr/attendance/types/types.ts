@@ -27,9 +27,48 @@ export interface RestAttdTO {
   requestDate: string;
   startDate: string;
   endDate: string;
-  startTime: string
+  startTime: string;
   endTime: string;
   numberOfDays: string;
   cause: string;
   applovalStatus: string;
+}
+
+export interface dailyAttdEntity {
+  empName: string;
+  deptName: string;
+  attendTime: string;
+  leaveTime: string;
+  briefLeaveTime: string;
+  workHour: string;
+  latenessStatus: string;
+  overWorkHour: string;
+  nightWorkHour:string;
+  finalizeStatus: string;
+  earlyLeaveTime: string;
+}
+export interface restAttdTO {
+  restAttdNo?: string;
+  empCode: string;
+  deptCode?: string;
+  attdCode: string;
+  attdType: string;
+  requestDate: string;
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+  cause: string;
+  approvalStatus?: string;
+}
+
+export interface breakAttdTO {
+  empName: string;
+  deptCode?: string;
+  attdType: string;
+  startDate: string;
+  endDate: string;
+  cause: string;
+  approvalStatus?: string;
+  remainBreakAttd: string;
 }

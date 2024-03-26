@@ -169,31 +169,31 @@ const hr: NavItemType = {
               id: 'dayAttendance',
               title: <FormattedMessage id="dayAttendance" />,
               type: 'item',
-              url: '/app/contact/c-card'
+              url: '/hr/attendance/DailyAttdRegistration'
             },
             {
               id: 'restAttendanceRegist',
               title: <FormattedMessage id="restAttendanceRegist" />,
               type: 'item',
-              url: '/hr/attendance/RestAttendance/RestAttendanceRegistPage'
+              url: '/hr/attendance/RestAttendance/RestAttdRegistPage'
             },
             {
-              id: 'dayoffRegist',
-              title: <FormattedMessage id="dayoffRegist" />,
+              id: 'breakAttendanceRegist',
+              title: <FormattedMessage id="breakAttendanceRegist" />,
               type: 'item',
-              url: '/hr/attendance/BreakAttendance/BreakAttendancePage'
+              url: '/hr/attendance/BreakAttendance/BreakAttdRegistPage'
             },
             {
               id: 'businessRegist',
               title: <FormattedMessage id="businessRegist" />,
               type: 'item',
-              url: '/app/contact/c-list'
+              url: '/hr/attendance/RestAttendance/BusinessRegistPage'
             },
             {
               id: 'overtimeRegist',
               title: <FormattedMessage id="overtimeRegist" />,
               type: 'item',
-              url: '/app/contact/c-list'
+              url: '/hr/attendance/RestAttendance/OvertimeRegistPage'
             }
           ]
         },
@@ -207,7 +207,7 @@ const hr: NavItemType = {
               id: 'dayAttendanceManagement',
               title: <FormattedMessage id="dayAttendanceManagement" />,
               type: 'item',
-              url: '/app/e-commerce/products'
+              url: '/hr/attendance/DailyAttdManage'
             },
             {
               id: 'monthAttendanceManagement',
@@ -219,13 +219,13 @@ const hr: NavItemType = {
               id: 'restAttendanceApprovalManagement',
               title: <FormattedMessage id="restAttendanceApprovalManagement" />,
               type: 'item',
-              url: '/hr/attendance/AttdApproval/AttdApprovalPage'
+              url: '/hr/attendance/RestAttendance/RestAttdApprovalPage'
             },
             {
-              id: 'dayoffManagement',
-              title: <FormattedMessage id="dayoffManagement" />,
+              id: 'breakAttendanceManagement',
+              title: <FormattedMessage id="breakAttendanceManagement" />,
               type: 'item',
-              url: '/hr/attendance/BreakAttendanceManage/BreakAttendanceManagePage'
+              url: '/hr/attendance/BreakAttendance/BreakAttdManagePage'
             }
           ]
         }

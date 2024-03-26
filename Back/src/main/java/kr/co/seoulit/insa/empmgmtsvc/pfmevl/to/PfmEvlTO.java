@@ -7,13 +7,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 public class PfmEvlTO {
 	
-	private String empCode;
-	private String empName;
-	private String deptCode;
-	private String grade;
-	private String score;
-	private String disqualification;
-	private String durationOfTraining;
-	private String numberOfCertificate;
+	private String empCode, empName, deptCode, grade, score, disqualification, durationOfTraining, numberOfCertificate;
 
 }

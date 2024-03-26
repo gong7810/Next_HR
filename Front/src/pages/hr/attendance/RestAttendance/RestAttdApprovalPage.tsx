@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Grid, Stack, TextField, Divider, Button, Select, Box, FormControl, InputLabel, MenuItem, CircularProgress } from '@mui/material';
 import Layout from 'layout';
 import Page from 'components/ui-component/Page';
@@ -6,40 +6,47 @@ import MainCard from 'ui-component/cards/MainCard';
 import SubCard from 'ui-component/cards/SubCard';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { RestAttdTO } from '../types/types';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'store';
+import { attdActions } from 'store/redux-saga/reducer/attendance/attendanceReducer';
 
 const Columns: GridColDef[] = [
-  { headerName: '사원명', field: 'empName', width: 150, headerAlign: 'center', align: 'center' , headerCheckboxSelection: true, checkboxSelection: true },
-  { headerName: '근태구분명', field: 'restTypeName', width: 150, headerAlign: 'center', align: 'center'  },
-  { headerName: '일수', field: 'numberOfDays', width: 150, headerAlign: 'center', align: 'center'  },
-  { headerName: '신청일자', field: 'requestDate', width: 150, headerAlign: 'center', align: 'center'  },
-  { headerName: '시작일', field: 'startDate', width: 150, headerAlign: 'center', align: 'center'  },
-  { headerName: '종료일', field: 'endDate', width: 150, headerAlign: 'center', align: 'center'  },
-  { 
-    headerName: '시작시간', 
-    field: 'startTime', 
-    width: 150, 
-    headerAlign: 'center', 
+  {
+    headerName: '사원코드',
+    field: 'empCode',
+    width: 150,
+    headerAlign: 'center',
+    align: 'center'
+  },
+  { headerName: '근태유형', field: 'attdType', width: 150, headerAlign: 'center', align: 'center' },
+  { headerName: '신청일자', field: 'requestDate', width: 150, headerAlign: 'center', align: 'center' },
+  { headerName: '시작일', field: 'startDate', width: 150, headerAlign: 'center', align: 'center' },
+  { headerName: '종료일', field: 'endDate', width: 150, headerAlign: 'center', align: 'center' },
+  {
+    headerName: '시작시간',
+    field: 'startTime',
+    width: 150,
+    headerAlign: 'center',
     align: 'center',
     valueFormatter: (params) => {
       return params.value ? `${params.value}` : ''; // null 체크 후 반환
     }
   },
-  { 
-    headerName: '종료시간', 
-    field: 'endTime', 
-    width: 150, 
-    headerAlign: 'center', 
+  {
+    headerName: '종료시간',
+    field: 'endTime',
+    width: 150,
+    headerAlign: 'center',
     align: 'center',
     valueFormatter: (params) => {
       return params.value ? `${params.value}` : ''; // null 체크 후 반환
     }
   },
-  { headerName: '사유', field: 'cause', width: 150, headerAlign: 'center', align: 'center'  },
-  { headerName: '승인여부', field: 'applovalStatus', width: 150, headerAlign: 'center', align: 'center'  },
+  { headerName: '사유', field: 'cause', width: 150, headerAlign: 'center', align: 'center' },
+  { headerName: '승인여부', field: 'approvalStatus', width: 150, headerAlign: 'center', align: 'center' }
 ];
 
-const AttdApprovalPage = () => {
+const RestAttdApprovalPage = () => {
+  const dispatch = useDispatch();
   // 부서
   const [deptName, setDeptName] = useState('');
   // 부서코드
@@ -50,104 +57,97 @@ const AttdApprovalPage = () => {
   const [endDate, setEndDate] = useState('');
 
   const [selectRowData, setSelectRowData] = useState<RestAttdTO[]>([]);
-  
+
   const [rows, setRows] = useState([]);
 
   const [loading, setLoading] = useState(false); // 로딩 상태 추가
 
-  const handleSearchExcusedAttd = async (deptCode: any, startDate: any, endDate: any) => {
-    setLoading(true); 
-  
-    try {
-      const response = await axios.get('http://localhost:9101/attdappvl/attnd-approval', {
-        params: {
-          deptCode: deptCode,
-          startDate: startDate,
-          endDate: endDate
-        }
-      });
-  
-      console.log('응답 데이터:', response.data);
-  
-      const updatedRows = response.data.restAttdList.map((item: any, index: any) => {
-        console.log('startTime:', item.startTime);
-        console.log('endTime:', item.endTime);
-  
-        const formatTime = (time: number) => {
-          const hours = Math.floor(time / 100);
-          const minutes = time % 100;
-          return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-        }
-  
-        return { 
-          ...item, 
-          id: index,
-          startTime: formatTime(item.startTime),
-          endTime: formatTime(item.endTime)
-        }; 
-      });
-  
-      setRows(updatedRows); 
-    } catch (error) {
-      console.error('데이터 가져오기 오류:', error);
-    } finally {
-      setLoading(false); 
-    }
-  }  
-  
+  const attdRestList = useSelector((state: any) => state.attdReducer.restAttdList);
+
+  // 근태외 관리 조회
+  const getRestAttdList = () => {
+    dispatch(attdActions.getRestAttdListRequest({ deptCode, startDate, endDate }));
+
+    setSelectRowData([]);
+  };
+
+  useEffect(() => {
+    const rows = attdRestList.map((item: any, index: any) => {
+      return {
+        ...item,
+        id: index
+      };
+    });
+
+    setRows(rows);
+  }, [attdRestList]);
+
+  // const searchBtn = () => {
+  //   handleSearchExcusedAttd(deptCode, startDate, endDate);
+  // };
+
+  // 근태외 승인/취소
   const handleUpdateExcusedAttd = async (sendData: any) => {
     try {
-      await axios.put('http://localhost:9101/attdappvl/react-attnd-approval', {
-        sendData: sendData
-      }, {
-        headers: { 'Content-Type': 'application/json' }
-      });
+      await dispatch(attdActions.approvalRestAttdRequest(sendData));
 
       console.log('데이터 업데이트 완료');
       setSelectRowData([]);
-      handleSearchExcusedAttd(deptCode, startDate, endDate);
     } catch (error) {
       console.error('데이터 업데이트 오류:', error);
     }
-  }
+  };
 
-  const searchBtn = () => {
-    handleSearchExcusedAttd(deptCode, startDate, endDate);
-  }
-
+  // 근태외 승인
   const recognitionBtn = async () => {
     if (selectRowData.length === 0) {
-      alert('승인할 신청을 선택하세요!');
+      alert('행을 선택하세요!');
       return;
     }
 
-    console.log(selectRowData)
+    console.log(selectRowData);
 
-    const takenData = selectRowData.map(item => ({
+    const takenData = selectRowData.map((item) => ({
       ...item,
-      applovalStatus: '승인완료'
+      approvalStatus: '승인'
     }));
 
     await handleUpdateExcusedAttd(takenData);
 
-    alert("승인이 완료 되었습니다.");
-  }
+    alert('승인이 완료되었습니다.');
+    await dispatch(attdActions.getRestAttdListRequest({ deptCode, startDate, endDate }));
+  };
 
+  // 근태외 승인취소
   const recognitionCancelBtn = async () => {
     if (selectRowData.length === 0) {
       alert('승인 취소할 신청을 선택하세요!');
       return;
     }
 
-    const takenData = selectRowData.map(item => ({
+    const takenData = selectRowData.map((item) => ({
       ...item,
-      applovalStatus: '승인취소'
+      approvalStatus: ''
     }));
 
     await handleUpdateExcusedAttd(takenData);
 
     alert('승인이 취소되었습니다.');
-  }
+    await dispatch(attdActions.getRestAttdListRequest({ deptCode, startDate, endDate }));
+  };
+
+  // 근태외 삭제
+  const deleteRestAttd = async () => {
+    if (selectRowData.length === 0) {
+      alert('삭제할 신청을 선택하세요!');
+      return;
+    } else {
+      await dispatch(attdActions.romoveRestAttdRequest({ selectRowData }));
+
+      alert('삭제되었습니다.');
+      await dispatch(attdActions.getRestAttdListRequest({ deptCode, startDate, endDate }));
+    }
+  };
 
   return (
     <Page title="근태외 승인관리">
@@ -157,8 +157,15 @@ const AttdApprovalPage = () => {
             title="근태외 승인관리"
             secondary={
               <Stack direction="row" spacing={2} alignItems="center">
-                <Button variant="contained" onClick={recognitionBtn}>승인완료</Button>
-                <Button variant="contained" onClick={recognitionCancelBtn}>승인취소</Button>
+                <Button variant="contained" onClick={recognitionBtn}>
+                  승인완료
+                </Button>
+                <Button variant="contained" onClick={recognitionCancelBtn}>
+                  승인취소
+                </Button>
+                <Button variant="contained" onClick={deleteRestAttd}>
+                  삭제
+                </Button>
               </Stack>
             }
           >
@@ -172,13 +179,19 @@ const AttdApprovalPage = () => {
                         <Select
                           value={deptName}
                           label="조회부서"
-                          onChange={(event) => {
+                          onChange={(event: any) => {
                             setDeptName(event.target.value);
-                            if (event.target.value === '인사팀') { setDeptCode('DEP001'); }
-                            else if (event.target.value === '전산팀') { setDeptCode('DEP002'); }
-                            else if (event.target.value === '회계팀') { setDeptCode('DEP000'); }
-                            else if (event.target.value === '보안팀') { setDeptCode('DEP003'); }
-                            else if (event.target.value === '개발팀') { setDeptCode('DEP004'); }
+                            if (event.target.value === '인사팀') {
+                              setDeptCode('DEP001');
+                            } else if (event.target.value === '전산팀') {
+                              setDeptCode('DEP002');
+                            } else if (event.target.value === '회계팀') {
+                              setDeptCode('DEP000');
+                            } else if (event.target.value === '보안팀') {
+                              setDeptCode('DEP003');
+                            } else if (event.target.value === '개발팀') {
+                              setDeptCode('DEP004');
+                            }
                           }}
                         >
                           <MenuItem value={'인사팀'}>인사팀</MenuItem>
@@ -192,27 +205,35 @@ const AttdApprovalPage = () => {
                   </Grid>
                   <Grid item xs={12} md={4}>
                     <TextField
-                      fullWidth label="시작일"
+                      fullWidth
+                      label="시작일"
                       name="시작일"
                       type={'date'}
-                      onChange={(event) => { setStartDate(event.target.value) }}
-                      InputLabelProps={{ shrink: true, }}
+                      onChange={(event: any) => {
+                        setStartDate(event.target.value);
+                      }}
+                      InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
                   <Grid item xs={12} md={4}>
                     <TextField
-                      fullWidth label="종료일"
+                      fullWidth
+                      label="종료일"
                       name="종료일"
                       type={'date'}
-                      onChange={(event) => { setEndDate(event.target.value) }}
-                      InputLabelProps={{ shrink: true, }}
+                      onChange={(event: any) => {
+                        setEndDate(event.target.value);
+                      }}
+                      InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
                 </Grid>
                 <Grid item>
                   <Grid container justifyContent="center" spacing={2}>
                     <Grid item>
-                      <Button variant="contained" onClick={searchBtn}>조회하기</Button>
+                      <Button variant="contained" onClick={() => getRestAttdList()}>
+                        조회
+                      </Button>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -221,13 +242,14 @@ const AttdApprovalPage = () => {
             <Grid item xs={12}>
               <Divider />
             </Grid>
-            <div style={{ height: 400, width: '100%' }}>
+            <Box sx={{ height: 400, width: '100%' }}>
               {loading ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                   <CircularProgress />
                 </div>
               ) : (
-                <DataGrid sx={{ textAlign: 'center' }}
+                <DataGrid
+                  sx={{ textAlign: 'center' }}
                   rows={rows}
                   columns={Columns}
                   pageSize={5}
@@ -240,16 +262,16 @@ const AttdApprovalPage = () => {
                   }}
                 />
               )}
-            </div>
+            </Box>
           </MainCard>
         </Grid>
       </Grid>
     </Page>
   );
-}
+};
 
-AttdApprovalPage.getLayout = function getLayout(page: ReactElement) {
+RestAttdApprovalPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export default AttdApprovalPage;
+export default RestAttdApprovalPage;

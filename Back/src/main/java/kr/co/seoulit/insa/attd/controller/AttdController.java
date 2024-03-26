@@ -2,14 +2,16 @@ package kr.co.seoulit.insa.attd.controller;
 
 
 import kr.co.seoulit.insa.attd.service.AttdService;
+import kr.co.seoulit.insa.attd.to.BreakAttdTO;
 import kr.co.seoulit.insa.attd.to.RestAttdManageTO;
+import kr.co.seoulit.insa.attdsvc.attdmgmt.to.RestAttdTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -23,21 +25,144 @@ public class AttdController {
     @Autowired
     private AttdService attdService;
 
+    // 근태외 관리 조회
     @GetMapping("/restAttd")
-    public HashMap<String, Object> selectRestAttdList() {
+    public HashMap<String, Object> findRestAttdList(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate,
+                                                      @RequestParam("deptCode") String deptCode) {
 
         HashMap<String, Object> map = new HashMap<>();
-
+        System.out.println("데이터 도착" + startDate + endDate + deptCode);
         try {
-            ArrayList<RestAttdManageTO> restAttdList =  attdService.selectRestAttdList();
+            ArrayList<RestAttdManageTO> restAttdList =  attdService.findRestAttdList(startDate, endDate, deptCode);
             map.put("restAttdList", restAttdList);
-            map.put("errorCode", "조회성공");
+            map.put("errorCode", "조회 성공");
         } catch (Exception e) {
             map.clear();
             map.put("errorCode", "failed");
             map.put("errorMsg", e.getMessage());
         }
+        return map;
+    }
 
+    // 근태외 신청
+    @PostMapping("/restAttd")
+    public HashMap<String, Object> registRestAttd(@RequestBody RestAttdManageTO restAttdManageTO) {
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        try{
+            attdService.registRestAttd(restAttdManageTO);
+            map.put("errorCode", "등록 성공");
+        } catch (Exception e) {
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+    // 근태외 승인/취소
+    @PutMapping("/restAttd")
+    public HashMap<String, Object> updateRestAttdList(@RequestBody HashMap<String, ArrayList<RestAttdManageTO>> restAttdMap){
+
+        HashMap<String, Object> map = new HashMap<>();
+        ArrayList<RestAttdManageTO> restAttdList = restAttdMap.get("data");
+
+        try {
+            attdService.updateRestAttdList(restAttdList);
+            map.put("errorMsg","승인/취소 성공");
+        } catch (Exception e){
+            map.clear();
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+    // 근태외 삭제
+    @DeleteMapping("/restAttd")
+    public HashMap<String, Object> deleteRestAttdList(@RequestBody HashMap<String, ArrayList<RestAttdManageTO>> restAttdMap) {
+
+        HashMap<String, Object> map = new HashMap<>();
+        ArrayList<RestAttdManageTO> restAttdList = restAttdMap.get("selectRowData");
+
+        try{
+            attdService.deleteRestAttdList(restAttdList);
+            map.put("errorMsg", "삭제 성공");
+        } catch (Exception e) {
+            map.clear();
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+    // 연차 조회
+    @GetMapping("breakAttd")
+    public HashMap<String, Object> findBreakAttdList(@RequestParam("selectMonth") String selectMonth) {
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        try {
+            ArrayList<BreakAttdTO> breakAttdList = attdService.findBreakAttdList(selectMonth);
+            map.put("breakAttdList", breakAttdList);
+            map.put("errorCode", "조회 성공");
+        } catch (Exception e) {
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+    // 연차 신청
+    @PostMapping("breakAttd")
+    public HashMap<String, Object> registBreakAttd(@RequestBody RestAttdManageTO breakAttdTO) {
+
+        HashMap<String,Object> map = new HashMap<>();
+
+        try {
+            attdService.registBreakAttd(breakAttdTO);
+            map.put("errorMsg", "신청 성공");
+        } catch (Exception e) {
+            map.clear();
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+    // 연차 승인/반려
+    @PutMapping("/breakAttd")
+    public HashMap<String, Object> updateBreakAttdList(@RequestBody HashMap<String, ArrayList<BreakAttdTO>> breakAttdMap){
+
+        HashMap<String, Object> map = new HashMap<>();
+        ArrayList<BreakAttdTO> breakAttdList = breakAttdMap.get("data");
+
+        try {
+            attdService.updateBreakAttdList(breakAttdList);
+            map.put("errorMsg","승인/반려 성공");
+        } catch (Exception e){
+            map.clear();
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+    // 연차 삭제
+    @DeleteMapping("/breakAttd")
+    public HashMap<String, Object> deleteBreakAttdList(@RequestBody HashMap<String, ArrayList<BreakAttdTO>> breakAttdMap) {
+
+        HashMap<String, Object> map = new HashMap<>();
+        ArrayList<BreakAttdTO> breakAttdList = breakAttdMap.get("selectedRow");
+
+        try{
+            attdService.deleteBreakAttdList(breakAttdList);
+            map.put("errorMsg", "삭제 성공");
+        } catch (Exception e) {
+            map.clear();
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
         return map;
     }
 }
