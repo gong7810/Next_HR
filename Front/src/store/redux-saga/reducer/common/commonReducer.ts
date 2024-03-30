@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   accessToken: '',
-  refreshToken: ''
+  refreshToken: '',
+  authLevel: ''
 };
 
 const commonSlice = createSlice({
@@ -14,9 +15,27 @@ const commonSlice = createSlice({
     },
     getLoginTokenSuccess(state, action) {
       console.warn('state 업데이트');
-      const { accessToken, refreshToken } = action.payload;
+      const { accessToken, authLevel } = action.payload;
       state.accessToken = accessToken;
-      state.refreshToken = refreshToken;
+      state.authLevel = authLevel;
+      // 추후 state에선 token, authLevel 삭제
+      // localStorage에서 관리할 예정
+      localStorage.setItem('access', accessToken);
+      localStorage.setItem('authLevel', authLevel);
+      // localStorage.setItem('refresh', refreshToken);
+    },
+    getTokenCheckRequest(state, action) {
+      console.warn('jwt 토큰 검증 요청');
+    },
+    removeTokenRequest(state, action) {
+      console.warn('jwt 토큰 삭제 요청 (로그아웃)');
+    },
+    removeTokenSuccess(state) {
+      console.warn('state 업데이트');
+      state.accessToken = '';
+      state.authLevel = '';
+      localStorage.removeItem('access');
+      localStorage.removeItem('authLevel');
     }
   }
 });

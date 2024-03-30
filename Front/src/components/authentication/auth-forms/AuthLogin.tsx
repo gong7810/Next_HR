@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'Link';
 
 // material-ui
@@ -30,25 +30,35 @@ import useScriptRef from 'hooks/useScriptRef';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 // ===============================|| JWT LOGIN ||=============================== //
 
 const JWTLogin = ({ loginProp, ...others }: { loginProp?: number }) => {
   const theme = useTheme();
+  const token = useSelector((state: RootState) => state.commonReducer.accessToken);
+  const [authPass, setAuthPass] = useState(true);
 
   const { login } = useAuth();
   const scriptedRef = useScriptRef();
 
-  const [checked, setChecked] = React.useState(true);
+  // const [checked, setChecked] = React.useState(true);
 
-  const [showPassword, setShowPassword] = React.useState(false);
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  // const [showPassword, setShowPassword] = React.useState(false);
+  // const handleClickShowPassword = () => {
+  //   setShowPassword(!showPassword);
+  // };
 
-  const handleMouseDownPassword = (event: React.MouseEvent) => {
-    event.preventDefault()!;
-  };
+  // const handleMouseDownPassword = (event: React.MouseEvent) => {
+  //   event.preventDefault()!;
+  // };
+
+  useEffect(() => {
+    if (token.length > 0) {
+      setAuthPass(false);
+    }
+  }, [token]);
 
   return (
     <Formik
@@ -81,7 +91,7 @@ const JWTLogin = ({ loginProp, ...others }: { loginProp?: number }) => {
     >
       {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
         <form noValidate onSubmit={handleSubmit} {...others}>
-          <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
+          {/* <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
             <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
             <OutlinedInput
               id="outlined-adornment-email-login"
@@ -97,9 +107,9 @@ const JWTLogin = ({ loginProp, ...others }: { loginProp?: number }) => {
                 {errors.email}
               </FormHelperText>
             )}
-          </FormControl>
+          </FormControl> */}
 
-          <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
+          {/* <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
             <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
             <OutlinedInput
               id="outlined-adornment-password-login"
@@ -129,9 +139,9 @@ const JWTLogin = ({ loginProp, ...others }: { loginProp?: number }) => {
                 {errors.password}
               </FormHelperText>
             )}
-          </FormControl>
+          </FormControl> */}
 
-          <Grid container alignItems="center" justifyContent="space-between">
+          {/* <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
               <FormControlLabel
                 control={
@@ -151,7 +161,7 @@ const JWTLogin = ({ loginProp, ...others }: { loginProp?: number }) => {
                 Forgot Password?
               </Typography>
             </Grid>
-          </Grid>
+          </Grid> */}
 
           {errors.submit && (
             <Box sx={{ mt: 3 }}>
@@ -160,8 +170,8 @@ const JWTLogin = ({ loginProp, ...others }: { loginProp?: number }) => {
           )}
           <Box sx={{ mt: 2 }}>
             <AnimateButton>
-              <Button color="secondary" disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained">
-                Sign In
+              <Button color="secondary" disabled={authPass} fullWidth size="large" type="submit" variant="contained">
+                Let's In!
               </Button>
             </AnimateButton>
           </Box>
