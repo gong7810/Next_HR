@@ -104,7 +104,7 @@ const BreakAttendancePage = () => {
       return;
     }
 
-    const restAttdTO: restAttdTO = {
+    const restAttdTO = {
       empCode,
       attdCode,
       attdType,
@@ -114,7 +114,7 @@ const BreakAttendancePage = () => {
       startTime: startTime.replace(/:/g, ''),
       endTime: endTime.replace(/:/g, ''),
       cause
-    };
+    } as restAttdTO;
 
     dispatch(attdActions.registBreakAttdRequest(restAttdTO));
 

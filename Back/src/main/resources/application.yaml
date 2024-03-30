@@ -17,9 +17,9 @@ server:
 spring:
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
-    password: insa78next
     url: jdbc:oracle:thin:@localhost:1521:xe
-    username: insa78next
+    username: hr77
+    password: hr77
   mvc:
     view:
       prefix: /WEB-INF/views/

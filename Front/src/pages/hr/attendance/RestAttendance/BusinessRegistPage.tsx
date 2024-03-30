@@ -91,7 +91,7 @@ const BusinessRegistPage = () => {
     } else if (startDate === endDate && startTime === endTime) {
       alert('신청 시간이 잘못되었습니다');
     } else {
-      const restAttdTO: restAttdTO = {
+      const restAttdTO = {
         empCode,
         attdCode,
         attdType,
@@ -101,7 +101,7 @@ const BusinessRegistPage = () => {
         startTime: startTime.replace(/:/g, ''),
         endTime: endTime.replace(/:/g, ''),
         cause
-      };
+      } as restAttdTO;
       console.log('추가 폼 :', restAttdTO);
 
       dispatch(attdActions.registRestAttdRequest(restAttdTO));

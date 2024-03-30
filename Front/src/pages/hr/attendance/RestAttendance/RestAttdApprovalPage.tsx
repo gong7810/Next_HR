@@ -5,9 +5,10 @@ import Page from 'components/ui-component/Page';
 import MainCard from 'ui-component/cards/MainCard';
 import SubCard from 'ui-component/cards/SubCard';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { RestAttdTO } from '../types/types';
+import { restAttdTO } from '../types/types';
 import { useDispatch, useSelector } from 'store';
 import { attdActions } from 'store/redux-saga/reducer/attendance/attendanceReducer';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 
 const Columns: GridColDef[] = [
   {
@@ -56,13 +57,24 @@ const RestAttdApprovalPage = () => {
   // 종료일
   const [endDate, setEndDate] = useState('');
 
-  const [selectRowData, setSelectRowData] = useState<RestAttdTO[]>([]);
+  const [selectRowData, setSelectRowData] = useState<restAttdTO[]>([]);
 
   const [rows, setRows] = useState([]);
 
   const [loading, setLoading] = useState(false); // 로딩 상태 추가
+  const [authCheck, setAuthCheck] = useState(false); // 페이지 접근 권한체크
 
   const attdRestList = useSelector((state: any) => state.attdReducer.restAttdList);
+
+  useEffect(() => {
+    const level = localStorage.getItem('authLevel') as string;
+    if (level && parseInt(level.slice(-1)) >= 3) {
+      setAuthCheck(true);
+    } else {
+      setAuthCheck(false);
+      alert('접근 권한이 없습니다.');
+    }
+  }, []);
 
   // 근태외 관리 조회
   const getRestAttdList = () => {
@@ -81,10 +93,6 @@ const RestAttdApprovalPage = () => {
 
     setRows(rows);
   }, [attdRestList]);
-
-  // const searchBtn = () => {
-  //   handleSearchExcusedAttd(deptCode, startDate, endDate);
-  // };
 
   // 근태외 승인/취소
   const handleUpdateExcusedAttd = async (sendData: any) => {
@@ -151,121 +159,133 @@ const RestAttdApprovalPage = () => {
 
   return (
     <Page title="근태외 승인관리">
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <MainCard
-            title="근태외 승인관리"
-            secondary={
-              <Stack direction="row" spacing={2} alignItems="center">
-                <Button variant="contained" onClick={recognitionBtn}>
-                  승인완료
-                </Button>
-                <Button variant="contained" onClick={recognitionCancelBtn}>
-                  승인취소
-                </Button>
-                <Button variant="contained" onClick={deleteRestAttd}>
-                  삭제
-                </Button>
-              </Stack>
-            }
-          >
-            <Grid item xs={12}>
-              <SubCard>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} md={4}>
-                    <Box sx={{ minWidth: 120, marginBottom: 2 }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">조회부서</InputLabel>
-                        <Select
-                          value={deptName}
-                          label="조회부서"
-                          onChange={(event: any) => {
-                            setDeptName(event.target.value);
-                            if (event.target.value === '인사팀') {
-                              setDeptCode('DEP001');
-                            } else if (event.target.value === '전산팀') {
-                              setDeptCode('DEP002');
-                            } else if (event.target.value === '회계팀') {
-                              setDeptCode('DEP000');
-                            } else if (event.target.value === '보안팀') {
-                              setDeptCode('DEP003');
-                            } else if (event.target.value === '개발팀') {
-                              setDeptCode('DEP004');
-                            }
-                          }}
-                        >
-                          <MenuItem value={'인사팀'}>인사팀</MenuItem>
-                          <MenuItem value={'전산팀'}>전산팀</MenuItem>
-                          <MenuItem value={'회계팀'}>회계팀</MenuItem>
-                          <MenuItem value={'보안팀'}>보안팀</MenuItem>
-                          <MenuItem value={'개발팀'}>개발팀</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} md={4}>
-                    <TextField
-                      fullWidth
-                      label="시작일"
-                      name="시작일"
-                      type={'date'}
-                      onChange={(event: any) => {
-                        setStartDate(event.target.value);
-                      }}
-                      InputLabelProps={{ shrink: true }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={4}>
-                    <TextField
-                      fullWidth
-                      label="종료일"
-                      name="종료일"
-                      type={'date'}
-                      onChange={(event: any) => {
-                        setEndDate(event.target.value);
-                      }}
-                      InputLabelProps={{ shrink: true }}
-                    />
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <Grid container justifyContent="center" spacing={2}>
-                    <Grid item>
-                      <Button variant="contained" onClick={() => getRestAttdList()}>
-                        조회
-                      </Button>
+      {authCheck ? (
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <MainCard
+              title="근태외 승인관리"
+              secondary={
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <Button variant="contained" onClick={recognitionBtn}>
+                    승인완료
+                  </Button>
+                  <Button variant="contained" onClick={recognitionCancelBtn}>
+                    승인취소
+                  </Button>
+                  <Button variant="contained" onClick={deleteRestAttd}>
+                    삭제
+                  </Button>
+                </Stack>
+              }
+            >
+              <Grid item xs={12}>
+                <SubCard>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} md={4}>
+                      <Box sx={{ minWidth: 120, marginBottom: 2 }}>
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">조회부서</InputLabel>
+                          <Select
+                            value={deptName}
+                            label="조회부서"
+                            onChange={(event: any) => {
+                              setDeptName(event.target.value);
+                              if (event.target.value === '인사팀') {
+                                setDeptCode('DEP001');
+                              } else if (event.target.value === '전산팀') {
+                                setDeptCode('DEP002');
+                              } else if (event.target.value === '회계팀') {
+                                setDeptCode('DEP000');
+                              } else if (event.target.value === '보안팀') {
+                                setDeptCode('DEP003');
+                              } else if (event.target.value === '개발팀') {
+                                setDeptCode('DEP004');
+                              }
+                            }}
+                          >
+                            <MenuItem value={'인사팀'}>인사팀</MenuItem>
+                            <MenuItem value={'전산팀'}>전산팀</MenuItem>
+                            <MenuItem value={'회계팀'}>회계팀</MenuItem>
+                            <MenuItem value={'보안팀'}>보안팀</MenuItem>
+                            <MenuItem value={'개발팀'}>개발팀</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <TextField
+                        fullWidth
+                        label="시작일"
+                        name="시작일"
+                        type={'date'}
+                        onChange={(event: any) => {
+                          setStartDate(event.target.value);
+                        }}
+                        InputLabelProps={{ shrink: true }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <TextField
+                        fullWidth
+                        label="종료일"
+                        name="종료일"
+                        type={'date'}
+                        onChange={(event: any) => {
+                          setEndDate(event.target.value);
+                        }}
+                        InputLabelProps={{ shrink: true }}
+                      />
                     </Grid>
                   </Grid>
-                </Grid>
-              </SubCard>
-            </Grid>
-            <Grid item xs={12}>
-              <Divider />
-            </Grid>
-            <Box sx={{ height: 400, width: '100%' }}>
-              {loading ? (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                  <CircularProgress />
-                </div>
-              ) : (
-                <DataGrid
-                  sx={{ textAlign: 'center' }}
-                  rows={rows}
-                  columns={Columns}
-                  pageSize={5}
-                  checkboxSelection
-                  onSelectionModelChange={(newSelection) => {
-                    const selectedRows = rows.filter((row) => newSelection.includes(row.id));
-                    setSelectRowData(selectedRows);
+                  <Grid item>
+                    <Grid container justifyContent="center" spacing={2}>
+                      <Grid item>
+                        <Button variant="contained" onClick={() => getRestAttdList()}>
+                          조회
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </SubCard>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
+              <Box sx={{ height: 400, width: '100%' }}>
+                {loading ? (
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                    <CircularProgress />
+                  </div>
+                ) : (
+                  <DataGrid
+                    sx={{ textAlign: 'center' }}
+                    rows={rows}
+                    columns={Columns}
+                    pageSize={5}
+                    checkboxSelection
+                    onSelectionModelChange={(newSelection) => {
+                      const selectedRows = rows.filter((row) => newSelection.includes(row.id));
+                      setSelectRowData(selectedRows);
 
-                    console.log('선택된 행의 데이터:', selectedRows);
-                  }}
-                />
-              )}
-            </Box>
-          </MainCard>
+                      console.log('선택된 행의 데이터:', selectedRows);
+                    }}
+                  />
+                )}
+              </Box>
+            </MainCard>
+          </Grid>
         </Grid>
-      </Grid>
+      ) : (
+        <MainCard
+          title={
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <DoDisturbIcon style={{ color: 'red', marginRight: '8px' }} /> {/* 아이콘을 title 옆에 추가합니다. */}
+              접근 권한 없음
+            </div>
+          }
+          style={{ textAlign: 'center' }}
+        />
+      )}
     </Page>
   );
 };

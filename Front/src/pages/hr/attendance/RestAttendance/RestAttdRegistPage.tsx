@@ -28,7 +28,7 @@ import { useSelector } from 'react-redux';
 const RestAttdRegistPage = () => {
   const dispatch = useDispatch();
   const rawList = useSelector((state: RootState) => state.attdReducer.empList);
-  
+
   const [empList, setEmpList] = useState<AnnualLeaveMgtTO[]>([]);
   const [empCode, setEmpCode] = useState<string>('');
   const [attdCode, setAttdCode] = useState<string>('');
@@ -92,7 +92,7 @@ const RestAttdRegistPage = () => {
     } else if (startDate === endDate && startTime === endTime) {
       alert('신청 시간이 잘못되었습니다');
     } else {
-      const restAttdTO: restAttdTO = {
+      const restAttdTO = {
         empCode,
         attdCode,
         attdType,
@@ -102,7 +102,7 @@ const RestAttdRegistPage = () => {
         startTime: startTime.replace(/:/g, ''),
         endTime: endTime.replace(/:/g, ''),
         cause
-      };
+      } as restAttdTO;
       console.log('추가 폼 :', restAttdTO);
 
       dispatch(attdActions.registRestAttdRequest(restAttdTO));
