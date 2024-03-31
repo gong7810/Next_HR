@@ -2,6 +2,7 @@ import { ReactElement, useEffect, useState } from 'react';
 
 // material-ui
 import { Button, Divider, Grid, Stack, TextField } from '@mui/material';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 
 // project imports
 import Layout from 'layout';
@@ -39,14 +40,22 @@ const BreakAttendanceManagePage = () => {
   const dispatch = useDispatch();
   const breakAttdList = useSelector((state) => state.attdReducer.breakAttdList);
 
+  const [authCheck, setAuthCheck] = useState(false); // 페이지 접근 권한체크
+
   const [selectedRow, setSelectRow] = useState<breakAttdTO[]>([]);
   const [selectMonth, setSelectMonth] = useState('');
 
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    console.log(selectedRow);
-  }, [selectedRow]);
+    const level = localStorage.getItem('authLevel') as string;
+    if (level && parseInt(level.slice(-1)) >= 3) {
+      setAuthCheck(true);
+    } else {
+      setAuthCheck(false);
+      alert('접근 권한이 없습니다.');
+    }
+  }, []);
 
   useEffect(() => {
     const rows = breakAttdList.map((item: any, index: any) => {
@@ -147,64 +156,76 @@ const BreakAttendanceManagePage = () => {
 
   return (
     <Page title="연차관리">
-      <MainCard
-        title="연차관리"
-        secondary={
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Button variant="contained" onClick={recognitionBtn}>
-              승인완료
-            </Button>
-            <Button variant="contained" onClick={recognitionRejectBtn}>
-              반려
-            </Button>
-            <Button variant="contained" onClick={recognitionCancelBtn}>
-              취소
-            </Button>
-            <Button variant="contained" onClick={deleteRestAttd}>
-              삭제
-            </Button>
-          </Stack>
-        }
-      >
-        <Grid container spacing={gridSpacing} justifyContent="center">
-          <Grid item xs={12} md={6} lg={4}>
-            <Grid container direction="column" spacing={3}>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  fullWidth
-                  label="조회년월"
-                  type={'month'}
-                  onChange={(event: any) => {
-                    setSelectMonth(event.target.value);
-                  }}
-                  InputLabelProps={{ shrink: true }}
-                />
-              </Grid>
-              <Grid item style={{ textAlign: 'center', marginBottom: '10px' }}>
-                <Button variant="contained" onClick={getBreakAttdList}>
-                  연차 내역 조회
-                </Button>
+      {authCheck ? (
+        <MainCard
+          title="연차관리"
+          secondary={
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Button variant="contained" onClick={recognitionBtn}>
+                승인완료
+              </Button>
+              <Button variant="contained" onClick={recognitionRejectBtn}>
+                반려
+              </Button>
+              <Button variant="contained" onClick={recognitionCancelBtn}>
+                취소
+              </Button>
+              <Button variant="contained" onClick={deleteRestAttd}>
+                삭제
+              </Button>
+            </Stack>
+          }
+        >
+          <Grid container spacing={gridSpacing} justifyContent="center">
+            <Grid item xs={12} md={6} lg={4}>
+              <Grid container direction="column" spacing={3}>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    fullWidth
+                    label="조회년월"
+                    type={'month'}
+                    onChange={(event: any) => {
+                      setSelectMonth(event.target.value);
+                    }}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Grid>
+                <Grid item style={{ textAlign: 'center', marginBottom: '10px' }}>
+                  <Button variant="contained" onClick={getBreakAttdList}>
+                    연차 내역 조회
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <Divider />
-        <div style={{ height: 500, width: '100%' }}>
-          <DataGrid
-            sx={{ textAlign: 'center', width: '100%' }}
-            rows={rows}
-            columns={Columns}
-            pageSize={10}
-            checkboxSelection
-            onSelectionModelChange={(newSelection) => {
-              const selectedRows = rows.filter((row) => newSelection.includes(row.id));
-              setSelectRow(selectedRows);
+          <Divider />
+          <div style={{ height: 500, width: '100%' }}>
+            <DataGrid
+              sx={{ textAlign: 'center', width: '100%' }}
+              rows={rows}
+              columns={Columns}
+              pageSize={10}
+              checkboxSelection
+              onSelectionModelChange={(newSelection) => {
+                const selectedRows = rows.filter((row) => newSelection.includes(row.id));
+                setSelectRow(selectedRows);
 
-              console.log('선택된 행의 데이터:', selectedRows);
-            }}
-          />
-        </div>
-      </MainCard>
+                console.log('선택된 행의 데이터:', selectedRows);
+              }}
+            />
+          </div>
+        </MainCard>
+      ) : (
+        <MainCard
+          title={
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <DoDisturbIcon style={{ color: 'red', marginRight: '8px' }} /> {/* 아이콘을 title 옆에 추가합니다. */}
+              접근 권한 없음
+            </div>
+          }
+          style={{ textAlign: 'center' }}
+        />
+      )}
     </Page>
   );
 };

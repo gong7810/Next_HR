@@ -7,20 +7,25 @@ const BREAK_ATTD_URL = 'attendance/breakAttd';
 // 사원 조회
 export const getEmplist = async () => {
   try {
-    return await hrApi.get(EMPLIST_URL);
+    return await hrApi.get(EMPLIST_URL, {
+      params: {
+        token: localStorage.getItem('access')
+      }
+    });
   } catch (error: any) {
     console.log(error);
   }
 };
 
-// 근태외 관리 조회
+// 근태외 승인관리 조회
 export const getRestAttdList = async (params: any) => {
   try {
     return await hrApi.get(REST_ATTD_URL, {
       params: {
         deptCode: params.deptCode,
         startDate: params.startDate,
-        endDate: params.endDate
+        endDate: params.endDate,
+        token: localStorage.getItem('access')
       }
     });
   } catch (error: any) {
@@ -31,7 +36,11 @@ export const getRestAttdList = async (params: any) => {
 // 근태외 신청
 export const insertRestAttd = async (body: any) => {
   try {
-    return await hrApi.post(REST_ATTD_URL, body);
+    return await hrApi.post(REST_ATTD_URL, body, {
+      params: {
+        token: localStorage.getItem('access')
+      }
+    });
   } catch (error: any) {
     console.log(error);
   }
@@ -41,7 +50,15 @@ export const insertRestAttd = async (body: any) => {
 export const updateRestAttd = async (body: any) => {
   try {
     console.log(body);
-    return await hrApi.put(REST_ATTD_URL, { data: body }); // map 형식으로
+    return await hrApi.put(
+      REST_ATTD_URL,
+      { data: body },
+      {
+        params: {
+          token: localStorage.getItem('access')
+        }
+      }
+    ); // map 형식으로
   } catch (error: any) {
     console.log(error);
   }
@@ -133,7 +150,7 @@ const searchDailyAttend = async (action: any) => {
     console.log('Error occurred during fetch:', err);
     return { dayAttdlist: [], errorMsg: 'failed', errorCode: 0 };
   }
-  
+
   if (!response.ok) {
     console.log('Network response was not ok: ' + response.status);
     return { dayAttdlist: [], errorMsg: 'failed', errorCode: 0 };
@@ -184,7 +201,7 @@ const fetchEmpList = async (data: any) => {
     console.log('Error occurred during fetch:', err);
     return { empList: [], errorMsg: 'failed', errorCode: 0 };
   }
-  
+
   if (!response.ok) {
     console.log('Network response was not ok: ' + response.status);
     return { empList: [], errorMsg: 'failed', errorCode: 0 };
@@ -220,4 +237,4 @@ const finalizeDailyAttend = async (action: any) => {
   }
 };
 
-export {registerDailyAttend, searchDailyAttend, modifyDailyAttend, fetchEmpList, finalizeDailyAttend};
+export { registerDailyAttend, searchDailyAttend, modifyDailyAttend, fetchEmpList, finalizeDailyAttend };

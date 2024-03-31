@@ -23,7 +23,7 @@ export const getTokenCheck = async (token: any) => {
   try {
     return await hrApi.get(TOKEN_AUTH_URL, {
       params: {
-        token
+        token: 'klawjehnkawerfjnb'
       }
     });
   } catch (error: any) {

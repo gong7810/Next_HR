@@ -1,5 +1,4 @@
-import { ReactElement, useEffect, useReducer, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { ReactElement, useState } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Button, Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';

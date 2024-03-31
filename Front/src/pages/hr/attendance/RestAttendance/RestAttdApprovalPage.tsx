@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { Grid, Stack, TextField, Divider, Button, Select, Box, FormControl, InputLabel, MenuItem, CircularProgress } from '@mui/material';
+import { Grid, Stack, TextField, Divider, Button, Select, Box, FormControl, MenuItem, CircularProgress, InputLabel } from '@mui/material';
 import Layout from 'layout';
 import Page from 'components/ui-component/Page';
 import MainCard from 'ui-component/cards/MainCard';
@@ -188,6 +188,7 @@ const RestAttdApprovalPage = () => {
                           <Select
                             value={deptName}
                             label="조회부서"
+                            name="조회부서"
                             onChange={(event: any) => {
                               setDeptName(event.target.value);
                               if (event.target.value === '인사팀') {

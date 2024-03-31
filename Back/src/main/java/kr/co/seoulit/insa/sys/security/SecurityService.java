@@ -13,7 +13,7 @@ import java.util.Date;
 @Service
 public class SecurityService {
 
-    private static final String SECRET_KEY = "adasfauenjnxcslkdtjawoefnjdkfgnjksdgnksdngvksdngvskzdj";
+    private static final String SECRET_KEY = "dkssudsksmstlflqekgkrhtlvdjTeksrhdtjddnrdlfkrhgoakssktjqkdrkqkdrk";
 //    private static final Map<String, String> SECRET_KEY_SET = Map.of(
 //            "key1", "dflgknj9458yh5t098yh945whgtagfueiwrtghwkrnbfvjdsfbnjknbsofw4-twuebgkvmnboszdriyht95hu",
 //            "key2", "lfgbknseorithngoasnfvjkzxncvknw948h5tg98qw3rhugvnjdkzfnvbksdfngboiurwhg8rthjg0erjmvirjtv98ertuymgrmcljg",
@@ -47,6 +47,7 @@ public class SecurityService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();      // 여기까지하면 claims이 만들어짐
+                                // 만약 해당 알고리즘으로 생성된 토큰이 아니면 null 리턴
 
         return claims.getSubject();
     }
