@@ -5,6 +5,6 @@
 .pnp.js
 
 # production
-/build
-/.gradle
-/out/
+build/
+.gradle/
+out/
