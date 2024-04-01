@@ -1,4 +1,4 @@
-import React, {useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { gridSpacing } from 'store/constant';
 import {
   Box,
@@ -20,8 +20,8 @@ import { dailyAttendAction } from 'store/redux-saga/reducer/attendance/DailyAtte
 import { useTheme } from '@mui/material/styles';
 
 // 코드가 긴 관계로 각각의 입력값에 따른 유효성 검사 로직은 작성하지 않았습니다.
-export default function DailyAttendModal(props: { toggle: () => void}) {
-  console.log("props  : " + props);
+export default function DailyAttendModal(props: { toggle: () => void }) {
+  console.log('props  : ' + props);
   const dispatch = useDispatch();
   const today = new Date();
   const year = today.getFullYear();
@@ -40,13 +40,10 @@ export default function DailyAttendModal(props: { toggle: () => void}) {
   const overWorkHourRef = useRef<HTMLInputElement>(null);
   const nightWorkHourRef = useRef<HTMLInputElement>(null);
 
-
-  const empList = useSelector((state: any) =>
-  state.dailyAttend.empList !== undefined ? state.dailyAttend.empList : []
-  );
+  const empList = useSelector((state: any) => (state.dailyAttend.empList !== undefined ? state.dailyAttend.empList : []));
 
   const theme = useTheme();
-  
+
   function generateUniqueSixDigitCode() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let code;
@@ -66,7 +63,7 @@ export default function DailyAttendModal(props: { toggle: () => void}) {
   const [open, setOpen] = React.useState(true);
   const [empCode, setEmpCode] = useState<number | string>(-1);
   const [deptCode, setDeptCode] = useState<number | string>(-1);
-  const [latenessStatus, setLatenessStatus] = useState<number | string>(-1); 
+  const [latenessStatus, setLatenessStatus] = useState<number | string>(-1);
 
   //부서 선택함
   const deptChangeHandler = (value: string) => {
@@ -87,10 +84,8 @@ export default function DailyAttendModal(props: { toggle: () => void}) {
     console.log(value);
   };
 
-
   //추가 버튼 누름
   const handleSave = () => {
-  
     //onst empName = empNameRef.current?.value;
 
     if (Number(empCode) === -1) {
@@ -120,7 +115,6 @@ export default function DailyAttendModal(props: { toggle: () => void}) {
 
     // 여기서 사원명과 부서코드를 받아서 이 두 정보로 사원코드 받아오기
     // dispatch(dailyAttendAction.DAILY_ATTEND_SEARCH_EMPCODE_FETCH_REQUESTED(info));
-   
 
     //empCode, gender는 넘어온 값을 그대로 사용한다.
     const data = {
@@ -128,7 +122,7 @@ export default function DailyAttendModal(props: { toggle: () => void}) {
       empCode: empCode,
       refDay: formattedDate,
       attendTime: attendTime,
-      leaveTime: leaveTime, 
+      leaveTime: leaveTime,
       briefLeaveTime: briefLeaveTime,
       workHour: workHour,
       latenessStatus: Number(latenessStatus) === 0 ? 'N' : 'Y',
@@ -137,7 +131,6 @@ export default function DailyAttendModal(props: { toggle: () => void}) {
       finalizeStatus: 'N',
       earlyLeaveTime: earlyLeaveTime,
       deptCode: deptCode
-
     };
     console.log('data is :', data);
 
@@ -153,18 +146,19 @@ export default function DailyAttendModal(props: { toggle: () => void}) {
   };
 
   const empNameClickHandler = () => {
-    console.log("empList: " + empList);
-    if(Number(deptCode) === -1){
+    console.log('empList: ' + empList);
+    if (Number(deptCode) === -1) {
       alert('부서를 먼저 선택해주세요.');
     }
   };
   const empLists = empList.map((item: any) => {
-    return (
-      <MenuItem value = {item.empCode} key = {item.empCode}>
-        {item.empName}
-      </MenuItem>
-    );
-  })
+    if (item.empCode === localStorage.getItem('empCode'))
+      return (
+        <MenuItem value={item.empCode} key={item.empCode}>
+          {item.empName}
+        </MenuItem>
+      );
+  });
 
   return (
     <div>
@@ -184,49 +178,49 @@ export default function DailyAttendModal(props: { toggle: () => void}) {
                 <Grid container spacing="auto" item xs>
                   <Grid container spacing={gridSpacing}>
                     <Grid item xs={12} sm={6}>
-                        <InputLabel>부서</InputLabel>
-                        <FormControl fullWidth>
-                          <Select
-                            defaultValue="-1"
-                            onChange={(e) => {
-                              deptChangeHandler(e.target.value);
-                            }}
-                          >
-                            <MenuItem value={'DEP000'}>회계팀</MenuItem>
-                            <MenuItem value={'DEP001'}>인사팀</MenuItem>
-                            <MenuItem value={'DEP002'}>전산팀</MenuItem>
-                            <MenuItem value={'DEP003'}>보안팀</MenuItem>
-                            <MenuItem value={'DEP004'}>개발팀</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item md={6} xs={12}>
+                      <InputLabel>부서</InputLabel>
+                      <FormControl fullWidth>
+                        <Select
+                          defaultValue="-1"
+                          onChange={(e) => {
+                            deptChangeHandler(e.target.value);
+                          }}
+                        >
+                          <MenuItem value={'DEP000'}>회계팀</MenuItem>
+                          <MenuItem value={'DEP001'}>인사팀</MenuItem>
+                          <MenuItem value={'DEP002'}>전산팀</MenuItem>
+                          <MenuItem value={'DEP003'}>보안팀</MenuItem>
+                          <MenuItem value={'DEP004'}>개발팀</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item md={6} xs={12}>
                       <InputLabel>사원명</InputLabel>
                       <FormControl fullWidth>
-                          <Select
-                            defaultValue="-1"
-                            ref={selectRef}
-                            onChange={(e) => {
-                              empChangeHandler(String(e.target.value));
-                            }}
-                            onClick={() => empNameClickHandler()}
-                          >
+                        <Select
+                          defaultValue="-1"
+                          ref={selectRef}
+                          onChange={(e) => {
+                            empChangeHandler(String(e.target.value));
+                          }}
+                          onClick={() => empNameClickHandler()}
+                        >
                           {empLists}
-                         </Select>
-                        </FormControl>
-                     </Grid>
+                        </Select>
+                      </FormControl>
+                    </Grid>
                     <Grid item md={6} xs={12}>
                       <InputLabel>출근시간</InputLabel>
                       <TextField id="outlined-basic2" inputRef={attendTimeRef} defaultValue="09:00" fullWidth />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <InputLabel>지각여부</InputLabel>
-                        <FormControl fullWidth>
-                          <Select defaultValue="-1" onChange={(e) => latenessStatusChangeHandler(e.target.value)}>
-                            <MenuItem value={0}>N</MenuItem>
-                            <MenuItem value={1}>Y</MenuItem>
-                          </Select>
-                        </FormControl>
+                      <InputLabel>지각여부</InputLabel>
+                      <FormControl fullWidth>
+                        <Select defaultValue="-1" onChange={(e) => latenessStatusChangeHandler(e.target.value)}>
+                          <MenuItem value={0}>N</MenuItem>
+                          <MenuItem value={1}>Y</MenuItem>
+                        </Select>
+                      </FormControl>
                     </Grid>
                     <Grid item md={6} xs={12}>
                       <InputLabel>외출시간</InputLabel>
@@ -238,19 +232,25 @@ export default function DailyAttendModal(props: { toggle: () => void}) {
                     </Grid>
                     <Grid item md={6} xs={12}>
                       <InputLabel>퇴근시간</InputLabel>
-                      <TextField id= "outlined-basic5" inputRef={leaveTimeRef} defaultValue="18:00" fullWidth />
+                      <TextField id="outlined-basic5" inputRef={leaveTimeRef} defaultValue="18:00" fullWidth />
                     </Grid>
                     <Grid item md={6} xs={12}>
                       <InputLabel>근무시간</InputLabel>
-                      <TextField id="outlined-basic6" inputRef={workHourRef} defaultValue="8" fullWidth>시간</TextField>
+                      <TextField id="outlined-basic6" inputRef={workHourRef} defaultValue="8" fullWidth>
+                        시간
+                      </TextField>
                     </Grid>
                     <Grid item md={6} xs={12}>
                       <InputLabel>연장근무시간</InputLabel>
-                      <TextField id="outlined-basic7" inputRef={overWorkHourRef} defaultValue="0" fullWidth >시간</TextField>
+                      <TextField id="outlined-basic7" inputRef={overWorkHourRef} defaultValue="0" fullWidth>
+                        시간
+                      </TextField>
                     </Grid>
                     <Grid item md={6} xs={12}>
                       <InputLabel>심야근무시간</InputLabel>
-                      <TextField id="outlined-basic8" inputRef={nightWorkHourRef} defaultValue="0" fullWidth>시간</TextField>
+                      <TextField id="outlined-basic8" inputRef={nightWorkHourRef} defaultValue="0" fullWidth>
+                        시간
+                      </TextField>
                     </Grid>
                   </Grid>
                 </Grid>

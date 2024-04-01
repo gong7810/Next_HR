@@ -6,6 +6,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
 import kr.co.seoulit.insa.sys.filter.SiteMeshFilter;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 public class InsaApplication {

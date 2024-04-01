@@ -28,7 +28,7 @@ public class AttdController {
     // 근태외 관리 조회
     @GetMapping("/restAttd")
     public HashMap<String, Object> findRestAttdList(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate,
-                                                      @RequestParam("deptCode") String deptCode) {
+                                                    @RequestParam("deptCode") String deptCode) {
 
         HashMap<String, Object> map = new HashMap<>();
         System.out.println("데이터 도착" + startDate + endDate + deptCode);

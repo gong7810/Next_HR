@@ -1,5 +1,4 @@
 import { ReactElement, useState } from 'react';
-
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Button, Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
@@ -17,10 +16,14 @@ import AuthLogin from 'components/authentication/auth-forms/AuthLogin';
 import Logo from 'ui-component/Logo';
 import AuthFooter from 'ui-component/cards/AuthFooter';
 import useAuth from 'hooks/useAuth';
+import { useDispatch } from 'store';
+import { commonActions } from 'store/redux-saga/reducer/common/commonReducer';
 
 // ================================|| AUTH3 - LOGIN ||================================ //
 
 const Login = () => {
+  const dispatch = useDispatch();
+
   const theme = useTheme();
   const { isLoggedIn } = useAuth();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
@@ -40,8 +43,14 @@ const Login = () => {
     setPw(e.target.value);
   };
 
-  const login = () => {
+  const login = async () => {
     console.log('로그인', id, pw);
+    dispatch(commonActions.getLoginTokenRequest({ id, pw }));
+  };
+
+  const checkToken = () => {
+    console.log(localStorage.getItem('access'));
+    dispatch(commonActions.getTokenCheckRequest(localStorage.getItem('access')));
   };
 
   return (
@@ -73,15 +82,22 @@ const Login = () => {
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
+<<<<<<< HEAD
                       { <AuthLogin /> }
+=======
+>>>>>>> f7ca05a4beacfd05ef0595890ddc2b2a373dd943
                       <Wrapper>
                         <Label>로그인</Label>
                         <Input placeholder="아이디" value={id} onChange={(e: any) => onChangeId(e)} />
                         <Input placeholder="비밀번호" type="password" value={pw} onChange={(e: any) => onChangePw(e)} />
                       </Wrapper>
                       <Wrapper2>
-                        <StyledButton onClick={() => login()}>로그인</StyledButton>
+                        <StyledButton onClick={() => login()}>Auth Check</StyledButton>
                       </Wrapper2>
+                      {/* <Wrapper2>
+                        <StyledButton onClick={() => checkToken()}>토큰확인</StyledButton>
+                      </Wrapper2> */}
+                      <AuthLogin />
                     </Grid>
                     <Grid item xs={12}>
                       <Divider />

@@ -17,9 +17,15 @@ server:
 spring:
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
+<<<<<<< HEAD
     password: hr77
     url: jdbc:oracle:thin:@localhost:1521:xe
     username: hr77
+=======
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: hr77
+    password: hr77
+>>>>>>> f7ca05a4beacfd05ef0595890ddc2b2a373dd943
   mvc:
     view:
       prefix: /WEB-INF/views/

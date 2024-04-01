@@ -67,11 +67,12 @@ const BusinessRegistPage = () => {
   }, [rawList]);
 
   const empLists = empList.map((item) => {
-    return (
-      <MenuItem value={item.empCode} key={item.empCode}>
-        {item.empName}
-      </MenuItem>
-    );
+    if (item.empCode === localStorage.getItem('empCode'))
+      return (
+        <MenuItem value={item.empCode} key={item.empCode}>
+          {item.empName}
+        </MenuItem>
+      );
   });
 
   // 근태코드 세팅
@@ -91,7 +92,7 @@ const BusinessRegistPage = () => {
     } else if (startDate === endDate && startTime === endTime) {
       alert('신청 시간이 잘못되었습니다');
     } else {
-      const restAttdTO: restAttdTO = {
+      const restAttdTO = {
         empCode,
         attdCode,
         attdType,
@@ -101,7 +102,7 @@ const BusinessRegistPage = () => {
         startTime: startTime.replace(/:/g, ''),
         endTime: endTime.replace(/:/g, ''),
         cause
-      };
+      } as restAttdTO;
       console.log('추가 폼 :', restAttdTO);
 
       dispatch(attdActions.registRestAttdRequest(restAttdTO));

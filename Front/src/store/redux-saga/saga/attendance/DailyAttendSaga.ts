@@ -34,10 +34,17 @@ export function* dailyAttendModifySaga(action: typeAction) {
 
 export function* dailyAttendSearchEmplistSaga(action: typeAction) {
   yield console.log('This is Saga!! dailyAttendSearchEmplistSaga called!!! ', action.payload);
+<<<<<<< HEAD
   const { payload } = action;
   const response: AxiosResponse = yield call(api.fetchEmpList, payload);
   console.log('data from dailyAttendSearchEmplistSaga:', response);
   yield put(dailyAttendAction.DAILY_ATTEND_SEARCH_EMPLIST_FETCH_STATUS(response.data.list));
+=======
+
+  const data: dailyAttendRequest = yield call(api.fetchEmpList, action);
+  console.log('data from dailyAttendSearchEmplistSaga:', data);
+  yield put(dailyAttendAction.DAILY_ATTEND_SEARCH_EMPLIST_FETCH_STATUS(data));
+>>>>>>> f7ca05a4beacfd05ef0595890ddc2b2a373dd943
 }
 
 export function* dailyAttendFinalizeSaga(action: typeAction) {
