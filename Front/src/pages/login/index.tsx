@@ -73,7 +73,7 @@ const Login = () => {
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      {/* <AuthLogin /> */}
+                      { <AuthLogin /> }
                       <Wrapper>
                         <Label>로그인</Label>
                         <Input placeholder="아이디" value={id} onChange={(e: any) => onChangeId(e)} />

@@ -73,7 +73,7 @@ public class AttdMgmtServiceImpl implements AttdMgmtService {
 
 	@Override
 	public List<DailyAttdSearchResTO> searchDayAttd(DailyAttdSearchReqTO dailyAttdSearchReqTO) {
-		System.out.println("서비스단으로 넘어온 dailyAttdSearchReqTO: " + dailyAttdSearchReqTO);
+		System.out.println("서비스단으로 넘어온 searchDayAttdMap: " + dailyAttdSearchReqTO);
 		List<DailyAttdSearchResTO> list = dayAttndMapper.selectDayAttd(dailyAttdSearchReqTO);
 		System.out.println("리스트: " + list);
 		for(DailyAttdSearchResTO bean: list){
@@ -117,7 +117,6 @@ public class AttdMgmtServiceImpl implements AttdMgmtService {
 
 	@Override
 	public void registRestAttd(ModelMap map) {
-
 		restAttdMapper.insertRestAttd(map);
 
 	}

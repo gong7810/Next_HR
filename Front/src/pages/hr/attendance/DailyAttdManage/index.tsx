@@ -49,9 +49,8 @@ function DailyAttend() {
 
   const onToggleFinalizeHandler = () => {
     setFinalizeModal((data) => !data);
-};
+  };
 
-  
   const onClickHandler = (identifier: string) => {
 
     if (identifier === 'mod') {
@@ -67,10 +66,6 @@ function DailyAttend() {
       return;
     } else if (identifier === 'finalize'){
       setFinalizeModal(true);
-      if(handleOk){
-        dispatch(dailyAttendAction.DAILY_ATTEND_FINALIZE_FETCH_REQUESTED(selectedEmp));
-        dispatch(dailyAttendAction.CLEAR_ATTD_LIST(dayAttdlist));
-      }
     } 
      
   };
@@ -100,6 +95,16 @@ function DailyAttend() {
     });
     setCheckedItems(updatedCheckedItems);
   }, [dayAttdlist]);
+
+  useEffect(() => {
+    console.log("handleOk 상태 바뀜!!");
+    console.log("handleOk: ", handleOk);
+    if(handleOk){
+      console.log('handleOk가 true로 변경!');
+      dispatch(dailyAttendAction.DAILY_ATTEND_FINALIZE_FETCH_REQUESTED(selectedEmp));
+      //dispatch(dailyAttendAction.CLEAR_ATTD_LIST(dayAttdlist));
+    }
+  }, [handleOk]);
 
 const onCheckedChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
   const { value, checked } = e.target;

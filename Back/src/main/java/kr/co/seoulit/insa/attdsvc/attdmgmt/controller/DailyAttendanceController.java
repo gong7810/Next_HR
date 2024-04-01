@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.co.seoulit.insa.attd.to.BreakAttdTO;
 import kr.co.seoulit.insa.attdsvc.attdmgmt.to.*;
 import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import kr.co.seoulit.insa.attdsvc.attdmgmt.service.AttdMgmtService;
 import kr.co.seoulit.insa.commsvc.systemmgmt.to.ResultTO;
 
 @RestController
-@RequestMapping("/attdmgmt/*")
+@RequestMapping("/hr/attdmgmt/*")
 @CrossOrigin
 public class DailyAttendanceController {
 	
@@ -27,8 +28,9 @@ public class DailyAttendanceController {
 	ModelMap map = null;
 	
 	@PostMapping("searchDailyAttnd")
-	public Map<String, Object> findDayAttdList(@RequestBody DailyAttdSearchReqTO dailyAttdSearchReqTO){
-		System.out.println("<<<<<<<<<<< dayAttdTO = " + dailyAttdSearchReqTO);
+	public Map<String, Object> findDayAttdList(@RequestBody HashMap<String, DailyAttdSearchReqTO> searchDayAttdMap){
+		System.out.println("<<<<<<<<<<< searchDayAttdMap = " + searchDayAttdMap);
+		DailyAttdSearchReqTO dailyAttdSearchReqTO = searchDayAttdMap.get("data");
 		Map<String, Object> map = new HashMap<>();
 
 		try {
