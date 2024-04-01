@@ -31,13 +31,15 @@ public class SysController {
         LoginTO loginTO = new LoginTO(id, id, pw);
 
         try {
-            Boolean result = loginService.Login(loginTO);
-            if (result) {
+            HashMap<String, Object> resultMap = loginService.Login(loginTO);
+            if ((Boolean) resultMap.get("result")) {
                 String token = securityService.createToken(id, (60*1000*60));
                 String authLevel = loginService.getAuthLevel(loginTO);
                 map.put("errorCode", "로그인 성공");
                 map.put("accessToken", token);
                 map.put("authLevel", authLevel);
+                map.put("empName", resultMap.get("empName"));
+                map.put("position", resultMap.get("position"));
             } else {
                 map.put("errorCode", "login failed");
             }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Data
@@ -22,5 +23,16 @@ public class LoginTO extends BaseTO {
     private String empCode;
     private String id;
     private String pw;
+
+    @Transient
+    private String empName;
+    @Transient
+    private String position;
+
+    public LoginTO (String empCode, String id, String pw) {
+        this.empCode = empCode;
+        this.id = id;
+        this.pw = pw;
+    }
 
 }

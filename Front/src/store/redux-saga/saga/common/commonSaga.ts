@@ -10,8 +10,9 @@ function* fetchLoginToken(action: any) {
     const response: AxiosResponse = yield call(getLoginToken, payload);
     console.log('jwt 토큰 조회 reponse', response);
     if (response.data.errorCode == '로그인 성공') {
+      localStorage.setItem('empCode', payload.id);
       yield put(commonActions.getLoginTokenSuccess(response.data));
-      alert('로그인 성공');
+      alert(`${localStorage.getItem('empName')} ${localStorage.getItem('position')}님 접속을 환영합니다.`);
     } else {
       alert('잘못된 접근입니다.');
     }

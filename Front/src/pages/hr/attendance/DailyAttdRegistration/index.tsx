@@ -105,12 +105,12 @@ function DailyAttend() {
     });
   };
   return (
-    <Page title="일근태관리">
+    <Page title="일근태 등록">
       <Grid container spacing={gridSpacing}>
         <Grid item xs={12}>
           <MainCard
             content={false}
-            title="일근태관리"
+            title="일근태 등록"
             secondary={
               <Stack direction="row" spacing={2} alignItems="center">
                 <Grid item xs={12} md={4}>
@@ -123,7 +123,7 @@ function DailyAttend() {
                       <Select
                         value={deptName}
                         label="조회부서"
-                        onChange={(event) => {
+                        onChange={(event: any) => {
                           setDeptName(event.target.value);
                           if (event.target.value === '인사팀') {
                             setDeptCode('DEP001');
@@ -153,7 +153,7 @@ function DailyAttend() {
                     label="근태조회시작일"
                     name="근태조회시작일"
                     type={'date'}
-                    onChange={(event) => {
+                    onChange={(event: any) => {
                       setStartDate(event.target.value);
                     }}
                     InputLabelProps={{ shrink: true }}
@@ -179,12 +179,12 @@ function DailyAttend() {
                 */}
 
                 {insertModal && <DailyAttendInsertModal toggle={onToggleInsertHandler} />}
-                <Button className={classes.button} onClick={() => onClickHandler('insert')} sx={{ width: '200' }}>
-                  일근태 추가
+                <Button variant="contained" onClick={() => onClickHandler('insert')} style={{ width: '200' }}>
+                  등록
                 </Button>
 
-                <Button className={classes.button} onClick={() => onSearchClickHandler()} sx={{ width: '200' }}>
-                  일근태 조회
+                <Button variant="contained" onClick={() => onSearchClickHandler()} sx={{ width: '200' }}>
+                  조회
                 </Button>
               </Stack>
             }

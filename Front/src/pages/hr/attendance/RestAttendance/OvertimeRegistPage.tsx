@@ -67,11 +67,12 @@ const OvertimeRegistPage = () => {
   }, [rawList]);
 
   const empLists = empList.map((item) => {
-    return (
-      <MenuItem value={item.empCode} key={item.empCode}>
-        {item.empName}
-      </MenuItem>
-    );
+    if (item.empCode === localStorage.getItem('empCode'))
+      return (
+        <MenuItem value={item.empCode} key={item.empCode}>
+          {item.empName}
+        </MenuItem>
+      );
   });
 
   // 근태코드 세팅

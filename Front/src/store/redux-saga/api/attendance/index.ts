@@ -67,7 +67,12 @@ export const updateRestAttd = async (body: any) => {
 // 근태외 삭제
 export const deleteRestAttd = async (body: any) => {
   try {
-    return await hrApi.delete(REST_ATTD_URL, { data: body });
+    return await hrApi.delete(REST_ATTD_URL, {
+      data: body,
+      params: {
+        token: localStorage.getItem('access')
+      }
+    });
   } catch (error: any) {
     console.log(error);
   }
@@ -78,7 +83,8 @@ export const getBreakAttdList = async (param: string) => {
   try {
     return await hrApi.get(BREAK_ATTD_URL, {
       params: {
-        selectMonth: param
+        selectMonth: param,
+        token: localStorage.getItem('access')
       }
     });
   } catch (error: any) {
@@ -89,7 +95,11 @@ export const getBreakAttdList = async (param: string) => {
 // 연차 신청
 export const insertBreaKAttd = async (body: any) => {
   try {
-    return await hrApi.post(BREAK_ATTD_URL, body);
+    return await hrApi.post(BREAK_ATTD_URL, body, {
+      params: {
+        token: localStorage.getItem('access')
+      }
+    });
   } catch (error: any) {
     console.log(error);
   }
@@ -98,7 +108,15 @@ export const insertBreaKAttd = async (body: any) => {
 // 연차 승인 / 반려 / 취소
 export const updateBreakAttd = async (body: any) => {
   try {
-    return await hrApi.put(BREAK_ATTD_URL, { data: body }); // map 형식으로
+    return await hrApi.put(
+      BREAK_ATTD_URL,
+      { data: body },
+      {
+        params: {
+          token: localStorage.getItem('access')
+        }
+      }
+    ); // map 형식으로
   } catch (error: any) {
     console.log(error);
   }
@@ -107,7 +125,12 @@ export const updateBreakAttd = async (body: any) => {
 // 연차 삭제
 export const deleteBreakAttd = async (body: any) => {
   try {
-    return await hrApi.delete(BREAK_ATTD_URL, { data: body });
+    return await hrApi.delete(BREAK_ATTD_URL, {
+      data: body,
+      params: {
+        token: localStorage.getItem('access')
+      }
+    });
   } catch (error: any) {
     console.log(error);
   }
@@ -189,7 +212,7 @@ const modifyDailyAttend = async (action: any) => {
 //일근태 추가할 때 사용자가 입력한 사원명과 부서코드를 이용해 사원코드 얻어오기
 const fetchEmpList = async (data: any) => {
   console.log('data.payload at api', data.payload); // payload로 값을 받을수 있다.
-  const url = 'http://localhost:9101/empinfomgmt/emplist?value=' + data.payload;
+  const url = 'http://localhost:9101/hr/empinfomgmt/emplist?value=' + data.payload;
   const obj = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }

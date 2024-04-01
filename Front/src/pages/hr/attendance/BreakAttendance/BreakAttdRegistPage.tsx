@@ -66,12 +66,13 @@ const BreakAttendancePage = () => {
     setEmpList(rawList);
   }, [rawList]);
 
-  const empLists = empList.map((e) => {
-    return (
-      <MenuItem value={e.empCode} key={e.empCode}>
-        {e.empName}
-      </MenuItem>
-    );
+  const empLists = empList.map((item) => {
+    if (item.empCode === localStorage.getItem('empCode'))
+      return (
+        <MenuItem value={item.empCode} key={item.empCode}>
+          {item.empName}
+        </MenuItem>
+      );
   });
   const insertEXAttd = () => {
     // 유효성 검사

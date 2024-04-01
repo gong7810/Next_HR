@@ -23,6 +23,7 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter{
 			System.out.println("request : "+ request);
 			return true;
 		} else {
+			System.out.println("request : "+ request);
 			String token = request.getParameter("token");
 			System.out.println("token : " + token);
 			try {

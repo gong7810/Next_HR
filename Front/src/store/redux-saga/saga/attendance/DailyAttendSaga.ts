@@ -33,7 +33,7 @@ export function* dailyAttendModifySaga(action: typeAction) {
 export function* dailyAttendSearchEmplistSaga(action: typeAction) {
   yield console.log('This is Saga!! dailyAttendSearchEmplistSaga called!!! ', action.payload);
 
-  const data: dailyAttendRequest = yield call(api.getEmpList, action);
+  const data: dailyAttendRequest = yield call(api.fetchEmpList, action);
   console.log('data from dailyAttendSearchEmplistSaga:', data);
   yield put(dailyAttendAction.DAILY_ATTEND_SEARCH_EMPLIST_FETCH_STATUS(data));
 }

@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public interface LoginService {
 
-    public Boolean Login(LoginTO loginTO);
+    public HashMap<String, Object> Login(LoginTO loginTO);
 
     public String getAuthLevel(LoginTO loginTO);
 }

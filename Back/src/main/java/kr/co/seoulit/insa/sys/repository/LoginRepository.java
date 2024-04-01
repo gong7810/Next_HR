@@ -11,4 +11,5 @@ public interface LoginRepository extends JpaRepository<LoginTO, String> {
 
     @Query("SELECT auth FROM LoginTO auth WHERE auth.id = :#{#loginTO.id} and auth.pw = :#{#loginTO.pw}")
     Optional<LoginTO> findUser(@Param("loginTO") LoginTO loginTO);
+
 }
