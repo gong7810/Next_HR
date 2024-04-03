@@ -21,12 +21,13 @@ public class AttdServiceImpl implements AttdService {
 
     // 근태외 조회
     @Override
-    public ArrayList<RestAttdManageTO> findRestAttdList(String startDate, String endDate, String deptCode) {
+    public ArrayList<RestAttdManageTO> findRestAttdList(String startDate, String endDate, String deptCode, String authLevel) {
 
         HashMap<String, String> params = new HashMap<>();
         params.put("startDate", startDate);
         params.put("endDate", endDate);
         params.put("deptCode", deptCode);
+        params.put("authLevel", authLevel);
 
         ArrayList<RestAttdManageTO> restAttdList = attdMapper.findRestAttdList(params);
 
@@ -78,9 +79,13 @@ public class AttdServiceImpl implements AttdService {
 
     // 연차 내역 조회
     @Override
-    public ArrayList<BreakAttdTO> findBreakAttdList(String useDate) {
+    public ArrayList<BreakAttdTO> findBreakAttdList(String useDate, String authLevel) {
 
-        ArrayList<BreakAttdTO> breakAttdList = attdMapper.findBreakAttdList(useDate);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("useDate", useDate);
+        map.put("authLevel", authLevel);
+
+        ArrayList<BreakAttdTO> breakAttdList = attdMapper.findBreakAttdList(map);
 
         return breakAttdList;
     }

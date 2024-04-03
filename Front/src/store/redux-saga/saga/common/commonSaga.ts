@@ -2,6 +2,7 @@ import { call, fork, put, all, takeLatest } from 'redux-saga/effects';
 import { commonActions } from 'store/redux-saga/reducer/common/commonReducer';
 import { AxiosResponse } from 'axios';
 import { getLoginToken, getTokenCheck } from 'store/redux-saga/api/common';
+import Swal from 'sweetalert2';
 
 // 로그인 + 회원 인증 및 토근 생성
 function* fetchLoginToken(action: any) {
@@ -12,9 +13,17 @@ function* fetchLoginToken(action: any) {
     if (response.data.errorCode == '로그인 성공') {
       localStorage.setItem('empCode', payload.id);
       yield put(commonActions.getLoginTokenSuccess(response.data));
-      alert(`${localStorage.getItem('empName')} ${localStorage.getItem('position')}님 접속을 환영합니다.`);
+      Swal.fire({
+        icon: 'success',
+        title: '로그인 성공',
+        text: `${localStorage.getItem('empName')} ${localStorage.getItem('position')}님 접속을 환영합니다.`
+      });
     } else {
-      alert('잘못된 접근입니다.');
+      Swal.fire({
+        icon: 'error',
+        title: '잘못된 접근입니다.',
+        text: 'id, pw를 확인해주세요.'
+      });
     }
   } catch (error: any) {
     console.log(error);

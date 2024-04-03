@@ -8,27 +8,16 @@ import Layout from 'layout';
 import Page from 'components/ui-component/Page';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
-import GridTable, { rows as Data, columns } from 'components/forms/tables/GridTable';
-import { ColumnProps, HolidayTO } from '../types/types';
-import axios, { Axios } from 'axios';
-import AddHoliday from 'components/hr/base/templates/AddHoliday';
+import { ColumnProps } from '../types/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { getHoliday, requestHoliday } from 'store/slices/hr/base/holiday';
+import { requestHoliday } from 'store/slices/hr/base/holiday';
+import AddHoliday from 'components/hr/base/templates/AddHoliday';
+import Swal from 'sweetalert2';
 
 // table data
 function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
   return { name, calories, fat, carbs, protein };
 }
-
-// const top100Films = [s
-//   { label: 'The Dark Knight', id: 1 },
-//   { label: 'Control with Control', id: 2 },
-//   { label: 'Combo with Solo', id: 3 },
-//   { label: 'The Dark', id: 4 },
-//   { label: 'Fight Club', id: 5 },
-//   { label: 'demo@company.com', id: 6 },
-//   { label: 'Pulp Fiction', id: 7 }
-// ];
 
 export const holidayGrid: ColumnProps[] = [
   // 칼럼정의
@@ -44,16 +33,6 @@ export const holidayGrid: ColumnProps[] = [
     label: '비고',
     id: 'note'
   }
-  // {
-  //   label: "holidayCode",
-  //   id: "holidayCode",
-
-  // },
-  // {
-  //   label: "상태",
-  //   id: "status",
-
-  // }
 ];
 
 // ==============================|| TABLE - BASIC ||============================== //
@@ -62,8 +41,17 @@ function HolidayPage() {
   const dispatch = useDispatch();
 
   const { holidayList } = useSelector((state: any) => state.holidayList);
-  console.log('홀리', holidayList);
   const [selRow, setSelRow] = useState(null);
+  const [authCheck, setAuthCheck] = useState(false); // 페이지 접근 권한체크
+
+  useEffect(() => {
+    const level = localStorage.getItem('authLevel') as string;
+    if (level && parseInt(level.slice(-1)) === 4) {
+      setAuthCheck(true);
+    } else {
+      setAuthCheck(false);
+    }
+  }, []);
 
   useEffect(() => {
     dispatch(requestHoliday());
@@ -75,10 +63,10 @@ function HolidayPage() {
   };
 
   return (
-    <Page title="휴일정보">
+    <Page title="휴일정보 관리">
       <Grid container spacing={gridSpacing}>
         <Grid item xs={12}>
-          <MainCard content={false} title="휴일정보">
+          <MainCard content={false} title="휴일정보 관리">
             <TableContainer>
               <Table sx={{ minWidth: 350 }} aria-label="simple table">
                 <TableHead sx={{ backgroundColor: '#E8D9FF' }}>
@@ -95,7 +83,7 @@ function HolidayPage() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {holidayList?.holidayList?.map((row, index) => (
+                  {holidayList?.holidayList?.map((row: any, index: any) => (
                     <TableRow
                       key={index}
                       onClick={() => selectRow(row)} // 행을 클릭하면 선택한 행을 설정
@@ -104,8 +92,6 @@ function HolidayPage() {
                       <TableCell sx={{ py: 3, textAlign: 'center' }}>{row.applyDay}</TableCell>
                       <TableCell sx={{ py: 3, textAlign: 'center' }}>{row.holidayName}</TableCell>
                       <TableCell sx={{ py: 3, textAlign: 'center' }}>{row.note}</TableCell>
-                      {/* <TableCell>{row.holidayCode}</TableCell>
-                          <TableCell>{row.status}</TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -115,7 +101,8 @@ function HolidayPage() {
         </Grid>
         <Grid item xs={12}></Grid>
       </Grid>
-      {/* <AddHoliday selRow={selRow} setSelRow={setSelRow} holidayList={holidayList} /> */}
+      {/* 휴일정보는 상무 이상만이 등록 수정 삭제 가능 */}
+      {authCheck ? <AddHoliday selRow={selRow} setSelRow={setSelRow} holidayList={holidayList} /> : <div></div>}
     </Page>
   );
 }

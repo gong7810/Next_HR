@@ -34,33 +34,33 @@
 	<insert id="insertWorkInfo" parameterType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.WorkInfoTO">
 		INSERT INTO WORK_INFO VALUES 
 		( #{empCode}
-		, TO_DATE(#{hiredate}, 'YYYY/MM/DD')
-		, TO_DATE(#{retireDate}, 'YYYY/MM/DD')
-		, #{occupation}
-		, #{employmentType}
-		, #{hobong}
-		, TO_NUMBER(#{workInfoDays})
+		, TO_DATE(#{hiredate,jdbcType=VARCHAR}, 'YYYY/MM/DD')
+		, TO_DATE(#{retireDate,jdbcType=VARCHAR}, 'YYYY/MM/DD')
+		, #{occupation,jdbcType=VARCHAR}
+		, #{employmentType,jdbcType=VARCHAR}
+		, #{hobong,jdbcType=VARCHAR}
+		, TO_NUMBER(#{workInfoDays,jdbcType=VARCHAR})
 		, #{position}
 		, #{deptName})
 	</insert>
 	
 	<update id="updateWorkInfo" parameterType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.WorkInfoTO">
 		UPDATE WORK_INFO SET
-		HIREDATE = TO_DATE(#{hiredate}, 'YYYY/MM/DD')
-		, RETIRE_DATE= TO_DATE(#{retireDate}, 'YYYY/MM/DD') 
-		, OCCUPATION = #{occupation}
-		, EMPLOYMENT_TYPE = #{employmentType}
-		, HOBONG = #{hobong}
+		HIREDATE = TO_DATE(#{hiredate ,jdbcType=VARCHAR}, 'YYYY/MM/DD')
+		, RETIRE_DATE= TO_DATE(#{retireDate,jdbcType=VARCHAR}, 'YYYY/MM/DD')
+		, OCCUPATION = #{occupation,jdbcType=VARCHAR}
+		, EMPLOYMENT_TYPE = #{employmentType,jdbcType=VARCHAR}
+		, HOBONG = #{hobong,jdbcType=VARCHAR}
 		, POSITION = #{position}
 		, DEPT_NAME = #{deptName}
 		WHERE EMP_CODE = #{empCode}
-		AND WORK_INFO_DAYS = TO_NUMBER(#{workInfoDays})
+		AND WORK_INFO_DAYS = TO_NUMBER(#{workInfoDays,jdbcType=VARCHAR})
 	</update>
 	
 	<delete id="deleteWorkInfo" parameterType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.WorkInfoTO">
 		DELETE FROM WORK_INFO 
 		WHERE EMP_CODE = #{empCode} 
-		AND WORK_INFO_DAYS = TO_NUMBER(#{workInfoDays})
+		AND WORK_INFO_DAYS = TO_NUMBER(#{workInfoDays,jdbcType=VARCHAR})
 	</delete>
 	
 </mapper>

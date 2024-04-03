@@ -33,7 +33,7 @@ public class SysController {
         try {
             HashMap<String, Object> resultMap = loginService.Login(loginTO);
             if ((Boolean) resultMap.get("result")) {
-                String token = securityService.createToken(id, (60*1000*60));
+                String token = securityService.createToken(id, (600*1000*60));
                 String authLevel = loginService.getAuthLevel(loginTO);
                 map.put("errorCode", "로그인 성공");
                 map.put("accessToken", token);

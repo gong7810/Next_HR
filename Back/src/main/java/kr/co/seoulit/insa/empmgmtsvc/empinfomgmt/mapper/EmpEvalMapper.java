@@ -13,7 +13,7 @@ public interface EmpEvalMapper {
 
 	public ArrayList<EmpEvalTO> selectEmpEval();
 	public void insertEmpEval(EmpEvalTO empevalto);
-	public List<EmpEvalTO> selectValidEmpEvalList();
+	public List<EmpEvalTO> selectValidEmpEvalList(String authLevel);
 	public List<EmpEvalTO> selectEmpEvalListByApprovalStatus();
 	public List<EmpEvalTO> selectEmpEvalByApprovalStatusCondition(String approvalStatus);
 	public List<EmpEvalTO> selectEmpEvalList();

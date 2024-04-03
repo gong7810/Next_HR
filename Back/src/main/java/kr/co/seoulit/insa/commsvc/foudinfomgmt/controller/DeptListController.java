@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
+@CrossOrigin("*")
 @RequestMapping("/foudinfomgmt/*")
 @RestController
 public class DeptListController {
@@ -23,17 +23,15 @@ public class DeptListController {
 	
 	
 	@PutMapping("deptlist")
-//	public ModelMap batchDeptProcess(HttpServletRequest request, HttpServletResponse response) {
-	public ModelMap batchDeptProcess(@RequestBody ArrayList<DeptTO> sendData, HttpServletRequest request, HttpServletResponse response) {
+	public ModelMap batchDeptProcess(@RequestBody ArrayList<DeptTO> sendData) {
 
 		System.out.println(sendData);
 		map = new ModelMap();
 
-
 		try {
 			foudInfoMgmtService.batchDeptProcess(sendData);
 			map.put("errorCode", 0);
-			map.put("errorMsg", request.getParameter("deptName")+" 부서가 등록/삭제가 완료되었습니다.");
+			map.put("errorMsg", "부서가 등록/삭제가 완료되었습니다.");
 
 		} catch (Exception e) {
 			map.clear();
@@ -45,7 +43,7 @@ public class DeptListController {
 	
 	
 	@GetMapping("deptlist")
-	public ModelMap findDeptList(HttpServletRequest request, HttpServletResponse response) {		
+	public ModelMap findDeptList() {
 		map = new ModelMap();		
 		try {
 			List<DeptTO> list = foudInfoMgmtService.findDeptList();

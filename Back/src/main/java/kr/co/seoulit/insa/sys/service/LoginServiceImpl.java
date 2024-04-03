@@ -6,7 +6,6 @@ import kr.co.seoulit.insa.sys.to.LoginTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 

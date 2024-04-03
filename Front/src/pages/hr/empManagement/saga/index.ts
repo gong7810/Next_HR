@@ -4,7 +4,7 @@ import { registerEmpSaga } from './registerEmpSaga';
 import { empEvalSaga } from './empEvalSaga';
 import { empEvalResultSaga } from './empEvalResultSaga';
 import { empEvalManagementSaga } from './empEvalManagementSaga';
-import { empAppointmentSaga } from './registerEmpAppointmentSaga';
+import { empAppointmentRegistSaga } from './empAppointmentRegistSaga';
 import { empAppointmentManagementSaga } from './empAppointmentManagementSaga';
 import { empAppointmentResultSaga } from './empAppointmentResultSaga';
 
@@ -15,7 +15,7 @@ export default function* empManagementRootSaga() {
     call(empEvalResultSaga),
     call(empEvalSaga),
     call(empEvalManagementSaga),
-    call(empAppointmentSaga),
+    call(empAppointmentRegistSaga),
     call(empAppointmentManagementSaga),
     call(empAppointmentResultSaga)
   ]);

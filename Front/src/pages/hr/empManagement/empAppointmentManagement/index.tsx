@@ -6,7 +6,6 @@ import { empAppointmentManagementAction } from '../slices/empAppointmentManageme
 import Layout from 'layout';
 import Page from 'components/ui-component/Page';
 import MainCard from 'ui-component/cards/MainCard';
-import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
 import { gridSpacing } from 'store/constant';
 import CSVExport from '../../../forms/tables/tbl-exports';
 import EmpAppointmentResult from '../empAppointmentResult';
@@ -27,11 +26,19 @@ function EmpAppointmentManagement() {
 
   const [selectedEmp, setSelectedEmp] = useState<EmpAppointmentManagementInfoEntity[]>([]);
 
+  const [authCheck, setAuthCheck] = useState(false); // 페이지 접근 권한체크
+
   useEffect(() => {
-    console.log('<<<<<<<<<<< useEffect called at empAppointmentManagement.');
+    const level = localStorage.getItem('authLevel') as string;
+    if (level && parseInt(level.slice(-1)) === 5) {
+      setAuthCheck(true);
+    } else {
+      setAuthCheck(false);
+    }
+  }, []);
+
+  useEffect(() => {
     dispatch(empAppointmentManagementAction.EMP_APPOINTMENT_FETCH_REQUESTED());
-    console.log('dispatched succeed');
-    // console.log(checkedCheckBox.current.value);
   }, [dispatch, fetchStatus]); // 백단으로부터 응답을 받으면 사원고과 결과가 반영된 DB의 결과를 가지고옴
 
   // 체크박스에 onChange이벤트가 발생할 때마다,
@@ -89,93 +96,96 @@ function EmpAppointmentManagement() {
   };
 
   return (
-    <Page title="인사발령관리">
+    <Page title="인사발령 관리">
       <Grid container spacing={gridSpacing}>
         <Grid item xs={12}>
-          <MainCard
-            content={false}
-            title="인사발령관리"
-            secondary={
-              <Stack direction="row" spacing={2} alignItems="center">
-                <button
-                  value="reject"
-                  onClick={(e) => {
-                    onClickHandler(e.currentTarget.value);
-                  }}
-                  className={classes.button}
-                >
-                  반려
-                </button>
-                <button
-                  value="approve"
-                  onClick={(e) => {
-                    onClickHandler(e.currentTarget.value);
-                  }}
-                  className={classes.button}
-                >
-                  승인
-                </button>
-
-                <CSVExport data={'empList'} filename={'basic-table.csv'} header={'header'} />
-                <SecondaryAction link="https://next.material-ui.com/components/tables/" />
-              </Stack>
-            }
-          >
-            <TableContainer>
-              <Table sx={{ minWidth: 350 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow
-                    sx={{
-                      borderTop: '1px solid black',
-                      borderBottom: '3px solid black',
-                      marginBottom: '3px',
-                      backgroundColor: '#E8D9FF'
+          {authCheck ? (
+            <MainCard
+              content={false}
+              title="인사발령 관리"
+              secondary={
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <button
+                    value="reject"
+                    onClick={(e: any) => {
+                      onClickHandler(e.currentTarget.value);
                     }}
+                    className={classes.button}
                   >
-                    <TableCell sx={{ pl: 3 }}></TableCell>
-                    <TableCell sx={{ pl: 5 }}>호수</TableCell>
-                    <TableCell>사원번호</TableCell>
-                    <TableCell>변경전</TableCell>
-                    <TableCell>변경후</TableCell>
-                    <TableCell sx={{ pr: 3 }}>결재상태</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {empList.length !== 0 ? (
-                    empList.map((emp: EmpAppointmentManagementInfoEntity) => (
-                      <TableRow hover key={emp.hosu}>
-                        <TableCell sx={{ pl: 3 }} padding="checkbox">
-                          <Checkbox
-                            value={emp.hosu}
-                            color="primary"
-                            onChange={(e) => {
-                              onCheckedChangeHandler(e);
-                            }}
-                          />
-                        </TableCell>
+                    반려
+                  </button>
+                  <button
+                    value="approve"
+                    onClick={(e: any) => {
+                      onClickHandler(e.currentTarget.value);
+                    }}
+                    className={classes.button}
+                  >
+                    승인
+                  </button>
 
-                        <TableCell sx={{ pl: 3 }} component="th" scope="row">
-                          {emp.hosu}
-                        </TableCell>
-                        <TableCell>{emp.empCode}</TableCell>
-                        <TableCell>{emp.beforeChange}</TableCell>
-                        <TableCell>{emp.afterChange}</TableCell>
-                        <TableCell sx={{ pr: 3 }}>{emp.approvalStatus}</TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell>{'인사발령 내역이 없습니다.'}</TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
+                  <CSVExport data={'empList'} filename={'basic-table.csv'} header={'header'} />
+                </Stack>
+              }
+            >
+              <TableContainer>
+                <Table sx={{ minWidth: 350 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow
+                      sx={{
+                        borderTop: '1px solid black',
+                        borderBottom: '3px solid black',
+                        marginBottom: '3px',
+                        backgroundColor: '#E8D9FF'
+                      }}
+                    >
+                      <TableCell sx={{ pl: 3 }}></TableCell>
+                      <TableCell sx={{ pl: 5 }}>호수</TableCell>
+                      <TableCell>사원번호</TableCell>
+                      <TableCell>변경전</TableCell>
+                      <TableCell>변경후</TableCell>
+                      <TableCell sx={{ pr: 3 }}>결재상태</TableCell>
                     </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </MainCard>
+                  </TableHead>
+                  <TableBody>
+                    {empList.length !== 0 ? (
+                      empList.map((emp: EmpAppointmentManagementInfoEntity) => (
+                        <TableRow hover key={emp.hosu}>
+                          <TableCell sx={{ pl: 3 }} padding="checkbox">
+                            <Checkbox
+                              value={emp.hosu}
+                              color="primary"
+                              onChange={(e: any) => {
+                                onCheckedChangeHandler(e);
+                              }}
+                            />
+                          </TableCell>
+
+                          <TableCell sx={{ pl: 3 }} component="th" scope="row">
+                            {emp.hosu}
+                          </TableCell>
+                          <TableCell>{emp.empCode}</TableCell>
+                          <TableCell>{emp.beforeChange}</TableCell>
+                          <TableCell>{emp.afterChange}</TableCell>
+                          <TableCell sx={{ pr: 3 }}>{emp.approvalStatus}</TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell>{'인사발령 내역이 없습니다.'}</TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </MainCard>
+          ) : (
+            <div></div>
+          )}
           <EmpAppointmentResult />
         </Grid>
       </Grid>

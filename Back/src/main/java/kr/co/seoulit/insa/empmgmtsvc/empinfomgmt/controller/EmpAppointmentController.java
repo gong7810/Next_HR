@@ -25,7 +25,6 @@ public class EmpAppointmentController {
 
     @Autowired
     private EmpInfoService empInfoService;
-
     ModelMap map = null;
 
 
@@ -66,7 +65,7 @@ public class EmpAppointmentController {
     }
 
 
-    // 이거는 정상 작동한다.
+    // 인사발령 등록
     @PostMapping("/registAppoint")
     public Map<String, Object> registAppointment(@RequestBody EmpAppointmentRegTO empAppointmentRegTO) {
         Map<String, Object> map = new HashMap<>();

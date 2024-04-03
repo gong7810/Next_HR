@@ -16,7 +16,7 @@ import javax.persistence.Transient;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-@Table(name="AUTHORITY")
+@Table(name="MEMBER")
 public class LoginTO extends BaseTO {
 
     @Id

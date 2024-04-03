@@ -86,7 +86,7 @@ export default function DailyAttendModal(props: { toggle: () => void }) {
 
   //추가 버튼 누름
   const handleSave = () => {
-    //onst empName = empNameRef.current?.value;
+    //const empName = empNameRef.current?.value;
 
     if (Number(empCode) === -1) {
       alert('사원명을 입력해 주세요.');
@@ -136,6 +136,7 @@ export default function DailyAttendModal(props: { toggle: () => void }) {
 
     // 여기서 reducer로 dispatch
     dispatch(dailyAttendAction.DAILY_ATTEND_INSERT_FETCH_REQUESTED(data));
+    alert('등록 완료');
 
     //dispatch를 하고나서 모달이 보이지 않게한다
     props.toggle();

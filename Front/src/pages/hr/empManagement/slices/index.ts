@@ -4,7 +4,7 @@ import registerEmpSlice from './registerEmpReducer';
 import empEvalSlice from './empEvalReducer';
 import empEvalResultSlice from './empEvalResultReducer';
 import empEvalManagementSlice from './empEvalManagementReducer';
-import empAppointmentSlice from './registerEmpAppointmentReducer';
+import empAppointmentSlice from './empAppointmentRegistReducer';
 import empAppointmentManagementSlice from './empAppointmentManagementReducer';
 import empAppointmentResultSlice from './empAppointmentResultReducer';
 

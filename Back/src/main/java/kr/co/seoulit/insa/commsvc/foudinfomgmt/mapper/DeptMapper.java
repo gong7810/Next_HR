@@ -10,5 +10,5 @@ public interface DeptMapper {
 	
 	public void updateDept(DeptTO dept);
 	public void registDept(DeptTO dept);
-	public void deleteDept(DeptTO dept);
+	public void deleteDept(String deptCode);
 }

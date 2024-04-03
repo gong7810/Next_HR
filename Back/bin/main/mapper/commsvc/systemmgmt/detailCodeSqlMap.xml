@@ -8,7 +8,7 @@
 		<result property="detailCodeNumber" column="DETAIL_CODE_NUMBER" />
 		<result property="codeNumber" column="CODE_NUMBER" />
 		<result property="detailCodeName" column="DETAIL_CODE_NAME" />
-		<result property="detailCodeNameusing" column="DETAIL_CODE_NAMEUSING" />
+		<result property="DetailCodeNameusing" column="DETAIL_CODE_NAMEUSING" />
 	</resultMap>
 
 
@@ -27,7 +27,7 @@
 		<![CDATA[                
    		UPDATE DETAIL_CODE SET
    		CODE_NUMBER = #{codeNumber}, DETAIL_CODE_NAME = #{detailCodeName}
-   		, DETAIL_CODE_NAMEUSING = #{detailCodeNameusing}
+   		, DETAIL_CODE_NAMEUSING = #{DetailCodeNameusing}
    		WHERE DETAIL_CODE_NUMBER = #{detailCodeNumber} ]]>
     </update>
     
@@ -36,7 +36,7 @@
 		<![CDATA[                
    		INSERT INTO DETAIL_CODE VALUES(
    		#{detailCodeNumber}, #{codeNumber}
-   		, #{detailCodeName}, #{detailCodeNameusing}, NULL ) ]]>
+   		, #{detailCodeName}, #{DetailCodeNameusing}, NULL ) ]]>
     </insert>
 	
 	

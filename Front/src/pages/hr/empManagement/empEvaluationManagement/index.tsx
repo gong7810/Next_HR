@@ -6,7 +6,6 @@ import { Grid, Table, Stack, TableBody, TableCell, TableContainer, TableHead, Ta
 import Layout from 'layout';
 import Page from 'components/ui-component/Page';
 import MainCard from 'ui-component/cards/MainCard';
-import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
 import { gridSpacing } from 'store/constant';
 import CSVExport from '../../../forms/tables/tbl-exports';
 import EmpEvaluationResult from '../empEvaluationResult/index';
@@ -15,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { empEvalManagementAction } from '../slices/empEvalManagementReducer';
 import { EmpEvalManagementInfoEntity } from '../types/empManagementTypes';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import Swal from 'sweetalert2';
 
 // table data
 
@@ -32,19 +32,19 @@ function EmpEvaluationManagement() {
 
   useEffect(() => {
     const level = localStorage.getItem('authLevel') as string;
-    if (level && parseInt(level.slice(-1)) >= 3) {
+    if (level && parseInt(level.slice(-1)) >= 5) {
       setAuthCheck(true);
     } else {
       setAuthCheck(false);
-      alert('접근 권한이 없습니다.');
+      Swal.fire({
+        icon: 'error',
+        title: '접근 권한이 없습니다.'
+      });
     }
   }, []);
 
   useEffect(() => {
-    console.log('<<<<<<<<<<< useEffect called.');
     dispatch(empEvalManagementAction.EMP_EVAL_FETCH_REQUESTED()); // action을 호출하는 것이므로 "()"를 뒤에 붙여 주어야 한다.
-    console.log('dispatched succeed');
-    // console.log(checkedCheckBox.current.value);
   }, [dispatch, fetchStatus]); // 백단으로부터 응답을 받으면 사원고과 결과가 반영된 DB의 결과를 가지고옴
 
   // 체크박스에 onChange이벤트가 발생할 때마다,
@@ -123,7 +123,7 @@ function EmpEvaluationManagement() {
                 <Stack direction="row" spacing={2} alignItems="center">
                   <button
                     value="del"
-                    onClick={(e) => {
+                    onClick={(e: any) => {
                       onClickHandler(e.currentTarget.value);
                     }}
                     className={classes.button}
@@ -132,7 +132,7 @@ function EmpEvaluationManagement() {
                   </button>
                   <button
                     value="approve"
-                    onClick={(e) => {
+                    onClick={(e: any) => {
                       onClickHandler(e.currentTarget.value);
                     }}
                     className={classes.button}
@@ -141,7 +141,7 @@ function EmpEvaluationManagement() {
                   </button>
                   <button
                     value="reject"
-                    onClick={(e) => {
+                    onClick={(e: any) => {
                       onClickHandler(e.currentTarget.value);
                     }}
                     className={classes.button}
@@ -150,7 +150,6 @@ function EmpEvaluationManagement() {
                   </button>
 
                   <CSVExport data={'empList'} filename={'basic-table.csv'} header={'header'} />
-                  <SecondaryAction link="https://next.material-ui.com/components/tables/" />
                 </Stack>
               }
             >
@@ -185,7 +184,7 @@ function EmpEvaluationManagement() {
                             <Checkbox
                               value={emp.empCode}
                               color="primary"
-                              onChange={(e) => {
+                              onChange={(e: any) => {
                                 onCheckedChangeHandler(e);
                               }}
                             />

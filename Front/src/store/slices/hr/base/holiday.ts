@@ -1,15 +1,6 @@
 // third-party
 import { createSlice } from '@reduxjs/toolkit';
-
-// project imports
-import axios from 'utils/axios';
-import { dispatch } from '../index';
-
-// types
 import { DefaultRootStateProps } from 'types';
-import { ProductsFilter, Address } from 'types/e-commerce';
-import { boolean } from 'yup';
-import { call, put } from 'redux-saga/effects';
 
 // ----------------------------------------------------------------------
 
