@@ -13,7 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
-@RequestMapping("/foudinfomgmt/*")
+@RequestMapping("hr/foudinfomgmt/*")
 @RestController
 public class DeptListController {
 	

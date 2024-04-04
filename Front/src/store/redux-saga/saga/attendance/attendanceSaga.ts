@@ -1,20 +1,10 @@
 import { call, fork, put, all, takeLatest } from 'redux-saga/effects';
 import { attdActions } from 'store/redux-saga/reducer/attendance/attendanceReducer';
-import {
-  getEmplist,
-  getRestAttdList,
-  insertRestAttd,
-  updateRestAttd,
-  deleteRestAttd,
-  insertBreaKAttd,
-  getBreakAttdList,
-  updateBreakAttd,
-  deleteBreakAttd
-} from 'store/redux-saga/api/attendance';
+import { getEmplist, getRestAttdList, insertRestAttd, updateRestAttd, deleteRestAttd } from 'store/redux-saga/api/attendance';
 import { AxiosResponse } from 'axios';
 
 // 사원 조회
-function* fetchEmpList() {
+function* FetchEmpList() {
   try {
     const response: AxiosResponse = yield call(getEmplist);
     console.log('사원 조회 response', response);
@@ -25,7 +15,7 @@ function* fetchEmpList() {
 }
 
 // 근태외 관리 조회
-function* fetchRestAttdList(action: any) {
+function* FetchRestAttdList(action: any) {
   const { payload } = action;
   try {
     const response: AxiosResponse = yield call(getRestAttdList, payload);
@@ -48,7 +38,7 @@ function* registRestAttd(action: any) {
 }
 
 // 근태외 승인/취소
-function* approvalRestAttdList(action: any) {
+function* approvalRestAttd(action: any) {
   const { payload } = action;
   try {
     const response: AxiosResponse = yield call(updateRestAttd, payload);
@@ -59,7 +49,7 @@ function* approvalRestAttdList(action: any) {
 }
 
 // 근태외 삭제
-function* removeRestAttdList(action: any) {
+function* removeRestAttd(action: any) {
   const { payload } = action;
   try {
     const response: AxiosResponse = yield call(deleteRestAttd, payload);
@@ -69,61 +59,12 @@ function* removeRestAttdList(action: any) {
   }
 }
 
-// 연차 내역 조회
-function* fetchBreakAttdList(action: any) {
-  const { payload } = action;
-  try {
-    const response: AxiosResponse = yield call(getBreakAttdList, payload);
-    console.log('조회 response', response);
-    yield put(attdActions.getBreakAttdListSuccess(response.data.breakAttdList));
-  } catch (error: any) {
-    console.log(error);
-  }
-}
-
-// 연차 신청
-function* registBreakAttd(action: any) {
-  const { payload } = action;
-  try {
-    const response: AxiosResponse = yield call(insertBreaKAttd, payload);
-    console.log('신청 response', response);
-  } catch (error: any) {
-    console.log(error);
-  }
-}
-
-// 연차 승인 / 반려
-function* approvalBreakAttdList(action: any) {
-  const { payload } = action;
-  try {
-    const response: AxiosResponse = yield call(updateBreakAttd, payload);
-    console.log('승인/반려/취소 response', response);
-  } catch (error: any) {
-    console.log(error);
-  }
-}
-
-// 연차 삭제
-function* removeBreakAttdList(action: any) {
-  const { payload } = action;
-  try {
-    const response: AxiosResponse = yield call(deleteBreakAttd, payload);
-    console.log('삭제 response', response);
-  } catch (error: any) {
-    console.log(error);
-  }
-}
-
 export function* watchAttdActions() {
-  yield takeLatest(attdActions.getEmpListRequest, fetchEmpList);
-  yield takeLatest(attdActions.getRestAttdListRequest, fetchRestAttdList);
+  yield takeLatest(attdActions.getEmpListRequest, FetchEmpList);
+  yield takeLatest(attdActions.getRestAttdListRequest, FetchRestAttdList);
   yield takeLatest(attdActions.registRestAttdRequest, registRestAttd);
-  yield takeLatest(attdActions.approvalRestAttdRequest, approvalRestAttdList);
-  yield takeLatest(attdActions.romoveRestAttdRequest, removeRestAttdList);
-  yield takeLatest(attdActions.getBreakAttdListRequest, fetchBreakAttdList);
-  yield takeLatest(attdActions.registBreakAttdRequest, registBreakAttd);
-  yield takeLatest(attdActions.approvalBreakAttdRequest, approvalBreakAttdList);
-  yield takeLatest(attdActions.romoveBreakAttdRequest, removeBreakAttdList);
+  yield takeLatest(attdActions.approvalRestAttdRequest, approvalRestAttd);
+  yield takeLatest(attdActions.romoveRestAttdRequest, removeRestAttd);
 }
 
 export default function* attdSaga() {

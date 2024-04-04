@@ -8,70 +8,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 public class AnnualLeaveMgtTO extends BaseTO{
 	
-	private String empCode, empName, applyYearMonth, afternoonOff,
-	monthlyLeave, remainingHoliday, finalizeStatus, totalUsing;
+	private String empCode;
+	private String empName;
+	private String applyYearMonth;
+	private String afternoonOff;
+	private String monthlyLeave;
+	private String remainingHoliday;
+	private String finalizeStatus;
+	private String totalUsing;
 
-	public String getEmpCode() {
-		return empCode;
-	}
-
-	public void setEmpCode(String empCode) {
-		this.empCode = empCode;
-	}
-
-	public String getEmpName() {
-		return empName;
-	}
-
-	public void setEmpName(String empName) {
-		this.empName = empName;
-	}
-
-	public String getApplyYearMonth() {
-		return applyYearMonth;
-	}
-
-	public void setApplyYearMonth(String applyYearMonth) {
-		this.applyYearMonth = applyYearMonth;
-	}
-
-	public String getAfternoonOff() {
-		return afternoonOff;
-	}
-
-	public void setAfternoonOff(String afternoonOff) {
-		this.afternoonOff = afternoonOff;
-	}
-
-	public String getMonthlyLeave() {
-		return monthlyLeave;
-	}
-
-	public void setMonthlyLeave(String monthlyLeave) {
-		this.monthlyLeave = monthlyLeave;
-	}
-
-	public String getRemainingHoliday() {
-		return remainingHoliday;
-	}
-
-	public void setRemainingHoliday(String remainingHoliday) {
-		this.remainingHoliday = remainingHoliday;
-	}
-
-	public String getFinalizeStatus() {
-		return finalizeStatus;
-	}
-
-	public void setFinalizeStatus(String finalizeStatus) {
-		this.finalizeStatus = finalizeStatus;
-	}
-
-	public String getTotalUsing() {
-		return totalUsing;
-	}
-
-	public void setTotalUsing(String totalUsing) {
-		this.totalUsing = totalUsing;
-	}
 }

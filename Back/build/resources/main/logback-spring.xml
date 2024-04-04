@@ -4,7 +4,7 @@
 	<!-- Appenders 콘솔-->
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{50} - %msg{full}%n</Pattern>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</Pattern>
 		</encoder>   
 	</appender>
 
@@ -66,7 +66,7 @@
 	
      
 	<!-- 루트 로거 -->
-	<root level="DEBUG">
+	<root level="ERROR">
 			<appender-ref ref="console"/>
 			<appender-ref ref="ROLLING"/>
 			<!-- <appender-ref ref="EMAIL"/> -->
