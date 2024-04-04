@@ -7,15 +7,17 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.co.seoulit.insa.attdsvc.attdmgmt.to.DailyAttdModifyTO;
 import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.entity.EmpDetailEntity;
-import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.service.EmpInfoService;
+import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpTO;
+import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.FamilyInfoTO;
+import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.LicenseInfoTO;
+import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.WorkInfoTO;
 
 
 @RequestMapping("/empinfomgmt/*")
@@ -70,27 +72,6 @@ public class EmpDetailController {
             map.put("errorMsg", dae.getMessage());
         }
 
-        return map;
-    }
-
-    @GetMapping("searchEmpCode")
-    public Map<String, Object> findEmpCode(@RequestParam String empName, @RequestParam String deptCode) {
-        System.out.println("findEmpCode 컨트롤러의 empName = " + empName);
-        System.out.println("findEmpCode 컨트롤러의 deptCode = " + deptCode);
-        Map<String,Object> map = new HashMap<>();
-
-        try {
-            String empCode = empInfoService.findEmpCode(empName, deptCode);
-            map.put("errorMsg", "success");
-            map.put("errorCode", 0);
-            map.put("empCode", empCode);
-
-        } catch (Exception dae) {
-            dae.printStackTrace();
-            map.clear();
-            map.put("errorCode", -1);
-            map.put("errorMsg", dae.getMessage());
-        }
         return map;
     }
 }

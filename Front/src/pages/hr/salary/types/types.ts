@@ -11,6 +11,16 @@ interface ColumnProps {
 
 export default ColumnProps;
 
+export interface AnnualLeaveMgtTO {
+  empCode: string;
+  empName: string;
+  applyYearMonth: string;
+  monthlyLeave: string;
+  remainingHoliday: string;
+  finalizeStatus: string;
+}
+
+
 export interface FullTimeSalaryEntity {
   empCode: string;
   basicSalary: string;
@@ -49,6 +59,15 @@ export interface RetirementSalaryTO {
   settlementdate: string;
   workingdate: string;
   retirementsalary: string;
+}
+
+export interface retirementSalaryTO {
+  hireDate: string;
+  severanceType: string;
+  empCode: string;
+  workDays: boolean;
+  severancePay?: string;
+  retireDate:string;
 }
 
 export interface BaseExtSalTO {

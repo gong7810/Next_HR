@@ -6,6 +6,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import SubCard from 'ui-component/cards/SubCard';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { RestAttdTO } from '../types/types';
+import axios from 'axios';
 import { useDispatch, useSelector } from 'store';
 import { attdActions } from 'store/redux-saga/reducer/attendance/attendanceReducer';
 
@@ -15,7 +16,9 @@ const Columns: GridColDef[] = [
     field: 'empCode',
     width: 150,
     headerAlign: 'center',
-    align: 'center'
+    align: 'center',
+    headerCheckboxSelection: true,
+    checkboxSelection: true
   },
   { headerName: '근태유형', field: 'attdType', width: 150, headerAlign: 'center', align: 'center' },
   { headerName: '신청일자', field: 'requestDate', width: 150, headerAlign: 'center', align: 'center' },
@@ -232,7 +235,7 @@ const RestAttdApprovalPage = () => {
                   <Grid container justifyContent="center" spacing={2}>
                     <Grid item>
                       <Button variant="contained" onClick={() => getRestAttdList()}>
-                        조회
+                        조회하기
                       </Button>
                     </Grid>
                   </Grid>
@@ -242,7 +245,7 @@ const RestAttdApprovalPage = () => {
             <Grid item xs={12}>
               <Divider />
             </Grid>
-            <Box sx={{ height: 400, width: '100%' }}>
+            <div style={{ height: 400, width: '100%' }}>
               {loading ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                   <CircularProgress />
@@ -262,7 +265,7 @@ const RestAttdApprovalPage = () => {
                   }}
                 />
               )}
-            </Box>
+            </div>
           </MainCard>
         </Grid>
       </Grid>

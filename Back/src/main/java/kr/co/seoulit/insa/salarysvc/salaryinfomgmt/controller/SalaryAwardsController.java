@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.service.SalaryInfoMgmtService;
 import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.to.SalaryBonusTO;
 
-@RequestMapping("/salaryinfomgmt/*")
+@RequestMapping("hr/salaryinfomgmt/*")
 @RestController
 @CrossOrigin
 public class SalaryAwardsController

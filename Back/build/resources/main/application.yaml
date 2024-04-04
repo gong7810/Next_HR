@@ -17,9 +17,9 @@ server:
 spring:
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
-    password: insa78next
     url: jdbc:oracle:thin:@localhost:1521:xe
-    username: insa78next
+    username: hr77
+    password: hr77
   mvc:
     view:
       prefix: /WEB-INF/views/
@@ -30,15 +30,6 @@ spring:
       file-size-threshold: 215MB
       maxFileSize: 10MB
       maxRequestSize: 10MB
-  jpa:
-    database: oracle
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.Oracle10gDialect
-        ddl-auto: none
-        temp:
-          use_jdbc_metadata_defaults: false
-        flushMode: COMMIT
 tomcat:
   ajp:
     enabled: true

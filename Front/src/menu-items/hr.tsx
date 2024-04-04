@@ -247,19 +247,19 @@ const hr: NavItemType = {
               id: 'monthSalaryInfo',
               title: <FormattedMessage id="monthSalaryInfo" />,
               type: 'item',
-              url: '/hr/salary/MonthSalary/MonthSalaryPage'
+              url: '/hr/salary/SalaryManagement/MonthSalaryPage'
             },
             {
               id: 'bonusInfo',
               title: <FormattedMessage id="bonusInfo" />,
               type: 'item',
-              url: '/hr/salary/SalaryAwards/SalaryAwardsPage'
+              url: '/hr/salary/SalaryManagement/SalaryAwardsPage'
             },
             {
               id: 'severancePayInfo',
               title: <FormattedMessage id="severancePayInfo" />,
               type: 'item',
-              url: '/hr/salary/SeverancePay/SeverancePayPage'
+              url: '/hr/salary/SalaryManagement/SeverancePayPage'
             }
           ]
         },
@@ -273,19 +273,19 @@ const hr: NavItemType = {
               id: 'monthSalaryRegist',
               title: <FormattedMessage id="monthSalaryRegist" />,
               type: 'item',
-              url: '/hr/salary/MonthSalary/MonthSalaryPage'
+              url: '/hr/salary/SalaryRegist/MonthSalaryRegistPage'
             },
             {
               id: 'bonusRegist',
               title: <FormattedMessage id="bonusRegist" />,
               type: 'item',
-              url: '/hr/salary/SalaryAwardManage/SalaryAwardManagePage'
+              url: '/hr/salary/SalaryRegist/SalaryAwardRegistPage'
             },
             {
               id: 'severancePayRegist',
               title: <FormattedMessage id="severancePayRegist" />,
               type: 'item',
-              url: '/hr/salary/SeverancePay/SeverancePayPage'
+              url: '/hr/salary/SalaryRegist/SeverancePayRegistPage'
             }
           ]
         },
@@ -299,19 +299,19 @@ const hr: NavItemType = {
               id: 'salaryBaseManagement',
               title: <FormattedMessage id="salaryBaseManagement" />,
               type: 'item',
-              url: '/hr/salary/BaseSalaryManage/BaseSalaryManagePage'
+              url: '/hr/salary/SalaryBaseInfoManagement/BaseSalaryManagePage'
             },
             {
               id: 'overtimePayManagement',
               title: <FormattedMessage id="overtimePayManagement" />,
               type: 'item',
-              url: '/hr/salary/BaseExtSalManage/BaseExtSalManagePage'
+              url: '/hr/salary/SalaryBaseInfoManagement/BaseExtSalManagePage'
             },
             {
               id: 'socialInsuranceManagement',
               title: <FormattedMessage id="socialInsuranceManagement" />,
               type: 'item',
-              url: '/hr/salary/SocialInsure/SocialInsurePage'
+              url: '/hr/salary/SalaryBaseInfoManagement/SocialInsurePage'
             }
           ]
         }

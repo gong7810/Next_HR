@@ -28,7 +28,7 @@ import { useSelector } from 'react-redux';
 const RestAttdRegistPage = () => {
   const dispatch = useDispatch();
   const rawList = useSelector((state: RootState) => state.attdReducer.empList);
-  
+
   const [empList, setEmpList] = useState<AnnualLeaveMgtTO[]>([]);
   const [empCode, setEmpCode] = useState<string>('');
   const [attdCode, setAttdCode] = useState<string>('');
@@ -66,7 +66,7 @@ const RestAttdRegistPage = () => {
     setEmpList(rawList);
   }, [rawList]);
 
-  const empLists = empList.map((item) => {
+  const empLists = empList.map((item: any) => {
     return (
       <MenuItem value={item.empCode} key={item.empCode}>
         {item.empName}
@@ -85,6 +85,10 @@ const RestAttdRegistPage = () => {
 
   // 근태외 등록
   const restAttdRegist = () => {
+    console.log(empCode, attdCode, attdType, requestDate, startDate, endDate);
+    console.log(startTime, endTime);
+    console.log(cause);
+
     if (!empCode || !attdCode) {
       alert('신청자와 근태구분은 필수선택입니다.');
     } else if (!startDate || !endDate) {

@@ -133,7 +133,7 @@ export default function EmpModifyModal(props: { toggle: () => void; emp: ModifyE
             <Box>
               <DialogTitle id="form-dialog-title">사원 정보 수정</DialogTitle>
               <DialogContent>
-                <Grid container spacing="auto" item xs>
+                <Grid container style={{ margin: 'auto', width: '1000px' }}>
                   <Grid container spacing={gridSpacing}>
                     <Grid item md={6} xs={12}>
                       <InputLabel>사원명</InputLabel>

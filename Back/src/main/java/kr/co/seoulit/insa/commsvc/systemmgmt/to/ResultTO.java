@@ -1,26 +1,14 @@
 package kr.co.seoulit.insa.commsvc.systemmgmt.to;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class ResultTO {
-	
-	private String errorCode, errorMsg;
 
-	public String getErrorCode() {
-		return errorCode;
-	}
+	private String errorCode;
+	private String errorMsg;
 
-	public void setErrorCode(String errorCode) {
-		this.errorCode = errorCode;
-	}
-
-	public String getErrorMsg() {
-		return errorMsg;
-	}
-
-	public void setErrorMsg(String errorMsg) {
-		this.errorMsg = errorMsg;
-	}
 
 }

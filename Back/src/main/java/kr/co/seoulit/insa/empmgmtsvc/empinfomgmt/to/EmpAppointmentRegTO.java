@@ -7,54 +7,11 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class EmpAppointmentRegTO
 {
-	String empCode, hosu, afterChange, startDate, endDate, type;
+	private String empCode;
+	private String hosu;
+	private String afterChange;
+	private String startDate;
+	private String endDate;
+	private String type;
 
-	public String getEmpCode() {
-		return empCode;
-	}
-
-	public void setEmpCode(String empCode) {
-		this.empCode = empCode;
-	}
-
-	public String getHosu() {
-		return hosu;
-	}
-
-	public void setHosu(String hosu) {
-		this.hosu = hosu;
-	}
-
-	public String getAfterChange() {
-		return afterChange;
-	}
-
-	public void setAfterChange(String afterChange) {
-		this.afterChange = afterChange;
-	}
-
-	public String getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
-
-	public String getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-	
 }

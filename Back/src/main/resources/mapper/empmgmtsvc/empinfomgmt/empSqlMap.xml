@@ -175,15 +175,6 @@
         WHERE EMP_NAME = #{name}
     </select>
 
-    <select id="selectEmpCode" parameterType="string" resultType="java.lang.String">
-        SELECT E.EMP_CODE as EMP_CODE
-        FROM DAT_ATTD D, EMP E
-        WHERE
-            E.EMP_NAME = D.EMP_ENAME
-        AND E.EMP_NAME = #{empName}
-        AND D.DEPT_CODE =  #{deptCode}
-    </select>
-
     <select id="selectEmpDetail" parameterType="String" resultMap="empResult">
         select
             EMP_NAME as empName
