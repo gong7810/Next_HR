@@ -11,6 +11,9 @@ import EmpEvaluationStandard from './EmpEvaluationStandardModal';
 import { empEvalAction } from '../slices/empEvalReducer';
 import { useDispatch } from 'react-redux';
 import { EvalEmpInfo, EvalEmpInfoEntity } from '../types/empManagementTypes';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import Swal from 'sweetalert2';
+
 // ==============================|| TABLE - BASIC ||============================== //
 
 // 리팩토링은 현재 프로젝트를 확실하게 사용하게 된다는 사실이 확인되면은 진행할예정
@@ -47,10 +50,15 @@ function EmpEvaluation() {
   const score = useRef<any>(0);
 
   // 현재 페이지가 로드 되면은 데이터를 가지고 온다.
-  //
+
+  const [authCheck, setAuthCheck] = useState(false); // 페이지 접근 권한체크
+
   useEffect(() => {
     const getEmpList = async () => {
-      const url = 'http://localhost:9101/empinfomgmt/evaluation/list';
+      const url = new URL('http://localhost:9101/empinfomgmt/evaluation/list');
+      url.searchParams.append('token', localStorage.getItem('access') as string);
+      url.searchParams.append('authLevel', localStorage.getItem('authLevel') as string);
+
       const obj = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
@@ -76,6 +84,19 @@ function EmpEvaluation() {
     };
     getEmpList();
     console.log('getEmpList function has been called.');
+  }, []);
+
+  useEffect(() => {
+    const level = localStorage.getItem('authLevel') as string;
+    if (level && parseInt(level.slice(-1)) >= 3) {
+      setAuthCheck(true);
+    } else {
+      setAuthCheck(false);
+      Swal.fire({
+        icon: 'error',
+        title: '접근 권한이 없습니다.'
+      });
+    }
   }, []);
 
   // 선택한 데이터가 유효한지 검사하는 로직
@@ -241,141 +262,153 @@ function EmpEvaluation() {
   };
 
   return (
-    <Page title="인사고과등록">
-      <Grid container spacing={gridSpacing}>
-        <Grid item xs={12}>
-          <MainCard className={classes.main_card} content={false} title="인사고과등록">
-            <div className={classes.main}>
-              <div className={classes.info_modal}>{<EmpEvaluationStandard />}</div>
-              <div className={classes.first_div}>
-                <div style={{ width: '890px', margin: 'auto', marginBottom: '20px' }}>
-                  {' '}
-                  <div
+    <Page title="인사고과 등록">
+      {authCheck ? (
+        <Grid container spacing={gridSpacing}>
+          <Grid item xs={12}>
+            <MainCard className={classes.main_card} content={false} title="인사고과 등록">
+              <div className={classes.main}>
+                <div className={classes.info_modal}>{<EmpEvaluationStandard />}</div>
+                <div className={classes.first_div}>
+                  <div style={{ width: '890px', margin: 'auto', marginBottom: '20px' }}>
+                    {' '}
+                    <div
+                      style={{
+                        display: 'inline-block',
+                        marginBottom: '3px',
+                        transform: 'translateX(-150px)'
+                      }}
+                    >
+                      사원 선택
+                    </div>{' '}
+                    <div style={{ display: 'inline-block', transform: 'translateX(200px)' }}>연차/병가 사용일수 선택</div>{' '}
+                  </div>
+                  <select defaultValue={'-1'} name="emp" ref={empListRef} className={classes.empList_select}>
+                    <option value="-1" className={classes.option} disabled hidden selected>
+                      사원을 선택해 주세요
+                    </option>
+                    {isValid &&
+                      empList.map((emp: any) => (
+                        <option value={emp.empCode} key={emp.empCode}>
+                          {emp.empName}
+                        </option>
+                      ))}
+                  </select>
+
+                  <select ref={empBreakRef} name="empBreak" className={classes.empBreak_select}>
+                    <option value="-1" disabled hidden selected>
+                      연차/병가 사용일수
+                    </option>
+                    <option value="0">합산 5일 이하</option>
+                    <option value="1">합산 5일초과, 10일 이하</option>
+                    <option value="2">합산 10일 이상</option>
+                  </select>
+                </div>
+                <div className={classes.second_div}>
+                  <div style={{ width: '890px', margin: 'auto' }}>
+                    {' '}
+                    <div style={{ display: 'inline-block', marginBottom: '3px', transform: 'translateX(-190px)' }}>자격증</div>{' '}
+                    <div style={{ display: 'inline-block', transform: 'translateX(200px)' }}>연수이수시간</div>{' '}
+                  </div>
+
+                  <br />
+                  <select name="certificate" ref={certificationRef} className={classes.empCertification_select}>
+                    <option value="-1" disabled hidden selected>
+                      관련자격증개수
+                    </option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4개 이상</option>
+                  </select>
+
+                  <select ref={hourOfcompanyEducationRef} className={classes.hourofcompanyeducation_select}>
+                    <option value="-1" disabled hidden selected>
+                      연수이수시간
+                    </option>
+                    <option value="0">8시간 미만</option>
+                    <option value="1">8시간 이상, 15시간 미만</option>
+                    <option value="2">15시간 이상, 30시간 미만</option>
+                    <option value="3">30시간 이상</option>
+                  </select>
+                </div>
+                <div className={classes.third_div}>
+                  <div style={{ width: '890px', margin: 'auto', marginBottom: '20px' }}>
+                    {' '}
+                    <div style={{ display: 'inline-block', marginBottom: '3px', transform: 'translateX(-160px)' }}>학위선택</div>{' '}
+                    <div style={{ display: 'inline-block', transform: 'translateX(200px)' }}>고과 결격사유 유무 선택</div>{' '}
+                  </div>
+                  <select ref={schoolCertificateRef} className={classes.schoolCertificate_select}>
+                    <option value="-1" disabled hidden selected>
+                      학위등록
+                    </option>
+                    <option value="0">대학 미졸업</option>
+                    <option value="1">학사</option>
+                    <option value="2">석사</option>
+                    <option value="3">박사</option>
+                  </select>
+                  <select ref={validationForPromotionRef} className={classes.validationForPromotion_select}>
+                    <option value="-1" disabled hidden selected>
+                      고과 결격사유 유무
+                    </option>
+                    <option value="0">해당사항 없음</option>
+                    <option value="1">해당사항 있음</option>
+                  </select>
+                </div>
+                <div className={classes.result_input_div}>
+                  <div style={{ width: '890px', margin: 'auto', marginTop: '20px', marginBottom: '20px' }}>
+                    {' '}
+                    <div style={{ display: 'inline-block', marginBottom: '3px' }}>예상 등급</div>{' '}
+                  </div>
+                  <p
                     style={{
+                      marginTop: '-20px',
+                      fontSize: '50px',
+                      height: '50px',
+                      width: '50px',
                       display: 'inline-block',
-                      marginBottom: '3px',
-                      transform: 'translateX(-150px)'
+                      color: 'orange'
                     }}
                   >
-                    사원 선택
-                  </div>{' '}
-                  <div style={{ display: 'inline-block', transform: 'translateX(200px)' }}>연차/병가 사용일수 선택</div>{' '}
-                </div>
-                <select defaultValue={'-1'} name="emp" ref={empListRef} className={classes.empList_select}>
-                  <option value="-1" className={classes.option} disabled hidden selected>
-                    사원을 선택해 주세요
-                  </option>
-                  {isValid &&
-                    empList.map((emp: any) => (
-                      <option value={emp.empCode} key={emp.empCode}>
-                        {emp.empName}
-                      </option>
-                    ))}
-                </select>
-
-                <select ref={empBreakRef} name="empBreak" className={classes.empBreak_select}>
-                  <option value="-1" disabled hidden selected>
-                    연차/병가 사용일수
-                  </option>
-                  <option value="0">합산 5일 이하</option>
-                  <option value="1">합산 5일초과, 10일 이하</option>
-                  <option value="2">합산 10일 이상</option>
-                </select>
-              </div>
-              <div className={classes.second_div}>
-                <div style={{ width: '890px', margin: 'auto' }}>
-                  {' '}
-                  <div style={{ display: 'inline-block', marginBottom: '3px', transform: 'translateX(-190px)' }}>자격증</div>{' '}
-                  <div style={{ display: 'inline-block', transform: 'translateX(200px)' }}>연수이수시간</div>{' '}
+                    {resultInput}
+                  </p>
                 </div>
 
-                <br />
-                <select name="certificate" ref={certificationRef} className={classes.empCertification_select}>
-                  <option value="-1" disabled hidden selected>
-                    관련자격증개수
-                  </option>
-                  <option value="0">0</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4개 이상</option>
-                </select>
-
-                <select ref={hourOfcompanyEducationRef} className={classes.hourofcompanyeducation_select}>
-                  <option value="-1" disabled hidden selected>
-                    연수이수시간
-                  </option>
-                  <option value="0">8시간 미만</option>
-                  <option value="1">8시간 이상, 15시간 미만</option>
-                  <option value="2">15시간 이상, 30시간 미만</option>
-                  <option value="3">30시간 이상</option>
-                </select>
-              </div>
-              <div className={classes.third_div}>
-                <div style={{ width: '890px', margin: 'auto', marginBottom: '20px' }}>
-                  {' '}
-                  <div style={{ display: 'inline-block', marginBottom: '3px', transform: 'translateX(-160px)' }}>학위선택</div>{' '}
-                  <div style={{ display: 'inline-block', transform: 'translateX(200px)' }}>고과 결격사유 유무 선택</div>{' '}
+                <div className={classes.button_div}>
+                  <button
+                    onClick={(e) => {
+                      onClickHandler(e.currentTarget.innerHTML);
+                    }}
+                    className={classes.calculate_button}
+                  >
+                    등급산출
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      onClickHandler(e.currentTarget.innerHTML);
+                    }}
+                    className={classes.result_button}
+                    disabled={isDisabled}
+                  >
+                    결과상신
+                  </button>
                 </div>
-                <select ref={schoolCertificateRef} className={classes.schoolCertificate_select}>
-                  <option value="-1" disabled hidden selected>
-                    학위등록
-                  </option>
-                  <option value="0">대학 미졸업</option>
-                  <option value="1">학사</option>
-                  <option value="2">석사</option>
-                  <option value="3">박사</option>
-                </select>
-                <select ref={validationForPromotionRef} className={classes.validationForPromotion_select}>
-                  <option value="-1" disabled hidden selected>
-                    고과 결격사유 유무
-                  </option>
-                  <option value="0">해당사항 없음</option>
-                  <option value="1">해당사항 있음</option>
-                </select>
               </div>
-              <div className={classes.result_input_div}>
-                <div style={{ width: '890px', margin: 'auto', marginTop: '20px', marginBottom: '20px' }}>
-                  {' '}
-                  <div style={{ display: 'inline-block', marginBottom: '3px' }}>예상 등급</div>{' '}
-                </div>
-                <p
-                  style={{
-                    marginTop: '-20px',
-                    fontSize: '50px',
-                    height: '50px',
-                    width: '50px',
-                    display: 'inline-block',
-                    color: 'orange'
-                  }}
-                >
-                  {resultInput}
-                </p>
-              </div>
-
-              <div className={classes.button_div}>
-                <button
-                  onClick={(e) => {
-                    onClickHandler(e.currentTarget.innerHTML);
-                  }}
-                  className={classes.calculate_button}
-                >
-                  등급산출
-                </button>
-                <button
-                  onClick={(e) => {
-                    onClickHandler(e.currentTarget.innerHTML);
-                  }}
-                  className={classes.result_button}
-                  disabled={isDisabled}
-                >
-                  결과상신
-                </button>
-              </div>
-            </div>
-          </MainCard>
+            </MainCard>
+          </Grid>
         </Grid>
-      </Grid>
+      ) : (
+        <MainCard
+          title={
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <DoDisturbIcon style={{ color: 'red', marginRight: '8px' }} /> {/* 아이콘을 title 옆에 추가합니다. */}
+              접근 권한 없음
+            </div>
+          }
+          style={{ textAlign: 'center' }}
+        />
+      )}
     </Page>
   );
 }

@@ -2,11 +2,14 @@ import { SUCCEED, FAILED } from '../constant/const';
 
 type typeAction = { payload: any; type: string };
 // 사원 정보관리
-//사원 조회
+
+//사원 전체 조회
 // ---> 전체 사원 혹은 부서에 따른 사원을 조회할수 있다.
 const getEmpList = async (data: any) => {
   console.log('data.payload at api', data.payload); // payload로 값을 받을수 있다.
-  const url = 'http://localhost:9101/empinfomgmt/emplist?value=' + data.payload;
+  const url = new URL('http://localhost:9101/hr/empinfomgmt/empAllList?value=' + data.payload);
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
@@ -25,10 +28,12 @@ const getEmpList = async (data: any) => {
   }
 };
 
-//사원등록
+//사원 등록
 const registerEmp = async (action: any) => {
   console.log('log from regiserEmp', action.payload);
-  const url = 'http://localhost:9101/empinfomgmt/employee';
+  const url = new URL('http://localhost:9101/empinfomgmt/employee');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -44,10 +49,14 @@ const registerEmp = async (action: any) => {
     return { errorMsg: 'success', errorCode: 0 };
   }
 };
+
 //사원정보 수정
 const updateEmpInfo = async (action: typeAction) => {
   console.log('updateEmpInfo api called!!!', action.payload);
-  const url = 'http://localhost:9101/empinfomgmt/empdetail/empcode';
+  console.log('이건 뭐냐', JSON.stringify(action.payload));
+  const url = new URL('http://localhost:9101/empinfomgmt/empdetail/empcode');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
@@ -67,7 +76,9 @@ const updateEmpInfo = async (action: typeAction) => {
 
 // 사원을 삭제
 const deleteEmpInfo = async (action: typeAction) => {
-  const url = 'http://localhost:9101/empinfomgmt/empdetail/empcode';
+  const url = new URL('http://localhost:9101/empinfomgmt/empdetail/empcode');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
@@ -82,12 +93,14 @@ const deleteEmpInfo = async (action: typeAction) => {
   console.log(data);
 };
 
-// 사원 고과
+////////////// 사원 고과
 
 // 사원고과 등록
 const registerEmpEval = async (action: typeAction) => {
   console.log('log from empEval', action.payload);
-  const url = 'http://localhost:9101/empinfomgmt/evaluation';
+  const url = new URL('http://localhost:9101/empinfomgmt/evaluation');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -108,7 +121,9 @@ const registerEmpEval = async (action: typeAction) => {
 // 사원고과가 진행된 사원의 정보를 가져오는 api
 // ---> 코드의 통일성을 주기위해 코드 리펙터링을 하자.
 const getEmpEvalEndedList = async () => {
-  const url = 'http://localhost:9101/empinfomgmt/evaluation/list/approvalStatus';
+  const url = new URL('http://localhost:9101/empinfomgmt/evaluation/list/approvalStatus');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
@@ -132,7 +147,9 @@ const getEmpEvalEndedList = async () => {
 //---> 코드의 통일성을 주기 위해 코드 리펙터링을 하자.
 const deleteEmpEval = async (action: typeAction) => {
   console.log('deleteEmpEval called', action.payload);
-  const url = 'http://localhost:9101/empinfomgmt/evaluation';
+  const url = new URL('http://localhost:9101/empinfomgmt/evaluation');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
@@ -158,7 +175,9 @@ const deleteEmpEval = async (action: typeAction) => {
 //승인된 사원 고과 수정
 const modifyApprovedEmpEval = async (action: typeAction) => {
   console.log('modifyApprovedEmpEval : ', action.payload);
-  const url = 'http://localhost:9101/empinfomgmt/evaluation-approval/approved';
+  const url = new URL('http://localhost:9101/empinfomgmt/evaluation-approval/approved');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
@@ -175,7 +194,9 @@ const modifyApprovedEmpEval = async (action: typeAction) => {
 
 //반려된 사원 고과 수정
 const modifyRejectedEmpEval = async (action: typeAction) => {
-  const url = 'http://localhost:9101/empinfomgmt/evaluation-approval/rejected?';
+  const url = new URL('http://localhost:9101/empinfomgmt/evaluation-approval/rejected?');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -194,7 +215,9 @@ const modifyRejectedEmpEval = async (action: typeAction) => {
 //모든 사원고과결과 조회
 const getEmpEvalResult = async () => {
   console.log('getEmpEvalResult called from api.');
-  const url = 'http://localhost:9101/empinfomgmt/evaluation/list/all';
+  const url = new URL('http://localhost:9101/empinfomgmt/evaluation/list/all');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
@@ -215,7 +238,9 @@ const getEmpEvalResult = async () => {
 // 결재 상태에 따른 사원고과 결과 조회
 const getEmpEvalResultByApprovalCondition = async (action: typeAction) => {
   console.log('action.payload from api:', action.payload);
-  const url = 'http://localhost:9101/empinfomgmt/evaluation/list/approvalStatus';
+  const url = new URL('http://localhost:9101/empinfomgmt/evaluation/list/approvalStatus');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
@@ -234,10 +259,13 @@ const getEmpEvalResultByApprovalCondition = async (action: typeAction) => {
 
 // 인사발령관련
 
-//사원조회
+// 본인 직급 이하 사원 조회
 const getEmpInfo = async (action: typeAction) => {
   console.log('data.payload at api', action.payload); // payload로 값을 받을수 있다.
-  const url = 'http://localhost:9101/empinfomgmt/emplist?value=' + action.payload;
+  const url = new URL('http://localhost:9101/hr/empinfomgmt/emplist?value=' + action.payload);
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+  url.searchParams.append('authLevel', localStorage.getItem('authLevel') as string);
+
   const obj = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
@@ -255,7 +283,9 @@ const getEmpInfo = async (action: typeAction) => {
 
 // 인사발령 등록시 필요한 hosu를 받아오는 코드
 const getHosu = async () => {
-  const url = 'http://localhost:9101/empinfomgmt/gethosu';
+  const url = new URL('http://localhost:9101/empinfomgmt/gethosu');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
@@ -271,9 +301,11 @@ const getHosu = async () => {
   } catch (err) {}
 };
 
-//인사발령등록
+//인사발령 등록
 const registerEmpAppointment = async (action: typeAction) => {
-  const url = 'http://localhost:9101/empinfomgmt/registAppoint';
+  const url = new URL('http://localhost:9101/empinfomgmt/registAppoint');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -293,7 +325,9 @@ const registerEmpAppointment = async (action: typeAction) => {
 
 //인사발령 조회
 const getEmpAppointment = async () => {
-  const url = 'http://localhost:9101/empinfomgmt/appointmentEmpList';
+  const url = new URL('http://localhost:9101/empinfomgmt/appointmentEmpList');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
@@ -310,6 +344,8 @@ const getEmpAppointment = async () => {
     return { errorCode: -1, errorMsg: FAILED, empList: [] };
   }
 };
+
+// 승인된 인사발령 수정
 const modifyApprovedEmpAppointment = async (action: typeAction) => {
   const url = 'http://localhost:9101/empinfomgmt/appointment/approve';
   const obj = {
@@ -329,8 +365,11 @@ const modifyApprovedEmpAppointment = async (action: typeAction) => {
   }
 };
 
+// 반려된 인사발령 수정
 const modifyRejectedEmpAppointment = async (action: typeAction) => {
-  const url = 'http://localhost:9101/empinfomgmt/appointment/reject';
+  const url = new URL('http://localhost:9101/empinfomgmt/appointment/reject');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
@@ -351,7 +390,9 @@ const modifyRejectedEmpAppointment = async (action: typeAction) => {
 
 // 에러가 나는데 왜나는지 모르겠다.
 const getAppointmentResult = async () => {
-  const url = 'http://localhost:9101/empinfomgmt/appointment/approved_rejected';
+  const url = new URL('http://localhost:9101/empinfomgmt/appointment/approved_rejected');
+  url.searchParams.append('token', localStorage.getItem('access') as string);
+
   const obj = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }

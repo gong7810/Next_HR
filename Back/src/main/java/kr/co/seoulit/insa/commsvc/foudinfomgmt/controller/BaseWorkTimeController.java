@@ -46,7 +46,7 @@ public class BaseWorkTimeController {
 
 	
 	@PostMapping("basetime")
-	public ModelMap batchTimeProcess(@RequestBody  BaseWorkTimeTO sendData ,HttpServletRequest request, HttpServletResponse response) {
+	public ModelMap batchTimeProcess(@RequestBody BaseWorkTimeTO sendData ,HttpServletRequest request, HttpServletResponse response) {
 
 		System.out.println(sendData);
 		map = new ModelMap();

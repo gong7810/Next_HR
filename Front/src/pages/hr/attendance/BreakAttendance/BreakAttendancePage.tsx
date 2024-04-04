@@ -69,12 +69,26 @@ const BreakAttendancePage = () => {
       });
   }, []);
 
+<<<<<<< HEAD:Front/src/pages/hr/attendance/BreakAttendance/BreakAttendancePage.tsx
   const empList = selectData.map((e) => {
     return (
       <MenuItem value={e.empCode} key={e.empCode}>
         {e.empName}
       </MenuItem>
     );
+=======
+  useEffect(() => {
+    setEmpList(rawList);
+  }, [rawList]);
+
+  const empLists = empList.map((item) => {
+    if (item.empCode === localStorage.getItem('empCode'))
+      return (
+        <MenuItem value={item.empCode} key={item.empCode}>
+          {item.empName}
+        </MenuItem>
+      );
+>>>>>>> develop/attd:Front/src/pages/hr/attendance/BreakAttendance/BreakAttdRegistPage.tsx
   });
   const insertEXAttd = () => {
     // 유효성 검사
@@ -107,6 +121,7 @@ const BreakAttendancePage = () => {
       return;
     }
 
+<<<<<<< HEAD:Front/src/pages/hr/attendance/BreakAttendance/BreakAttendancePage.tsx
     axios.post(
       'http://localhost:9101/attdmgmt/excused-attnd',
       {},
@@ -127,6 +142,23 @@ const BreakAttendancePage = () => {
       }
     );
     alert(' 신청이 완료 되었습니다.');
+=======
+    const restAttdTO = {
+      empCode,
+      attdCode,
+      attdType,
+      requestDate: today,
+      startDate,
+      endDate,
+      startTime: startTime.replace(/:/g, ''),
+      endTime: endTime.replace(/:/g, ''),
+      cause
+    } as restAttdTO;
+
+    dispatch(attdActions.registBreakAttdRequest(restAttdTO));
+
+    alert('신청이 완료 되었습니다.');
+>>>>>>> develop/attd:Front/src/pages/hr/attendance/BreakAttendance/BreakAttdRegistPage.tsx
     window.location.reload();
   };
 

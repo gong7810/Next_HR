@@ -3,13 +3,13 @@
 
 <mapper namespace="kr.co.seoulit.insa.empmgmtsvc.pfmevl.mapper.PfmEvlMapper">
 
-
     <update id="updatePfmEval" parameterType="map" statementType="CALLABLE">
         <![CDATA[
         {call P_UPDATE_EMP_EVAL(
              #{empCode, jdbcType=VARCHAR, javaType=java.lang.String, mode=IN}
             ,#{numberOfCertificate, jdbcType=DECIMAL, javaType=java.lang.Integer, mode=IN}
             ,#{durationOfTraining , jdbcType=DECIMAL, javaType=java.lang.Integer, mode=IN}
+            ,#{disqualification , jdbcType=VARCHAR, javaType=java.lang.String, mode=IN}
             )}
         ]]>
     </update>

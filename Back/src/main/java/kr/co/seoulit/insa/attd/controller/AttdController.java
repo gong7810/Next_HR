@@ -3,17 +3,12 @@ package kr.co.seoulit.insa.attd.controller;
 
 import kr.co.seoulit.insa.attd.service.AttdService;
 import kr.co.seoulit.insa.attd.to.RestAttdManageTO;
-import kr.co.seoulit.insa.attdsvc.attdmgmt.to.RestAttdTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 @CrossOrigin("*")
 @RestController
@@ -27,12 +22,12 @@ public class AttdController {
     // 근태외 관리 조회
     @GetMapping("/restAttd")
     public HashMap<String, Object> findRestAttdList(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate,
-                                                      @RequestParam("deptCode") String deptCode) {
+                                                    @RequestParam("deptCode") String deptCode, @RequestParam("authLevel") String authLevel) {
 
         HashMap<String, Object> map = new HashMap<>();
-        System.out.println("데이터 도착" + startDate + endDate + deptCode);
+        System.out.println("데이터 도착" + startDate + endDate + deptCode + authLevel);
         try {
-            ArrayList<RestAttdManageTO> restAttdList =  attdService.findRestAttdList(startDate, endDate, deptCode);
+            ArrayList<RestAttdManageTO> restAttdList =  attdService.findRestAttdList(startDate, endDate, deptCode, authLevel);
             map.put("restAttdList", restAttdList);
             map.put("errorCode", "조회 성공");
         } catch (Exception e) {
@@ -97,5 +92,74 @@ public class AttdController {
 
         return map;
 
+    // 연차 조회
+    @GetMapping("breakAttd")
+    public HashMap<String, Object> findBreakAttdList(@RequestParam("selectMonth") String selectMonth,
+                                                     @RequestParam("authLevel") String authLevel) {
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        try {
+            ArrayList<BreakAttdTO> breakAttdList = attdService.findBreakAttdList(selectMonth, authLevel);
+            map.put("breakAttdList", breakAttdList);
+            map.put("errorCode", "조회 성공");
+        } catch (Exception e) {
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+    // 연차 신청
+    @PostMapping("breakAttd")
+    public HashMap<String, Object> registBreakAttd(@RequestBody RestAttdManageTO breakAttdTO) {
+
+        HashMap<String,Object> map = new HashMap<>();
+
+        try {
+            attdService.registBreakAttd(breakAttdTO);
+            map.put("errorMsg", "신청 성공");
+        } catch (Exception e) {
+            map.clear();
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+    // 연차 승인/반려
+    @PutMapping("/breakAttd")
+    public HashMap<String, Object> updateBreakAttdList(@RequestBody HashMap<String, ArrayList<BreakAttdTO>> breakAttdMap){
+
+        HashMap<String, Object> map = new HashMap<>();
+        ArrayList<BreakAttdTO> breakAttdList = breakAttdMap.get("data");
+
+        try {
+            attdService.updateBreakAttdList(breakAttdList);
+            map.put("errorMsg","승인/반려 성공");
+        } catch (Exception e){
+            map.clear();
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+    // 연차 삭제
+    @DeleteMapping("/breakAttd")
+    public HashMap<String, Object> deleteBreakAttdList(@RequestBody HashMap<String, ArrayList<BreakAttdTO>> breakAttdMap) {
+
+        HashMap<String, Object> map = new HashMap<>();
+        ArrayList<BreakAttdTO> breakAttdList = breakAttdMap.get("selectedRow");
+
+        try{
+            attdService.deleteBreakAttdList(breakAttdList);
+            map.put("errorMsg", "삭제 성공");
+        } catch (Exception e) {
+            map.clear();
+            map.put("errorCode", "failed");
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
     }
 }

@@ -6,7 +6,6 @@ import { Grid, Table, Stack, TableBody, TableCell, TableContainer, TableHead, Ta
 import Layout from 'layout';
 import Page from 'components/ui-component/Page';
 import MainCard from 'ui-component/cards/MainCard';
-import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
 import { gridSpacing } from 'store/constant';
 import CSVExport from '../../../forms/tables/tbl-exports';
 import classes from '../../../../styles/hr/empmanagement/empevaluationresult.module.css';
@@ -48,12 +47,12 @@ function EmpEvaluationResult() {
   };
 
   return (
-    <Page title="사원고과결과조회">
+    <Page title="사원고과 결과조회">
       <Grid container spacing={gridSpacing}>
         <Grid item xs={12}>
           <MainCard
             content={false}
-            title="사원고과결과조회"
+            title="사원고과 결과조회"
             secondary={
               <Stack direction="row" spacing={2} alignItems="center">
                 <div>
@@ -75,7 +74,6 @@ function EmpEvaluationResult() {
                   </select>
                 </div>
                 <CSVExport data={'empList'} filename={'basic-table.csv'} header={'header'} />
-                <SecondaryAction link="https://next.material-ui.com/components/tables/" />
               </Stack>
             }
           >

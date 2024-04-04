@@ -67,16 +67,14 @@
 
     <insert id="insertEmpAppointment" parameterType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpAppointmentRegTO"
             statementType="CALLABLE">
-		<![CDATA[
-        {call P_INSERT_APPOINTMENT_EMP(
-                #{empCode, jdbcType=VARCHAR, javaType=java.lang.String, mode=IN},
-                #{hosu, jdbcType=VARCHAR, javaType=java.lang.String, mode=IN},
-                #{afterChange, jdbcType=VARCHAR, javaType=java.lang.String, mode=IN},
-                TO_DATE(#{startDate, jdbcType=DATE, javaType=java.lang.String, mode=IN}, 'YYYY-MM-DD'),
-                TO_DATE(#{endDate, jdbcType=DATE, javaType=java.lang.String, mode=IN}, 'YYYY-MM-DD'),
-                #{type, jdbcType=VARCHAR, javaType=java.lang.String, mode=IN}
+            {call P_INSERT_APPOINTMENT_EMP(
+                    #{empCode, jdbcType=VARCHAR, javaType=java.lang.String, mode=IN},
+                    #{hosu, jdbcType=VARCHAR, javaType=java.lang.String, mode=IN},
+                    #{afterChange, jdbcType=VARCHAR, javaType=java.lang.String, mode=IN},
+                    TO_DATE(#{startDate, jdbcType=DATE, javaType=java.lang.String, mode=IN}, 'YYYY-MM-DD'),
+                    TO_DATE(#{endDate, jdbcType=DATE, javaType=java.lang.String, mode=IN}, 'YYYY-MM-DD'),
+                    #{type, jdbcType=VARCHAR, javaType=java.lang.String, mode=IN}
             )}
-        ]]>
 	</insert>
 
 

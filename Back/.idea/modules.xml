@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/humanResources.iml" filepath="$PROJECT_DIR$/.idea/modules/humanResources.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/humanResources.main.iml" filepath="$PROJECT_DIR$/.idea/modules/humanResources.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/humanResources.test.iml" filepath="$PROJECT_DIR$/.idea/modules/humanResources.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/kr.co.seoulit.insa.humanResources.main.iml" filepath="$PROJECT_DIR$/.idea/modules/kr.co.seoulit.insa.humanResources.main.iml" />
     </modules>
   </component>

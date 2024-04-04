@@ -15,7 +15,8 @@ import {
   IconEyeCheck,
   IconCoins,
   IconCoinBitcoin,
-  IconBrandSamsungpass
+  IconBrandSamsungpass,
+  IconBrandAndroid
 } from '@tabler/icons';
 import { NavItemType } from 'types';
 
@@ -59,26 +60,26 @@ const hr: NavItemType = {
         }
       ]
     },
-    // {
-    //   id: 'customer',
-    //   title: <FormattedMessage id="인사시스템관리" />,
-    //   type: 'collapse',
-    //   icon: IconBasket,
-    //   children: [
-    //     {
-    //       id: 'posts',
-    //       title: <FormattedMessage id="권한관리" />,
-    //       type: 'item',
-    //       url: '/app/user/social-profile/posts'
-    //     },
-    //     {
-    //       id: 'posts',
-    //       title: <FormattedMessage id="코드조회" />,
-    //       type: 'item',
-    //       url: '/app/user/social-profile/posts'
-    //     }
-    //   ]
-    // },
+    {
+      id: 'hrSystemManagement',
+      title: <FormattedMessage id="hrSystemManagement" />,
+      type: 'collapse',
+      icon: IconBrandAndroid,
+      children: [
+        {
+          id: 'authorityManagement',
+          title: <FormattedMessage id="authorityManagement" />,
+          type: 'item',
+          url: '/hr/base/HrSystem/AuthorityInfoPage'
+        },
+        {
+          id: 'codeManagement',
+          title: <FormattedMessage id="codeManagement" />,
+          type: 'item',
+          url: '/hr/base/HrSystem/CodeInfoPage'
+        }
+      ]
+    },
     {
       id: 'hrManagement',
       title: <FormattedMessage id="hrManagement" />,
@@ -114,8 +115,8 @@ const hr: NavItemType = {
           icon: IconListCheck,
           children: [
             {
-              id: 'performanceEvaluationInfo',
-              title: <FormattedMessage id="performanceEvaluationInfo" />,
+              id: 'performanceEvaluationRegist',
+              title: <FormattedMessage id="performanceEvaluationRegist" />,
               type: 'item',
               url: '/hr/empManagement/empEvaluation',
               breadcrumbs: false
@@ -139,7 +140,7 @@ const hr: NavItemType = {
               id: 'personnelAppointmentRegist',
               title: <FormattedMessage id="personnelAppointmentRegist" />,
               type: 'item',
-              url: '/hr/empManagement/registerEmpAppointment',
+              url: '/hr/empManagement/empAppointmentRegist',
               breadcrumbs: false
             },
             {
@@ -169,7 +170,7 @@ const hr: NavItemType = {
               id: 'dayAttendance',
               title: <FormattedMessage id="dayAttendance" />,
               type: 'item',
-              url: '/hr/attendance/DailyAttdRegistration'
+              url: '/hr/attendance/DailyAttdRegistration/DailyAttdRegistPage'
             },
             {
               id: 'restAttendanceRegist',
@@ -207,7 +208,7 @@ const hr: NavItemType = {
               id: 'dayAttendanceManagement',
               title: <FormattedMessage id="dayAttendanceManagement" />,
               type: 'item',
-              url: '/hr/attendance/DailyAttdManage'
+              url: '/hr/attendance/DailyAttdManage/DailyAttdManagePage'
             },
             {
               id: 'monthAttendanceManagement',

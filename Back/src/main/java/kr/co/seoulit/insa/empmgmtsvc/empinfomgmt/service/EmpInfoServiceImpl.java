@@ -46,24 +46,44 @@ public class EmpInfoServiceImpl implements EmpInfoService {
     }
 
 
-    // 사원 조회할때 사용하는 코드
+    // 본인 직급 이하의 사원 조회할때 사용하는 코드
     @Override
-    public List<EmpDetailEntity> findEmpList(String deptName) {
+    public List<EmpDetailEntity> findEmpList(String deptCode, String authLevel) {
 
         List<EmpDetailEntity> empList = null;
 
-        System.out.println("서비스단" + deptName);
+        System.out.println("부서코드" + deptCode);
 
-        if (deptName.equals("000000")) {
-            empList = empDetailRepository.findAll();
-        } else if (deptName.substring(deptName.length() - 1, deptName.length()).equals("팀")) {
-            empList = empDetailRepository.findAllByDeptCodeOrderByEmpCodeAsc(deptName);
+        if (deptCode.equals("000000")) {
+            empList = empDetailRepository.findSubAll(authLevel);
+        } else if (deptCode.substring(deptCode.length() - 1, deptCode.length()).equals("팀")) {
+            empList = empDetailRepository.findSubAllByDeptCodeOrderByEmpCodeAsc(deptCode, authLevel);
 
         } else {
-            empList = empDetailRepository.findAllByDeptCodeOrderByEmpCodeAsc(deptName);
+            empList = empDetailRepository.findSubAllByDeptCodeOrderByEmpCodeAsc(deptCode, authLevel);
             System.out.println("되나요" + empList);
         }
         return empList;
+    }
+
+    // 전체 사원 조회
+    @Override
+    public List<EmpDetailEntity> findEmpAllList(String deptCode) {
+
+        List<EmpDetailEntity> empAllList = null;
+
+        System.out.println("부서코드" + deptCode);
+
+        if (deptCode.equals("000000")) {
+            empAllList = empDetailRepository.findAll();
+        } else if (deptCode.substring(deptCode.length() - 1, deptCode.length()).equals("팀")) {
+            empAllList = empDetailRepository.findAllByDeptCodeOrderByEmpCodeAsc(deptCode);
+
+        } else {
+            empAllList = empDetailRepository.findAllByDeptCodeOrderByEmpCodeAsc(deptCode);
+            System.out.println("되나요" + empAllList);
+        }
+        return empAllList;
 
     }
 
@@ -72,33 +92,28 @@ public class EmpInfoServiceImpl implements EmpInfoService {
 
         ArrayList<EmpTO> empList = null;
 
-
         empList = empMapper.selectEmpList();
 
         return empList;
-
     }
-
 
     @Override
     public void registEmployee(EmpTO emp) {
 
         // 마지막 사원의 empCode를 가져와서 새로운 사원의 empCode를 생성한다.
         String lastEmpCode = empMapper.selectLastEmpCode();
-        String prefix = lastEmpCode.substring(0, 1);
-        System.out.println("<<<<<<<<<<prefix = " + prefix);
-        Integer suffix = Integer.parseInt(lastEmpCode.substring(1)) + 1;
-        System.out.println("<<<<<<<<<<< suffix = " + suffix);
-        String empCode = prefix + suffix;
+        String lastTwoDigits = lastEmpCode.substring(lastEmpCode.length() - 2);
+        int number = Integer.parseInt(lastTwoDigits) + 1;
+
+        String empCode = "EMP-" + String.format("%02d", number);
         System.out.println("<<<< emp_code = " + empCode);
         //새로 생성된 empCode를 넘겨받은 객체의 empCode로 할당
         emp.setEmpCode(empCode);
 
-        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, String> map = new HashMap<>();
         map.put("empCode", emp.getEmpCode());
         map.put("empName", emp.getEmpName());
-        map.put("deptCode", emp.getDeptCode());
-        map.put("birthdate", emp.getBirthdate());
+        map.put("birthDate", emp.getBirthDate());
         map.put("gender", emp.getGender());
         map.put("mobileNumber", emp.getMobileNumber());
         map.put("address", emp.getAddress());
@@ -107,10 +122,11 @@ public class EmpInfoServiceImpl implements EmpInfoService {
         map.put("email", emp.getEmail());
         map.put("lastSchool", emp.getLastSchool());
         map.put("imgExtend", emp.getImgExtend());
+        map.put("deptCode", emp.getDeptCode());
         map.put("position", emp.getPosition());
-        map.put("hobong", emp.getHobong());
-        map.put("occupation", emp.getOccupation());
-        map.put("employment", emp.getEmployment());
+//        map.put("hobong", emp.getHobong());
+//        map.put("occupation", emp.getOccupation());
+//        map.put("employment", emp.getEmployment());
         System.out.println("<<<<<<<<<<<<<< map = " + map);
         empMapper.registEmployee(map);
 
@@ -186,10 +202,8 @@ public class EmpInfoServiceImpl implements EmpInfoService {
 
     @Override
     public void removeEmployee(List<EmpDetailEntity> empDetailEntities) {
-        Map<String, String> map = new HashMap<>();
         for (EmpDetailEntity emp : empDetailEntities) {
-            map.put("empCode", emp.getEmpCode());
-            empMapper.deleteEmployee(map);
+            empMapper.deleteEmployee(emp.getEmpCode());
             DetailCodeTO detailCodeto = new DetailCodeTO();
             detailCodeto.setDetailCodeNumber(emp.getEmpCode());
             detailCodeto.setDetailCodeName(emp.getEmpName());
@@ -224,10 +238,9 @@ public class EmpInfoServiceImpl implements EmpInfoService {
     }
 
     @Override
-    public List<EmpEvalTO> findValidEmpEvalList() {
+    public List<EmpEvalTO> findValidEmpEvalList(String authLevel) {
 
-        return empEvalMapper.selectValidEmpEvalList();
-
+        return empEvalMapper.selectValidEmpEvalList(authLevel);
     }
 
 
@@ -333,7 +346,7 @@ public class EmpInfoServiceImpl implements EmpInfoService {
     @Override
     public void registAppoint(EmpAppointmentRegTO empAppointmentRegTO) {
 
-
+        empAppointmentRegTO.setEndDate(empAppointmentRegTO.getStartDate());
         empAppointmentMapper.insertEmpAppointment(empAppointmentRegTO);
     }
 

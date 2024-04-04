@@ -31,7 +31,6 @@ public class EmpLoginController {
 				if(empto!=null)
 				{
 					request.getSession().setAttribute("id", empName);
-					request.getSession().setAttribute("dept", empto.getDeptName());
 					request.getSession().setAttribute("position", empto.getPosition());
 					request.getSession().setAttribute("code", empto.getEmpCode());
 					request.getSession().setAttribute("authority", empto.getAuthority());

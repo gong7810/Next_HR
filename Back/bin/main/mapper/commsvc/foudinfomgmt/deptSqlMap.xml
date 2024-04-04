@@ -21,13 +21,14 @@
 	
 	
 	<update id="updateDept" parameterType="kr.co.seoulit.insa.commsvc.foudinfomgmt.to.DeptTO">
-	  UPDATE DEPT SET
-	  DEPT_NAME = #{deptName}
-	  , DEPT_TEL = #{deptTel}
-	  WHERE DEPT_CODE = #{deptCode}
+		<![CDATA[
+			UPDATE DEPT SET
+				DEPT_NAME = #{deptName}
+		  	  , DEPT_TEL = #{deptTel}
+			WHERE DEPT_CODE = #{deptCode}
+	  	]]>
 	</update>
-	
-	
+
 	<insert id="registDept" parameterType="kr.co.seoulit.insa.commsvc.foudinfomgmt.to.DeptTO">
 		INSERT INTO DEPT VALUES(
 		#{deptCode}
@@ -37,7 +38,7 @@
 	</insert>
 	
 	
-	<delete id="deleteDept" parameterType="kr.co.seoulit.insa.commsvc.foudinfomgmt.to.DeptTO">
+	<delete id="deleteDept" parameterType="String">
 		DELETE DEPT WHERE
 		DEPT_CODE = #{deptCode}
 	</delete>

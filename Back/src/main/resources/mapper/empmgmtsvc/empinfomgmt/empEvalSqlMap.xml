@@ -50,36 +50,38 @@
 
     <!--  EMP_EVAL 테이블 에서 APPROVAL_STATUS 가 반려 이거나 EMP 테이블에 정보는 있지만 아직 사원 고과가 진행되진 않은 사원들의 정보를 출력하는 쿼리문   -->
     <!--    사원 고과 등록 페이지에서 사용하는 쿼리문 입니다. -->
-    <select id="selectValidEmpEvalList" resultType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpEvalTO">
-
-        select e.EMP_NAME   as empName
-             , e.EMP_CODE   as empCode
-             , e.DEPT_CODE  as deptCode
-             , ev.APPLY_DAY as applyDay
-             , p.POSITION as position
-     ,ev.APPROVAL_STATUS as approvalStatus
-     ,d.DEPT_NAME    as deptName
-     ,ev.GRADE    as grade
-        from EMP e, EMP_EVAL ev, DEPT d, POSITION p
-        where e.EMP_CODE = ev.EMP_CODE(+)
-          and e.POSITION_CODE = p.POSITION_CODE
-          and e.DEPT_CODE = d.DEPT_CODE
-          and ev.APPROVAL_STATUS ='반려'
-        union
-        select e.EMP_NAME   as empName
-             , e.EMP_CODE   as empCode
-             , e.DEPT_CODE  as deptCode
-             , ev.APPLY_DAY as applyDay
-             , p.POSITION as position
-     ,ev.APPROVAL_STATUS as approvalStatus
-     ,d.DEPT_NAME    as deptName
-     ,ev.GRADE    as grade
-        from EMP e, EMP_EVAL ev, DEPT d, POSITION p
-        where e.EMP_CODE = ev.EMP_CODE(+)
-          and e.POSITION_CODE = p.POSITION_CODE
-          and e.DEPT_CODE = d.DEPT_CODE
-          and ev.APPROVAL_STATUS is null
-
+    <select id="selectValidEmpEvalList" parameterType="String" resultType="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpEvalTO">
+        <![CDATA[
+            select e.EMP_NAME   as empName
+                 , e.EMP_CODE   as empCode
+                 , e.DEPT_CODE  as deptCode
+                 , ev.APPLY_DAY as applyDay
+                 , p.POSITION as position
+                 ,ev.APPROVAL_STATUS as approvalStatus
+                 ,d.DEPT_NAME    as deptName
+                 ,ev.GRADE    as grade
+            from EMP e, EMP_EVAL ev, DEPT d, POSITION p
+            where e.EMP_CODE = ev.EMP_CODE(+)
+              and SUBSTR(e.AUTHORITY, -1) < SUBSTR(#{authLevel}, -1)
+              and e.POSITION_CODE = p.POSITION_CODE
+              and e.DEPT_CODE = d.DEPT_CODE
+              and ev.APPROVAL_STATUS ='반려'
+            union
+            select e.EMP_NAME   as empName
+                 , e.EMP_CODE   as empCode
+                 , e.DEPT_CODE  as deptCode
+                 , ev.APPLY_DAY as applyDay
+                 , p.POSITION as position
+                 ,ev.APPROVAL_STATUS as approvalStatus
+                 ,d.DEPT_NAME    as deptName
+                 ,ev.GRADE    as grade
+            from EMP e, EMP_EVAL ev, DEPT d, POSITION p
+            where e.EMP_CODE = ev.EMP_CODE(+)
+              and SUBSTR(e.AUTHORITY, -1) < SUBSTR(#{authLevel}, -1)
+              and e.POSITION_CODE = p.POSITION_CODE
+              and e.DEPT_CODE = d.DEPT_CODE
+              and ev.APPROVAL_STATUS is null
+        ]]>
     </select>
 
 

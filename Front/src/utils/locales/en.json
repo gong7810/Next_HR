@@ -6,13 +6,17 @@
   "positionManagement": "직급정보 관리",
   "baseWorkTimeManagement": "기준근무시간 관리",
 
+  "hrSystemManagement": "인사시스템 관리",
+  "authorityManagement": "권한 관리",
+  "codeManagement": "코드 관리",
+
   "hrManagement": "인사 관리",
   "employeeManagement": "사원정보 관리",
   "employeeRegist": "사원 등록",
   "employeeInfo": "사원 조회",
 
   "performanceEvaluationManagement": "인사고과 관리",
-  "performanceEvaluationInfo": "인사고과 조회",
+  "performanceEvaluationRegist": "인사고과 등록",
   "performanceEvaluationApproval": "인사고과 승인",
 
   "personnelAppointmentManagement": "인사발령 관리",

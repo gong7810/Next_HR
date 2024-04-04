@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import javax.persistence.Transient;
+
 @Data
 @ToString
 @EqualsAndHashCode(callSuper = false)
@@ -14,7 +16,8 @@ public class EmpTO extends BaseTO {
 
     private String empCode;
     private String empName;
-    private String birthdate;
+    private String deptCode;
+    private String birthDate;
     private String gender;
     private String mobileNumber;
     private String address;
@@ -22,25 +25,43 @@ public class EmpTO extends BaseTO {
     private String postNumber;
     private String email;
     private String lastSchool;
-    private String imgExtend;
-    private String deptName;
     private String position;
+
+    @Transient
+    private String imgExtend;
+    @Transient
     private String hobong;
+    @Transient
     private String occupation;
+    @Transient
     private String employment;
-    private String deptCode;
+    @Transient
     private String authority;
+    @Transient
     private String hiredate;
+    @Transient
     private String achievement;
+    @Transient
     private String ability;
+    @Transient
     private String attitude;
+    @Transient
     private String status;
 
-    private ArrayList<FamilyInfoTO> familyInfoList;
-    private ArrayList<LicenseInfoTO> licenseInfoList;
-    private ArrayList<WorkInfoTO> workInfo;
+    @Transient
+    ArrayList<FamilyInfoTO> familyInfoList;
+    @Transient
+    ArrayList<LicenseInfoTO> licenseInfoList;
+    @Transient
+    ArrayList<WorkInfoTO> workInfo;
 
 
+    public String getImgExtend() {
+        return "jpg";
+    }
 
+    public void setWorkInfo(ArrayList<WorkInfoTO> workInfo) {
+        this.workInfo = workInfo;
+    }
 
 }

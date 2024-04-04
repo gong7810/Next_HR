@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public interface AttdService{
 
     // 근태외 조회
-    public ArrayList<RestAttdManageTO> findRestAttdList(String startDate, String endDate, String deptCode);
+    public ArrayList<RestAttdManageTO> findRestAttdList(String startDate, String endDate, String deptCode, String authLevel);
 
     // 근태외 등록
     public void registRestAttd(RestAttdManageTO restAttdManageTO);
@@ -18,4 +18,16 @@ public interface AttdService{
 
     // 근태외 삭제
     public void deleteRestAttdList(ArrayList<RestAttdManageTO> restAttdList);
+
+    // 연차 내역 조회
+    public ArrayList<BreakAttdTO> findBreakAttdList(String useDate, String authLevel);
+
+    // 연차 신청
+    public void registBreakAttd(RestAttdManageTO breakAttdTO);
+
+    // 연차 승인/반려
+    public void updateBreakAttdList(ArrayList<BreakAttdTO> breakAttdList);
+
+    // 연차 삭제
+    public void deleteBreakAttdList(ArrayList<BreakAttdTO> breakAttdList);
 }

@@ -60,13 +60,45 @@ public class AttdMgmtServiceImpl implements AttdMgmtService {
 		for (DayAttdTO dayAttd : dayAttdList) {
 			dayAttdMapper.deleteDayAttd(dayAttd);
 		}
-
 	}
 
 	@Override
 	public void insertDayAttd(DayAttdTO dayAttd) {
 		dayAttdMapper.insertDayAttd(dayAttd);
 	}
+
+
+	@Override
+	public ArrayList<DailyAttdSearchResTO> searchDayAttd(DailyAttdSearchReqTO dailyAttdSearchReqTO) {
+		System.out.println("서비스단으로 넘어온 searchDayAttdMap: " + dailyAttdSearchReqTO);
+		System.out.println("type : " + dailyAttdSearchReqTO.getType());
+		ArrayList<DailyAttdSearchResTO> list = new ArrayList<>();
+		if(dailyAttdSearchReqTO.getType().equals("less")) {
+			list = dayAttndMapper.selectAllDayAttd(dailyAttdSearchReqTO);
+		} else if (dailyAttdSearchReqTO.getType().equals("under")) {
+			list = dayAttndMapper.selectDayAttd(dailyAttdSearchReqTO);
+		}
+		System.out.println("리스트: " + list);
+		for(DailyAttdSearchResTO bean: list){
+			System.out.println("받아온 사원명: " + bean.getEmpName());
+		}
+		return list;
+	}
+
+	@Override
+	public void modifyDailyAttd(DailyAttdModifyTO dailyAttdModifyTO){
+		System.out.println("서비스단으로 넘어온 DailyAttdModifyTO: " + dailyAttdModifyTO);
+		dayAttndMapper.updateDayAttd(dailyAttdModifyTO);
+	}
+	@Override
+	public void finalizeDailyAttd(List<DailyAttdSearchResTO> selectedAttdList){
+		System.out.println("서비스단으로 넘어온 DailyAttdModifyTO: " + selectedAttdList);
+		for(DailyAttdSearchResTO selectedAttd: selectedAttdList){
+			dayAttndMapper.updateFinalizeStatus(selectedAttd);
+		}
+
+	}
+
 
 	@Override
 	public ArrayList<RestAttdTO> findRestAttdList(String empCode, String startDate, String endDate, String code) {
@@ -88,7 +120,6 @@ public class AttdMgmtServiceImpl implements AttdMgmtService {
 
 	@Override
 	public void registRestAttd(ModelMap map) {
-
 		restAttdMapper.insertRestAttd(map);
 
 	}

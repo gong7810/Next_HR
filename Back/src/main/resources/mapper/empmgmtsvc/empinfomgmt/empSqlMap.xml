@@ -4,7 +4,7 @@
 <mapper namespace="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.mapper.EmpMapper">
 
 
-    <resultMap type="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpTO" id="empResult">
+    <resultMap id="empResult" type="kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpTO">
         <result property="empCode" column="EMP_CODE"/>
         <result property="empName" column="EMP_NAME"/>
         <result property="deptCode" column="DEPT_CODE"/>
@@ -104,16 +104,43 @@
         <parameter property="employment" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
     </parameterMap>
 
-
-    <select id="registEmployee" parameterMap="empInsertParameter" statementType="CALLABLE">
+    <select id="registEmployee" parameterType="map">
           <![CDATA[
-        {call P_INSERT_EMP(?, ?, TO_DATE(?, 'RRRR/MM/DD'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}
-        ]]>
-       </select>
-
-
-
-
+            INSERT INTO EMP
+            (
+                  EMP_CODE
+                , EMP_NAME
+                , BIRTHDATE
+                , GENDER
+                , MOBILE_NUMBER
+                , ADDRESS
+                , DETAIL_ADDRESS
+                , POST_NUMBER
+                , EMAIL
+                , LAST_SCHOOL
+                , IMG_EXTEND
+                , DEPT_CODE
+                , POSITION_CODE
+                , AUTHORITY
+            ) VALUES
+                (
+                      #{empCode}
+                    , #{empName}
+                    , TO_DATE(#{birthDate}, 'YYYY-MM-DD')
+                    , #{gender}
+                    , #{mobileNumber}
+                    , #{address}
+                    , #{detailAddress}
+                    , #{postNumber}
+                    , #{email, jdbcType=NULL}
+                    , #{lastSchool, jdbcType=NULL}
+                    , #{imgExtend, jdbcType=NULL}
+                    , #{deptCode, jdbcType=NULL}
+                    , #{position, jdbcType=NULL}
+                    , #{authority, jdbcType=NULL}
+                )
+          ]]>
+    </select>
 
     <select id="selectEmpList" resultMap="empResult">
         SELECT E.EMP_CODE
@@ -289,9 +316,10 @@
         <parameter property="errorMsg" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT"/>
     </parameterMap>
 
-    <delete id="deleteEmployee" parameterMap="empDeleteParameter" statementType="CALLABLE">
+    <delete id="deleteEmployee" parameterType="String">
       <![CDATA[
-        {call P_DELETE_EMP(?, ?, ?)}
+            DELETE FROM EMP
+            WHERE EMP_CODE = #{empCode}
         ]]>
    </delete>
 

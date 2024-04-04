@@ -27,7 +27,6 @@ public class PositionListController {
 	public ModelMap findPositionList(HttpServletRequest request, HttpServletResponse response) {
 
 		map = new ModelMap();
-		response.setContentType("application/json; charset=UTF-8");
 			try {
 				ArrayList<PositionTO> positionList = foudInfoMgmtService.findPositionList();
 				System.out.println(positionList);

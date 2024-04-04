@@ -8,6 +8,7 @@
 		<result property="empCode" column="EMP_CODE" />
 		<result property="applyYearMonth" column="APPLY_YEAR_MONTH" />
 		<result property="afternoonOff" column="AFTERNOON_OFF" />
+		<result property="totalUsing" column="TOTAL_USING" />
 		<result property="monthlyLeave" column="MONTHLY_LEAVE" />
 		<result property="remainingHoliday" column="REMAINING_HOLIDAY" />
 		<result property="finalizeStatus" column="FINALIZE_STATUS" />
@@ -30,7 +31,7 @@
 	<update id="updateAnnualVacationMgtList"
 	 parameterType="kr.co.seoulit.insa.attdsvc.attdappvl.to.AnnualLeaveMgtTO">
 		UPDATE ANNUAL_VACATION_MANAGE SET 
-		FINALIZE_STATUS = #finalizeStatus#, REMAINING_HOLIDAY = #remainingHoliday#
+		FINALIZE_STATUS = #{finalizeStatus}, REMAINING_HOLIDAY = #{remainingHoliday}
 		WHERE EMP_CODE = #{empCode} AND APPLY_YEAR_MONTH = #{applyYearMonth}
 	</update>
 	

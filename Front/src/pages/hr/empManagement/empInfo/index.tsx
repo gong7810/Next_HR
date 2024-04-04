@@ -1,13 +1,12 @@
 import { ReactElement, useState, useEffect, useRef } from 'react';
 
 // material-ui
-import { Grid, Table, Stack, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox } from '@mui/material';
+import { Grid, Table, Stack, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Button } from '@mui/material';
 
 // project imports
 import Layout from 'layout';
 import Page from 'components/ui-component/Page';
 import MainCard from 'ui-component/cards/MainCard';
-import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
 import { gridSpacing } from 'store/constant';
 import CSVExport from '../../../forms/tables/tbl-exports';
 import classes from '../../../../styles/hr/empmanagement/empInfo.module.css';
@@ -15,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { empInfoAction } from '../slices/empInfoReducer';
 import EmpModifyModal from './EmpModifyModal';
 import { EmpInfoEntity } from '../types/empManagementTypes';
-
+import Swal from 'sweetalert2';
 
 const selectData: { deptCode: string; deptName: string }[] = [
   { deptCode: '000000', deptName: '전체부서' },
@@ -37,6 +36,17 @@ function EmpInfo() {
   const [selectedEmp, setSelectedEmp] = useState<EmpInfoEntity[]>([]);
   const selectRef = useRef<HTMLSelectElement>(null);
   const [isValid, setIsValid] = useState<boolean>(false);
+
+  const [authCheck, setAuthCheck] = useState(false); // 수정 삭제 권한체크
+
+  useEffect(() => {
+    const level = localStorage.getItem('authLevel') as string;
+    if (level && parseInt(level.slice(-1)) >= 2) {
+      setAuthCheck(true);
+    } else {
+      setAuthCheck(false);
+    }
+  }, []);
 
   useEffect(() => {
     dispatch(empInfoAction.EMP_FETCH_REQUESTED(''));
@@ -65,28 +75,34 @@ function EmpInfo() {
   };
 
   const onClickHandler = (identifier: string) => {
-    if (selectedEmp.length === 0) {
-      alert('사원을 선택해 주세요');
-      return;
-    }
-    if (identifier === 'mod') {
-      if (selectedEmp.length > 1) {
-        alert('사원 수정은 한번에 한명씩 가능합니다.');
+    if (authCheck) {
+      if (selectedEmp.length === 0) {
+        alert('사원을 선택해 주세요');
         return;
       }
-      setIsValid(true);
-      console.log(identifier);
-    } else if (identifier === 'del') {
-      const bool = confirm('삭제 하시겠습니까?');
-      if (bool) {
+      if (identifier === 'mod') {
+        if (selectedEmp.length > 1) {
+          alert('사원 수정은 한번에 한명씩 가능합니다.');
+          return;
+        }
+        setIsValid(true);
         console.log(identifier);
-        dispatch(empInfoAction.EMP_DELETE_REQUESTED(selectedEmp));
-  
-        return;
-      } else {
+      } else if (identifier === 'del') {
+        const bool = confirm('삭제 하시겠습니까?');
+        if (bool) {
+          console.log(identifier);
+          dispatch(empInfoAction.EMP_DELETE_REQUESTED(selectedEmp));
 
-        return;
+          return;
+        } else {
+          return;
+        }
       }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: '수정/삭제 권한이 없습니다.'
+      });
     }
 
     console.log('selectedEmp is : ', selectedEmp);
@@ -106,12 +122,12 @@ function EmpInfo() {
             secondary={
               <Stack direction="row" spacing={2} alignItems="center">
                 {isValid && <EmpModifyModal toggle={onToggleHandler} emp={selectedEmp} />}
-                <button className={classes.button} onClick={() => onClickHandler('mod')}>
+                <Button variant="contained" onClick={() => onClickHandler('mod')}>
                   수정
-                </button>
-                <button className={classes.button} onClick={() => onClickHandler('del')}>
+                </Button>
+                <Button variant="contained" onClick={() => onClickHandler('del')}>
                   삭제
-                </button>
+                </Button>
                 <div>
                   <select
                     ref={selectRef}
@@ -128,7 +144,6 @@ function EmpInfo() {
                   </select>
                 </div>
                 <CSVExport data={empList} filename={'basic-table.csv'} header={'header'} />
-                <SecondaryAction link="https://next.material-ui.com/components/tables/" />
               </Stack>
             }
           >

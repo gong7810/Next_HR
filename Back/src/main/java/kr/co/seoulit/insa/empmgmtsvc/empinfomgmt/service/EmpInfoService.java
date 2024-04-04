@@ -17,7 +17,11 @@ public interface EmpInfoService {
 
     public EmpTO findAllEmpInfo(String empCode);
 
-    public List<EmpDetailEntity> findEmpList(String deptName); //findEmployeeListByDept
+    // 본인직급 이하 사원 조회
+    public List<EmpDetailEntity> findEmpList(String deptCode, String authLevel); //findEmployeeListByDept
+
+    // 전체 사원 조회
+    public List<EmpDetailEntity> findEmpAllList(String deptCode); //findEmployeeListByDept
 
 
     public void modifyEmployee(EmpTO empTO);
@@ -33,7 +37,7 @@ public interface EmpInfoService {
 
     public void registEmpEval(EmpEvalTO empevalto);
 
-    public List<EmpEvalTO> findValidEmpEvalList();
+    public List<EmpEvalTO> findValidEmpEvalList(String authLevel);
 
     public List<EmpEvalTO> findEmpEvalListByApprovalStatus();
 

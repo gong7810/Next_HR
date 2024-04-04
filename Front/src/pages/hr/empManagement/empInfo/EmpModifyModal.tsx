@@ -105,7 +105,6 @@ export default function EmpModifyModal(props: { toggle: () => void; emp: ModifyE
       status: 'update'
     };
     console.log('data is :', data);
-    console.log('data is : ' + data.email);
     // 여기서 reducer로 dispatch
     dispatch(empInfoAction.EMP_UPDATE_REQUESTED(data));
 

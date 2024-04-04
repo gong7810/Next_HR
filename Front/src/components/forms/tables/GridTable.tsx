@@ -1,9 +1,7 @@
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box } from '@mui/material';
-import { DataGrid, GridColDef, GridRowsProp, GridValueGetterParams } from '@mui/x-data-grid';
-import { BreakMangeTO } from 'pages/hr/attendance/types/types';
-import ColumnProps from 'pages/hr/salary/types/types';
+import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 
 // table columns
@@ -24,7 +22,7 @@ export default function TableDataGrid({ Selected, data }: { Selected: any, data:
   useEffect(() => {
     if (data) {
       // 데이터가 들어올 때 applyYearMonth 값을 수정
-      const modifiedData = data.map((item) => {
+      const modifiedData = data.map((item: { applyYearMonth: string; }) => {
         if (item.applyYearMonth) {
           // 원래 데이터가 "20231" 형식이라면 "2023년 1월"로 변경
           const year = item.applyYearMonth.substring(0, 4);

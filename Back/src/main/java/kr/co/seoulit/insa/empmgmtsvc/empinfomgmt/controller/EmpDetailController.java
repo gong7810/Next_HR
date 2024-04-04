@@ -38,8 +38,6 @@ public class EmpDetailController {
         Map<String,Object> map = new HashMap<>();
 
         try {
-
-
             empInfoService.modifyEmployee(empTO);
             map.put("errorMsg", "success");
             map.put("errorCode", 0);
@@ -52,7 +50,6 @@ public class EmpDetailController {
         }
         return map;
     }
-
 
     // 삭제할 사원의 정보를 객체배열로 받아서 삭제한다.
     @DeleteMapping("/empdetail/empcode")

@@ -18,7 +18,7 @@ import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpTO;
 
 @RequestMapping("/hr/empinfomgmt/*")
 @RestController
-@CrossOrigin
+@CrossOrigin("*")
 public class EmpListController {
 
 	@Autowired
@@ -26,10 +26,10 @@ public class EmpListController {
 
 	ModelMap map = null;
 
-
-	// 사원 정보를 부서코드에 따라서  조회
+	// 사원 정보를 부서코드에 따라서 본인직급 미만만 조회
 	@GetMapping("/emplist")
-	public Map<String,Object> emplist(@RequestParam(value="value",required = true,defaultValue = "000000") String val, HttpServletResponse response) {
+	public Map<String,Object> emplist(@RequestParam(value="value",required = true,defaultValue = "000000") String val,
+									  @RequestParam("authLevel") String authLevel) {
 
 	Map<String,Object> map = new HashMap<>();
 
@@ -39,7 +39,32 @@ public class EmpListController {
 			if (val != null) {
 				value = val;
 			}
-			List<EmpDetailEntity> list = empInfoService.findEmpList(value);
+			List<EmpDetailEntity> list = empInfoService.findEmpList(value, authLevel);
+			map.put("errorCode",0);
+			map.put("errorMsg","succeed");
+			map.put("list", list);
+			System.out.println("<<<<<<<<<<<<<<<<<list:"+list);
+		} catch (Exception e) {
+			map.put("errorCode", -1);
+			map.put("errorMsg", "failed");
+			map.put("list",null);
+		}
+		return map;
+	}
+
+	// 사원 정보를 부서코드에 따라서 전체 조회
+	@GetMapping("/empAllList")
+	public Map<String,Object> empAllList(@RequestParam(value="value",required = true,defaultValue = "000000") String val) {
+
+		Map<String,Object> map = new HashMap<>();
+
+		try {
+			System.out.println("부서번호=" + val);
+			String value = "000000";
+			if (val != null) {
+				value = val;
+			}
+			List<EmpDetailEntity> list = empInfoService.findEmpAllList(value);
 			map.put("errorCode",0);
 			map.put("errorMsg","succeed");
 			map.put("list", list);

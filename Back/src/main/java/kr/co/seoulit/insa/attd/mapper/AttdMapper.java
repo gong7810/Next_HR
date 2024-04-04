@@ -23,4 +23,10 @@ public interface AttdMapper {
 
     // 근태외 삭제
     public void deleteRestAttd(RestAttdManageTO restAttdManageTO);
+
+    // 연차 내역 조회
+    public ArrayList<BreakAttdTO> findBreakAttdList(HashMap<String, String> map);
+
+    // 연차 승인/반려
+    public void updateBreakAttd(BreakAttdTO breakAttdTO);
 }

@@ -149,7 +149,7 @@ section .section-title {
 			field : "detailCodeName"
 		}, {
 			headerName : "사용가능여부",
-			field : "detailCodeNameusing"
+			field : "DetailCodeNameusing"
 		}, {
 			headerName : "상태",
 			field : "status"

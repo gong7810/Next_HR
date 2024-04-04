@@ -1,8 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { breakAttdTO, restAttdTO } from 'pages/hr/attendance/types/types';
 
 const initialState = {
+<<<<<<< HEAD
   empList: [],
   restAttdList: []
+=======
+  empList: [], // 사원 목록
+  restAttdList: [] as restAttdTO[], // 근태외 내역
+  breakAttdList: [] as breakAttdTO[] // 연차 내역
+>>>>>>> develop/attd
 };
 
 const attdSlice = createSlice({

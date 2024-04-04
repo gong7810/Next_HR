@@ -16,12 +16,13 @@ public class AttdServiceImpl implements AttdService {
 
     // 근태외 조회
     @Override
-    public ArrayList<RestAttdManageTO> findRestAttdList(String startDate, String endDate, String deptCode) {
+    public ArrayList<RestAttdManageTO> findRestAttdList(String startDate, String endDate, String deptCode, String authLevel) {
 
         HashMap<String, String> params = new HashMap<>();
         params.put("startDate", startDate);
         params.put("endDate", endDate);
         params.put("deptCode", deptCode);
+        params.put("authLevel", authLevel);
 
         ArrayList<RestAttdManageTO> restAttdList = attdMapper.findRestAttdList(params);
 
@@ -68,6 +69,61 @@ public class AttdServiceImpl implements AttdService {
 
         for (RestAttdManageTO restAttdManageTO : restAttdList) {
             attdMapper.deleteRestAttd(restAttdManageTO);
+        }
+    }
+
+    // 연차 내역 조회
+    @Override
+    public ArrayList<BreakAttdTO> findBreakAttdList(String useDate, String authLevel) {
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("useDate", useDate);
+        map.put("authLevel", authLevel);
+
+        ArrayList<BreakAttdTO> breakAttdList = attdMapper.findBreakAttdList(map);
+
+        return breakAttdList;
+    }
+
+    // 연차 신청
+    @Override
+    public void registBreakAttd(RestAttdManageTO breakAttdTO) {
+
+        StringBuffer restAttdNo = new StringBuffer();
+        String restAttdNoDate = breakAttdTO.getRequestDate().replace("-", "");
+        restAttdNo.append(restAttdNoDate);
+        restAttdNo.append("REST"); // 20240320REST
+
+        String lastNo = attdMapper.findRestAttdMaxNo(restAttdNoDate);
+        if (lastNo == null){
+            lastNo = "00000";
+        }
+
+        int length = lastNo.length();
+
+        String code = "0000" + (Integer.parseInt(lastNo.substring(length - 5)) + 1) + "";
+        restAttdNo.append(code.substring(code.length() - 5)); // 20240320REST00001
+
+        breakAttdTO.setRestAttdNo(restAttdNo.toString());
+
+        attdMapper.registRestAttd(breakAttdTO);
+    }
+
+    // 연차 승인/반려
+    @Override
+    public void updateBreakAttdList(ArrayList<BreakAttdTO> breakAttdList) {
+
+        for (BreakAttdTO breakAttdTO : breakAttdList) {
+            attdMapper.updateBreakAttd(breakAttdTO);
+        }
+    }
+
+    // 연차 삭제
+    @Override
+    public void deleteBreakAttdList(ArrayList<BreakAttdTO> breakAttdList) {
+
+        for (BreakAttdTO breakAttdTO : breakAttdList) {
+            attdRepository.deleteById(breakAttdTO.getRestAttdNo());
         }
     }
 }

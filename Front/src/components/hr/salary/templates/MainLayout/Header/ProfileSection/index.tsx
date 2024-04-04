@@ -37,12 +37,15 @@ import useAuth from 'hooks/useAuth';
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
 import useConfig from 'hooks/useConfig';
+import { useDispatch } from 'react-redux';
+import { commonActions } from 'store/redux-saga/reducer/common/commonReducer';
 
 const User1 = '/assets/images/users/user-round.svg';
 
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const { borderRadius } = useConfig();
   // const navigate = useNavigate();
@@ -58,6 +61,7 @@ const ProfileSection = () => {
    * */
   const anchorRef = useRef<any>(null);
   const handleLogout = async () => {
+    dispatch(commonActions.removeTokenRequest('ASDF'));
     try {
       await logout();
     } catch (err) {
@@ -166,7 +170,7 @@ const ProfileSection = () => {
                         <Stack direction="row" spacing={0.5} alignItems="center">
                           <Typography variant="h4">Good Morning,</Typography>
                           <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                            {user?.name}
+                            {`${localStorage.getItem('empName')} ${localStorage.getItem('position')}`}
                           </Typography>
                         </Stack>
                         <Typography variant="subtitle2">Project Admin</Typography>

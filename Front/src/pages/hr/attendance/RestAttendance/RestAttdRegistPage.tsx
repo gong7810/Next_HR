@@ -24,6 +24,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import { RootState, useDispatch } from 'store';
 import { attdActions } from 'store/redux-saga/reducer/attendance/attendanceReducer';
 import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 const RestAttdRegistPage = () => {
   const dispatch = useDispatch();
@@ -66,12 +67,22 @@ const RestAttdRegistPage = () => {
     setEmpList(rawList);
   }, [rawList]);
 
+<<<<<<< HEAD
   const empLists = empList.map((item: any) => {
     return (
       <MenuItem value={item.empCode} key={item.empCode}>
         {item.empName}
       </MenuItem>
     );
+=======
+  const empLists = empList.map((item) => {
+    if (item.empCode === localStorage.getItem('empCode'))
+      return (
+        <MenuItem value={item.empCode} key={item.empCode}>
+          {item.empName}
+        </MenuItem>
+      );
+>>>>>>> develop/attd
   });
 
   // 근태코드 세팅
@@ -90,13 +101,22 @@ const RestAttdRegistPage = () => {
     console.log(cause);
 
     if (!empCode || !attdCode) {
-      alert('신청자와 근태구분은 필수선택입니다.');
+      Swal.fire({
+        icon: 'warning',
+        title: '신청자와 근태구분은 필수선택입니다.'
+      });
     } else if (!startDate || !endDate) {
-      alert('신청날짜를 선택해주세요');
+      Swal.fire({
+        icon: 'warning',
+        title: '신청날짜를 선택해주세요.'
+      });
     } else if (startDate === endDate && startTime === endTime) {
-      alert('신청 시간이 잘못되었습니다');
+      Swal.fire({
+        icon: 'warning',
+        title: '신청 시간이 잘못되었습니다.'
+      });
     } else {
-      const restAttdTO: restAttdTO = {
+      const restAttdTO = {
         empCode,
         attdCode,
         attdType,
@@ -106,7 +126,7 @@ const RestAttdRegistPage = () => {
         startTime: startTime.replace(/:/g, ''),
         endTime: endTime.replace(/:/g, ''),
         cause
-      };
+      } as restAttdTO;
       console.log('추가 폼 :', restAttdTO);
 
       dispatch(attdActions.registRestAttdRequest(restAttdTO));
