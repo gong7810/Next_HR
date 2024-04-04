@@ -22,6 +22,8 @@ import holidayReducer from './slices/hr/base/holiday';
 import empManagementReducer from '../pages/hr/empManagement/slices/index';
 import dailyAttendReducer from './redux-saga/reducer/attendance/DailyAttendReducer';
 import attdReducer from './redux-saga/reducer/attendance/attendanceReducer';
+import commonReducer from './redux-saga/reducer/common/commonReducer';
+import baseReducer from './redux-saga/reducer/base/baseReducer';
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -50,7 +52,9 @@ const reducer = combineReducers({
   holidayList: holidayReducer,
   empManagement: empManagementReducer,
   attdReducer: attdReducer, // 근태리듀서
-  dailyAttend :  dailyAttendReducer // 일근태등록리듀서
+  dailyAttend: dailyAttendReducer, // 일근태등록리듀서
+  baseReducer: baseReducer, // 권한리듀서
+  commonReducer: commonReducer
 });
 
 export default reducer;

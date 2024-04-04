@@ -1,3 +1,5 @@
 ## Next_HR
 
-feature attd branch
+feature2 attd branch
+
+npm install sweetalert2

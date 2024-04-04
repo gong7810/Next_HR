@@ -21,10 +21,12 @@
 	
 	
 	<update id="updateDept" parameterType="kr.co.seoulit.insa.commsvc.foudinfomgmt.to.DeptTO">
-	  UPDATE DEPT SET
+<![CDATA[
+		UPDATE DEPT SET
 	  DEPT_NAME = #{deptName}
 	  , DEPT_TEL = #{deptTel}
 	  WHERE DEPT_CODE = #{deptCode}
+	            	]]>
 	</update>
 	
 	

@@ -8,31 +8,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.seoulit.insa.attdsvc.attdmgmt.to.*;
-import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import kr.co.seoulit.insa.attdsvc.attdmgmt.service.AttdMgmtService;
-import kr.co.seoulit.insa.commsvc.systemmgmt.to.ResultTO;
 
 @RestController
-@RequestMapping("/attdmgmt/*")
+@RequestMapping("/hr/attdmgmt/*")
 @CrossOrigin
 public class DailyAttendanceController {
 	
 	@Autowired
 	private AttdMgmtService attdMgmtService;
 	ModelMap map = null;
-	
+
+	// 일근태 관리 조회
 	@PostMapping("searchDailyAttnd")
-	public Map<String, Object> findDayAttdList(@RequestBody DailyAttdSearchReqTO dailyAttdSearchReqTO){
-		System.out.println("<<<<<<<<<<< dayAttdTO = " + dailyAttdSearchReqTO);
+	public Map<String, Object> findDayAttdList(@RequestBody HashMap<String, DailyAttdSearchReqTO> searchDayAttdMap) {
+		System.out.println("<<<<<<<<<<< searchDayAttdMap = " + searchDayAttdMap);
+		DailyAttdSearchReqTO dailyAttdSearchReqTO = searchDayAttdMap.get("data");
 		Map<String, Object> map = new HashMap<>();
 
 		try {
-			List<DailyAttdSearchResTO> list = attdMgmtService.searchDayAttd(dailyAttdSearchReqTO);
+			ArrayList<DailyAttdSearchResTO> list = attdMgmtService.searchDayAttd(dailyAttdSearchReqTO);
 			map.put("errorMsg", "success");
 			map.put("errorCode", 0);
 			map.put("list", list);

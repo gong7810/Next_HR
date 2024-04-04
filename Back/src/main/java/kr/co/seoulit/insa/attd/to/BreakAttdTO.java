@@ -25,5 +25,7 @@ public class BreakAttdTO extends BaseTO {
     private String approvalStatus;  // 승인상태
     @Transient
     private String remainBreakAttd; // 남은연차
+    @Transient
+    private String authority;       // 권한레벨
 
 }

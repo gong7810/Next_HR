@@ -43,7 +43,7 @@ export interface dailyAttdEntity {
   workHour: string;
   latenessStatus: string;
   overWorkHour: string;
-  nightWorkHour:string;
+  nightWorkHour: string;
   finalizeStatus: string;
   earlyLeaveTime: string;
 }
@@ -60,6 +60,7 @@ export interface restAttdTO {
   endTime: string;
   cause: string;
   approvalStatus?: string;
+  authority?: string;
 }
 
 export interface breakAttdTO {
@@ -71,4 +72,5 @@ export interface breakAttdTO {
   cause: string;
   approvalStatus?: string;
   remainBreakAttd: string;
+  authority?: string;
 }

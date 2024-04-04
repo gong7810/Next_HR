@@ -8,8 +8,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.co.seoulit.insa.commsvc.systemmgmt.repository.HrSystemRepository;
 import kr.co.seoulit.insa.commsvc.systemmgmt.to.*;
+import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Service;
 
 import kr.co.seoulit.insa.commsvc.systemmgmt.exception.IdNotFoundException;
@@ -42,6 +45,8 @@ public class SystemMgmtServiceImpl implements SystemMgmtService {
 	private MenuMapper menuMapper;
 	@Autowired
 	private CodeMapper codeMapper;
+	@Autowired
+	private HrSystemRepository hrSystemRepository;
 
 
 	@Override
@@ -286,6 +291,26 @@ public class SystemMgmtServiceImpl implements SystemMgmtService {
 		ArrayList<AdminCodeTO> authadminList=null;
 		authadminList = adminMapper.selectAuthAdminCodeList(empno);
 		return authadminList;
+
+	}
+
+	// 권한 관리
+	@Override
+	public ArrayList<AuthTO> getAuthList() {
+
+		ArrayList<AuthTO> authList = hrSystemRepository.findAllOrderByPositionCode();
+
+		return authList;
+
+	}
+
+	// 코드 관리
+	@Override
+	public ArrayList<DetailCodeTO> getCodeList() {
+
+		ArrayList<DetailCodeTO> codeList = hrSystemRepository.findAllOrderByCode();
+
+		return codeList;
 
 	}
 

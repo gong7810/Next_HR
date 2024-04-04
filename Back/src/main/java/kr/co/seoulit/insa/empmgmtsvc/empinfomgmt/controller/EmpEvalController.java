@@ -26,22 +26,17 @@ public class EmpEvalController {
 
 	ModelMap map = null;
 
-
-
-
-
-
 	// 아직 사원평가가 진행되지 않았거나, 사원평가가 반려된 직원들의 정보를 반환
 	// 예외가 발생하면은 빈 배열을 반환
 	// ---> 프론트 단에서 검색된 값이 없을때 빈배열을 사용할수 있다.
 	// 사원 고과 평가 페이지에서 사용하는 쿼리문 입니다.(사원고과를 진행하지 않은 사원의 정보 및 사원고과 삭제 및 반려
 	// 진행중인 사원들의 정보를 가져옵니다.)
 	@GetMapping("/evaluation/list")
-	public List<EmpEvalTO> validEmpEvalList() {
+	public List<EmpEvalTO> validEmpEvalList(@RequestParam("authLevel") String authLevel) {
 		List<EmpEvalTO> empList = new ArrayList<EmpEvalTO>();
 		try {
 
-			empList = empInfoService.findValidEmpEvalList();
+			empList = empInfoService.findValidEmpEvalList(authLevel);
 			System.out.println("<<<< empList = " + empList);
 			return empList;
 		} catch (Exception e) {

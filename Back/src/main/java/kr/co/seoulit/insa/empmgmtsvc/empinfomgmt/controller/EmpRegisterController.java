@@ -16,12 +16,10 @@ public class EmpRegisterController {
 	@Autowired
 	private EmpInfoService empInfoService;
 
-
 	@PostMapping("/employee")
 	public Map<String, Object> registEmployee(@RequestBody EmpTO empTO) {
 		System.out.println("<<<<<<<<<<< empTO = " + empTO);
 		Map<String, Object> map = new HashMap<>();
-
 
 		try {
 			empInfoService.registEmployee(empTO);

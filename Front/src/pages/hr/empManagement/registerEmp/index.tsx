@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { Grid, InputLabel, TextField, FormControl, Select, MenuItem, Avatar, Button, Stack, Typography } from '@mui/material';
 import SubCard from 'ui-component/cards/SubCard';
 import AnimateButton from 'ui-component/extended/AnimateButton';
@@ -7,15 +7,13 @@ import React, { useState, useRef } from 'react';
 import Layout from 'layout';
 import Page from 'components/hr/Page';
 import MainCard from 'components/hr/MainCard';
-import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { registerEmpAction } from '../slices/registerEmpReducer';
 import { sendData } from '../types/empManagementTypes';
-
-
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import Swal from 'sweetalert2';
 
 function RegisterEmp() {
-  const router = useRouter();
   const dispatch = useDispatch();
 
   const empNameRef = useRef<HTMLInputElement>(null);
@@ -27,14 +25,29 @@ function RegisterEmp() {
   const emailRef = useRef<HTMLInputElement>(null);
 
   const [dept, setDept] = useState<number | string>(-1);
-  const [gender, setGender] = useState<number | string>(-1); //
-  const [lastSchool, setLastSchool] = useState<number | string>(-1); //
+  const [gender, setGender] = useState<number | string>(-1);
+  const [lastSchool, setLastSchool] = useState<number | string>(-1);
   const [position, setPosition] = useState<number | string>(-1);
   const [salaryStep, setSalaryStep] = useState<number | string>(-1);
-  const [occupation, setOccupation] = useState<number | string>(-1); //
-  const [employment, setEmployment] = useState<number | string>(-1); //
+  const [occupation, setOccupation] = useState<number | string>(-1);
+  const [employment, setEmployment] = useState<number | string>(-1);
 
   const Avatar1 = '/assets/images/users/emp_img_1.avif';
+
+  const [authCheck, setAuthCheck] = useState(false); // 페이지 접근 권한체크
+
+  useEffect(() => {
+    const level = localStorage.getItem('authLevel') as string;
+    if (level && parseInt(level.slice(-1)) >= 2) {
+      setAuthCheck(true);
+    } else {
+      setAuthCheck(false);
+      Swal.fire({
+        icon: 'error',
+        title: '접근 권한이 없습니다.'
+      });
+    }
+  }, []);
 
   const deptChangeHandler = (value: string) => {
     setDept(value);
@@ -95,7 +108,7 @@ function RegisterEmp() {
     console.log('data : ', data);
 
     dispatch(registerEmpAction.REGISTER_EMP_REQUSTED(data));
-    router.reload();
+    // router.reload();
   };
 
   // 등록 버튼을 클릭하면은 유효성 검사를 진행한뒤 값들이 유효하면은 백엔드로 데이터를 전송
@@ -196,173 +209,185 @@ function RegisterEmp() {
   };
 
   return (
-    <Page title="사원등록">
-      <Grid container spacing={gridSpacing}>
-        <Grid item xs={12}>
-          <MainCard content={false} title="사원등록">
-            <Grid mt={3} mb={3} ml={3} pt={3} pl={3} pr={3} container width={1300} spacing={3}>
-              <Grid container spacing={gridSpacing}>
-                <Grid item xs={6} pr={1} md={1.5}>
-                  <Grid container xs={8} spacing={2} md={18}>
-                    <Grid item xs={10} md={16}>
-                      <Avatar alt="User 1" src={Avatar1} sx={{ width: 100, height: 100, margin: 'auto' }} />
-                    </Grid>
+    <Page title="사원 등록">
+      {authCheck ? (
+        <Grid container spacing={gridSpacing}>
+          <Grid item xs={12}>
+            <MainCard content={false} title="사원 등록">
+              <Grid mt={3} mb={3} ml={3} pt={3} pl={3} pr={3} container width={1300} spacing={3}>
+                <Grid container spacing={gridSpacing}>
+                  <Grid item xs={6} pr={1} md={1.5}>
+                    <Grid container xs={8} spacing={2} md={18}>
+                      <Grid item xs={10} md={16}>
+                        <Avatar alt="User 1" src={Avatar1} sx={{ width: 100, height: 100, margin: 'auto' }} />
+                      </Grid>
 
-                    <Grid item xs={12} width={30}>
-                      <AnimateButton>
-                        <Button sx={{ width: '120px' }} variant="contained" size="small">
-                          사진등록
-                        </Button>
-                      </AnimateButton>
+                      <Grid item xs={12} width={30}>
+                        <AnimateButton>
+                          <Button sx={{ width: '120px' }} variant="contained" size="small">
+                            사진등록
+                          </Button>
+                        </AnimateButton>
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-                {/*여기가 사원 사진을 넣을수 있는 곳이다.*/}
-                <Grid item sm={6} md={8}>
-                  <SubCard title="사원정보">
-                    <Grid container spacing={gridSpacing}>
-                      <Grid item md={6} xs={12}>
-                        <InputLabel>사원명</InputLabel>
-                        <TextField id="outlined-basic1" inputRef={empNameRef} fullWidth />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <InputLabel>부서</InputLabel>
-                        <FormControl fullWidth>
-                          <Select
-                            defaultValue="-1"
-                            onChange={(e) => {
-                              deptChangeHandler(e.target.value);
-                            }}
-                          >
-                            <MenuItem value={'DEP000'}>회계팀</MenuItem>
-                            <MenuItem value={'DEP001'}>인사팀</MenuItem>
-                            <MenuItem value={'DEP002'}>전산팀</MenuItem>
-                            <MenuItem value={'DEP003'}>보안팀</MenuItem>
-                            <MenuItem value={'DEP004'}>개발팀</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item md={6} xs={12}>
-                        <InputLabel>생일</InputLabel>
-                        <TextField id="outlined-basic14" inputRef={birthDateRef} fullWidth type="date" />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <InputLabel>성별</InputLabel>
-                        <FormControl fullWidth>
-                          <Select defaultValue="-1" onChange={(e) => genderChangeHandler(e.target.value)}>
-                            <MenuItem value={0}>남</MenuItem>
-                            <MenuItem value={1}>여</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item md={6} xs={12}>
-                        <InputLabel>휴대폰 번호</InputLabel>
-                        <TextField id="outlined-basic5" inputRef={mobileNumberRef} fullWidth defaultValue="010-1234-1234" />
-                      </Grid>
-                      <Grid item md={6} xs={12}>
-                        <InputLabel>주소</InputLabel>
-                        <TextField id="outlined-basic6" inputRef={addressRef} fullWidth />
-                      </Grid>
-                      <Grid item md={6} xs={12}>
-                        <InputLabel>세부주소</InputLabel>
-                        <TextField id="outlined-basic7" inputRef={detailAddressRef} fullWidth />
-                      </Grid>
-                      <Grid item md={6} xs={12}>
-                        <InputLabel>우편번호</InputLabel>
-                        <TextField id="outlined-basic8" inputRef={postNumberRef} fullWidth />
-                      </Grid>
-                      <Grid item md={6} xs={12}>
-                        <InputLabel>이메일</InputLabel>
-                        <TextField id="outlined-basic9" inputRef={emailRef} fullWidth defaultValue="aaa@aaa.com" type="email" />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <InputLabel>최종학력</InputLabel>
-                        <FormControl fullWidth>
-                          <Select defaultValue="-1" onChange={(e) => lastSchoolChangeHandler(e.target.value)}>
-                            <MenuItem value={0}>대학 미졸업</MenuItem>
-                            <MenuItem value={1}>전문대</MenuItem>
-                            <MenuItem value={2}>학사</MenuItem>
-                            <MenuItem value={3}>석사</MenuItem>
-                            <MenuItem value={4}>박사</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <InputLabel>직급</InputLabel>
-                        <FormControl fullWidth>
-                          <Select defaultValue="-1" onChange={(e) => positionChangeHandler(e.target.value)}>
-                            <MenuItem value={'POS000'}>인턴</MenuItem>
-                            <MenuItem value={'POS001'}>사원</MenuItem>
-                            <MenuItem value={'POS002'}>대리</MenuItem>
-                            <MenuItem value={'POS003'}>팀장</MenuItem>
-                            <MenuItem value={'POS004'}>부장</MenuItem>
-                            <MenuItem value={'POS005'}>상무</MenuItem>
-                            <MenuItem value={'POS006'}>대표이사</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <InputLabel>호봉</InputLabel>
-                        <FormControl fullWidth>
-                          <Select defaultValue="-1" onChange={(e) => salaryStepChangeHandler(e.target.value)}>
-                            <MenuItem value={3}>3호봉</MenuItem>
-                            <MenuItem value={4}>4호봉</MenuItem>
-                            <MenuItem value={5}>5호봉</MenuItem>
-                            <MenuItem value={6}>6호봉</MenuItem>
-                            <MenuItem value={7}>7호봉</MenuItem>
-                            <MenuItem value={8}>8호봉</MenuItem>
-                            <MenuItem value={9}>9호봉</MenuItem>
-                            <MenuItem value={10}>10호봉</MenuItem>
-                            <MenuItem value={11}>11호봉</MenuItem>
-                            <MenuItem value={12}>12호봉</MenuItem>
-                            <MenuItem value={13}>12호봉 이상</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <InputLabel>직종</InputLabel>
-                        <FormControl fullWidth>
-                          <Select defaultValue="-1" onChange={(e) => occupationChangeHandler(e.target.value)}>
-                            <MenuItem value={0}>생산직</MenuItem>
-                            <MenuItem value={1}>사무직</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <InputLabel>고용형태</InputLabel>
-                        <FormControl fullWidth>
-                          <Select defaultValue="-1" onChange={(e) => employmentChangeHandler(e.target.value)}>
-                            <MenuItem value={0}>정규직</MenuItem>
-                            <MenuItem value={1}>계약직</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <Stack direction="row">
-                          <AnimateButton>
-                            <Button
-                              sx={{ width: '100px' }}
-                              onClick={() => {
-                                onClickHandler();
+                  {/*여기가 사원 사진을 넣을수 있는 곳이다.*/}
+                  <Grid item sm={6} md={8}>
+                    <SubCard title="사원정보">
+                      <Grid container spacing={gridSpacing}>
+                        <Grid item md={6} xs={12}>
+                          <InputLabel>사원명</InputLabel>
+                          <TextField id="outlined-basic1" inputRef={empNameRef} fullWidth />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <InputLabel>부서</InputLabel>
+                          <FormControl fullWidth>
+                            <Select
+                              defaultValue="-1"
+                              onChange={(e) => {
+                                deptChangeHandler(e.target.value);
                               }}
-                              variant="contained"
                             >
-                              등록
-                            </Button>
-                          </AnimateButton>
-                        </Stack>
+                              <MenuItem value={'DEP000'}>회계팀</MenuItem>
+                              <MenuItem value={'DEP001'}>인사팀</MenuItem>
+                              <MenuItem value={'DEP002'}>전산팀</MenuItem>
+                              <MenuItem value={'DEP003'}>보안팀</MenuItem>
+                              <MenuItem value={'DEP004'}>개발팀</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <InputLabel>생일</InputLabel>
+                          <TextField id="outlined-basic14" inputRef={birthDateRef} fullWidth type="date" />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <InputLabel>성별</InputLabel>
+                          <FormControl fullWidth>
+                            <Select defaultValue="-1" onChange={(e) => genderChangeHandler(e.target.value)}>
+                              <MenuItem value={0}>남</MenuItem>
+                              <MenuItem value={1}>여</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <InputLabel>휴대폰 번호</InputLabel>
+                          <TextField id="outlined-basic5" inputRef={mobileNumberRef} fullWidth defaultValue="010-1234-1234" />
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <InputLabel>주소</InputLabel>
+                          <TextField id="outlined-basic6" inputRef={addressRef} fullWidth />
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <InputLabel>세부주소</InputLabel>
+                          <TextField id="outlined-basic7" inputRef={detailAddressRef} fullWidth />
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <InputLabel>우편번호</InputLabel>
+                          <TextField id="outlined-basic8" inputRef={postNumberRef} fullWidth />
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <InputLabel>이메일</InputLabel>
+                          <TextField id="outlined-basic9" inputRef={emailRef} fullWidth defaultValue="aaa@aaa.com" type="email" />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <InputLabel>최종학력</InputLabel>
+                          <FormControl fullWidth>
+                            <Select defaultValue="-1" onChange={(e) => lastSchoolChangeHandler(e.target.value)}>
+                              <MenuItem value={0}>대학 미졸업</MenuItem>
+                              <MenuItem value={1}>전문대</MenuItem>
+                              <MenuItem value={2}>학사</MenuItem>
+                              <MenuItem value={3}>석사</MenuItem>
+                              <MenuItem value={4}>박사</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                          <InputLabel>직급</InputLabel>
+                          <FormControl fullWidth>
+                            <Select defaultValue="-1" onChange={(e) => positionChangeHandler(e.target.value)}>
+                              <MenuItem value={'POS000'}>인턴</MenuItem>
+                              <MenuItem value={'POS001'}>사원</MenuItem>
+                              <MenuItem value={'POS002'}>대리</MenuItem>
+                              <MenuItem value={'POS003'}>팀장</MenuItem>
+                              <MenuItem value={'POS004'}>부장</MenuItem>
+                              <MenuItem value={'POS005'}>상무</MenuItem>
+                              <MenuItem value={'POS006'}>대표이사</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                          <InputLabel>호봉</InputLabel>
+                          <FormControl fullWidth>
+                            <Select defaultValue="-1" onChange={(e) => salaryStepChangeHandler(e.target.value)}>
+                              <MenuItem value={3}>3호봉</MenuItem>
+                              <MenuItem value={4}>4호봉</MenuItem>
+                              <MenuItem value={5}>5호봉</MenuItem>
+                              <MenuItem value={6}>6호봉</MenuItem>
+                              <MenuItem value={7}>7호봉</MenuItem>
+                              <MenuItem value={8}>8호봉</MenuItem>
+                              <MenuItem value={9}>9호봉</MenuItem>
+                              <MenuItem value={10}>10호봉</MenuItem>
+                              <MenuItem value={11}>11호봉</MenuItem>
+                              <MenuItem value={12}>12호봉</MenuItem>
+                              <MenuItem value={13}>12호봉 이상</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <InputLabel>직종</InputLabel>
+                          <FormControl fullWidth>
+                            <Select defaultValue="-1" onChange={(e) => occupationChangeHandler(e.target.value)}>
+                              <MenuItem value={0}>생산직</MenuItem>
+                              <MenuItem value={1}>사무직</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <InputLabel>고용형태</InputLabel>
+                          <FormControl fullWidth>
+                            <Select defaultValue="-1" onChange={(e) => employmentChangeHandler(e.target.value)}>
+                              <MenuItem value={0}>정규직</MenuItem>
+                              <MenuItem value={1}>계약직</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                          <Stack direction="row">
+                            <AnimateButton>
+                              <Button
+                                sx={{ width: '100px' }}
+                                onClick={() => {
+                                  onClickHandler();
+                                }}
+                                variant="contained"
+                              >
+                                등록
+                              </Button>
+                            </AnimateButton>
+                          </Stack>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </SubCard>
+                    </SubCard>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          </MainCard>
+            </MainCard>
+          </Grid>
         </Grid>
-      </Grid>
+      ) : (
+        <MainCard
+          title={
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <DoDisturbIcon style={{ color: 'red', marginRight: '8px' }} /> {/* 아이콘을 title 옆에 추가합니다. */}
+              접근 권한 없음
+            </div>
+          }
+          style={{ textAlign: 'center' }}
+        />
+      )}
     </Page>
   );
 }

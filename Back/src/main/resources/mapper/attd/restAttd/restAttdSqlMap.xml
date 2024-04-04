@@ -16,6 +16,7 @@
         <result property="endTime" column="END_TIME" />
         <result property="cause" column="CAUSE" />
         <result property="approvalStatus" column="APPROVAL_STATUS" />
+        <result property="authority" column="AUTHORITY" />
     </resultMap>
 
     <resultMap id="breakAttdResult" type="kr.co.seoulit.insa.attd.to.BreakAttdTO">
@@ -28,27 +29,31 @@
         <result property="cause" column="CAUSE" />
         <result property="approvalStatus" column="APPROVAL_STATUS" />
         <result property="remainBreakAttd" column="REMAIN_BREAK_ATTD" />
+        <result property="authority" column="AUTHORITY" />
     </resultMap>
 
     <!-- 근태외 조회 -->
     <select id="findRestAttdList" parameterType="map" resultMap="restAttdResult">
         <![CDATA[
-            SELECT REST_ATTD_NO
-                 , EMP_CODE
-                 , DEPT_CODE
-                 , ATTD_CODE
-                 , ATTD_TYPE
-                 , TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD') AS REQUEST_DATE
-                 , TO_CHAR(START_DATE, 'YYYY-MM-DD') AS START_DATE
-                 , TO_CHAR(END_DATE, 'YYYY-MM-DD') AS END_DATE
-                 , SUBSTR(START_TIME, 1, 2)||':'||SUBSTR(START_TIME, 3, 2) AS START_TIME
-                 , SUBSTR(END_TIME, 1, 2)||':'||SUBSTR(END_TIME, 3, 2) AS END_TIME
-                 , CAUSE
-                 , APPROVAL_STATUS
-            FROM REST_ATTD_MANAGE
-            WHERE DEPT_CODE = #{deptCode}
-              AND REQUEST_DATE BETWEEN #{startDate} AND #{endDate}
-              AND ATTD_TYPE IN ('공가', '병가', '출장', '외근', '교육', '외출', '조퇴', '초과근무')
+            SELECT R.REST_ATTD_NO AS REST_ATTD_NO
+                 , R.EMP_CODE AS EMP_CODE
+                 , R.DEPT_CODE AS DEPT_CODE
+                 , R.ATTD_CODE AS ATTD_CODE
+                 , R.ATTD_TYPE AS ATTD_TYPE
+                 , TO_CHAR(R.REQUEST_DATE, 'YYYY-MM-DD') AS REQUEST_DATE
+                 , TO_CHAR(R.START_DATE, 'YYYY-MM-DD') AS START_DATE
+                 , TO_CHAR(R.END_DATE, 'YYYY-MM-DD') AS END_DATE
+                 , SUBSTR(R.START_TIME, 1, 2)||':'||SUBSTR(R.START_TIME, 3, 2) AS START_TIME
+                 , SUBSTR(R.END_TIME, 1, 2)||':'||SUBSTR(R.END_TIME, 3, 2) AS END_TIME
+                 , R.CAUSE AS CAUSE
+                 , R.APPROVAL_STATUS AS APPROVAL_STATUS
+                 , E.AUTHORITY AS AUTHORITY
+            FROM REST_ATTD_MANAGE R, EMP E
+            WHERE R.EMP_CODE = E.EMP_CODE
+              AND R.DEPT_CODE = #{deptCode}
+              AND R.REQUEST_DATE BETWEEN #{startDate} AND #{endDate}
+              AND SUBSTR(E.AUTHORITY, -1) <= SUBSTR(#{authLevel}, -1)
+              AND R.ATTD_TYPE IN ('공가', '병가', '출장', '외근', '교육', '외출', '조퇴', '초과근무')
         ]]>
     </select>
 
@@ -112,7 +117,7 @@
     </delete>
 
     <!-- 연차 내역 조회 -->
-    <select id="findBreakAttdList" parameterType="String" resultMap="breakAttdResult">
+    <select id="findBreakAttdList" parameterType="map" resultMap="breakAttdResult">
         <![CDATA[
             SELECT E.EMP_NAME AS EMP_NAME,
                    R.REST_ATTD_NO AS REST_ATTD_NO,
@@ -122,7 +127,8 @@
                    R.ATTD_TYPE AS ATTD_TYPE,
                    R.CAUSE AS CAUSE,
                    R.APPROVAL_STATUS AS APPROVAL_STATUS,
-                   (A.REMAIN_BREAK_ATTD - EMP_COUNT.EMP_NAME_COUNT) AS REMAIN_BREAK_ATTD
+                   (A.REMAIN_BREAK_ATTD - EMP_COUNT.EMP_NAME_COUNT) AS REMAIN_BREAK_ATTD,
+                   E.AUTHORITY AS AUTHORITY
             FROM REST_ATTD_MANAGE R
                      JOIN (
                         SELECT E.EMP_CODE,
@@ -134,12 +140,14 @@
                      JOIN EMP E ON R.EMP_CODE = E.EMP_CODE
                      LEFT JOIN (
                             SELECT EMP_CODE,
-                                   NVL(COUNT(CASE WHEN APPROVAL_STATUS = '승인' THEN 1 END), 0) AS EMP_NAME_COUNT
+                                   NVL(SUM(CASE WHEN APPROVAL_STATUS = '승인' AND ATTD_TYPE = '연차' THEN 1
+                                                  WHEN APPROVAL_STATUS = '승인' AND ATTD_TYPE LIKE '%반차' THEN 0.5 END), 0) AS EMP_NAME_COUNT
                             FROM REST_ATTD_MANAGE
                             WHERE ATTD_TYPE IN ('오전반차', '오후반차', '연차')
-                              AND TO_CHAR(START_DATE, 'YYYY-MM') = #{useDate}
+                              AND TO_CHAR(START_DATE, 'YYYY-MM') BETWEEN SUBSTR('2024-03', 1, 4) || '-01' AND TO_CHAR(SYSDATE, 'YYYY-MM')
                             GROUP BY EMP_CODE) EMP_COUNT ON E.EMP_CODE = EMP_COUNT.EMP_CODE
             WHERE R.ATTD_TYPE IN ('오전반차', '오후반차', '연차')
+              AND SUBSTR(E.AUTHORITY, -1) <= SUBSTR(#{authLevel}, -1)
               AND TO_CHAR(R.START_DATE, 'YYYY-MM') = #{useDate}
             GROUP BY E.EMP_NAME,
                      R.REST_ATTD_NO,
@@ -150,7 +158,8 @@
                      R.CAUSE,
                      R.APPROVAL_STATUS,
                      A.REMAIN_BREAK_ATTD,
-                     EMP_COUNT.EMP_NAME_COUNT
+                     EMP_COUNT.EMP_NAME_COUNT,
+                     E.AUTHORITY
             ORDER BY E.EMP_NAME, R.START_DATE
         ]]>
     </select>

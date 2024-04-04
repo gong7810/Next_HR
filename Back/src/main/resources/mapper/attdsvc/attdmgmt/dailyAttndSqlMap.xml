@@ -62,6 +62,31 @@
 		)
 	</insert>
 
+	<!-- 일근태 등록페이지 조회 -->
+	<select id="selectAllDayAttd" parameterType="DailyAttdSearchReqTO" resultMap="dailyAttdSearchResult">
+	<![CDATA[
+		SELECT
+		    E.EMP_NAME AS EMP_NAME
+		  , D2.DEPT_NAME AS DEPT_NAME
+		  ,  D1.ATTEND_TIME AS ATTEND_TIME
+		  ,  D1.LEAVE_TIME AS LEAVE_TIME
+		  ,  D1.BRIEF_LEAVE_TIME AS BRIEF_LEAVE_TIME
+		  ,  D1.WORK_HOUR AS WORK_HOUR
+		  ,  D1.LATENESS_STATUS AS LATENESS_STATUS
+		  ,  D1.OVER_WORK_HOUR AS OVER_WORK_HOUR
+		  ,  D1.NIGHT_WORK_HOUR AS NIGHT_WORK_HOUR
+		  ,  D1.FINALIZE_STATUS AS FINALIZE_STATUS
+		  ,  D1.EARLY_LEAVE_TIME AS EARLY_LEAVE_TIME
+		    FROM DAY_ATTD D1, DEPT D2, EMP E
+		    WHERE D1.DEPT_CODE = D2.DEPT_CODE
+		      AND D1.EMP_CODE = E.EMP_CODE
+			AND D1.DEPT_CODE = #{deptCode}
+			AND SUBSTR(E.AUTHORITY, -1) <= SUBSTR(#{authLevel}, -1)
+			AND D1.REF_DAY BETWEEN #{startDate} AND #{endDate}
+		]]>
+	</select>
+
+	<!-- 일근태 관리페이지 조회 -->
 	<select id="selectDayAttd" parameterType="DailyAttdSearchReqTO" resultMap="dailyAttdSearchResult">
 	<![CDATA[
 		SELECT
@@ -80,6 +105,7 @@
 		    WHERE D1.DEPT_CODE = D2.DEPT_CODE
 		      AND D1.EMP_CODE = E.EMP_CODE
 			AND D1.DEPT_CODE = #{deptCode}
+		    AND SUBSTR(E.AUTHORITY, -1) < SUBSTR(#{authLevel}, -1)
 			AND D1.REF_DAY BETWEEN #{startDate} AND #{endDate}
 		]]>
 	</select>

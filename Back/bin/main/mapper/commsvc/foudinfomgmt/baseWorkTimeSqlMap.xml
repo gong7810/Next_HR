@@ -35,24 +35,35 @@
       WHERE apply_year = #{applyYear}  ]]>
 		</update>
 
-		<insert id="insertTime" parameterType="kr.co.seoulit.insa.commsvc.foudinfomgmt.to.BaseWorkTimeTO">
-		<![CDATA[                
-   		insert into base_work_time values(
-   		 #{applyYear}
-   		 ,#{attendTime}
-   		 ,#{quitTime}
-   		 ,#{lunchStartTime}
-   		 ,#{lunchEndTime}
-   		 ,#{dinnerStartTime}
-   		 ,#{dinnerEndTime}
-   		 ,#{overEndTime}
-   		 ,#{nightEndTime}
-   		 )]]>
-		</insert>
+	<insert id="insertTime" parameterType="kr.co.seoulit.insa.commsvc.foudinfomgmt.to.BaseWorkTimeTO">
+  <![CDATA[
+		insert into base_work_time (
+			apply_year,
+			attend_time,
+			quit_time,
+			lunch_start_time,
+			lunch_end_time,
+			dinner_start_time,
+			dinner_end_time,
+			over_end_time,
+			night_end_time
+		)
+		values (
+				   #{applyYear},
+				   #{attendTime},
+				   #{quitTime},
+				   #{lunchStartTime},
+				   #{lunchEndTime},
+				   #{dinnerStartTime},
+				   #{dinnerEndTime},
+				   #{overEndTime},
+				   #{nightEndTime}
+			   )]]>
+</insert>
 
 		<delete id="deleteTime" parameterType="kr.co.seoulit.insa.commsvc.foudinfomgmt.to.BaseWorkTimeTO">
 		<![CDATA[                
-   			delete base_work_time where apply_year = {applyYear} ]]>
+   			delete base_work_time where apply_year = #{applyYear} ]]>
 		</delete>
 
 </mapper>

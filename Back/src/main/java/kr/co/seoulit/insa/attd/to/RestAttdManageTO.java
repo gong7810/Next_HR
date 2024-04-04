@@ -4,6 +4,8 @@ import kr.co.seoulit.insa.commsvc.systemmgmt.to.BaseTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.persistence.Transient;
+
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class RestAttdManageTO extends BaseTO {
@@ -20,4 +22,7 @@ public class RestAttdManageTO extends BaseTO {
     private String endTime;         // 종료시간
     private String cause;           // 사유
     private String approvalStatus;  // 승인상태
+
+    @Transient
+    private String authority;       // 권한레벨
 }

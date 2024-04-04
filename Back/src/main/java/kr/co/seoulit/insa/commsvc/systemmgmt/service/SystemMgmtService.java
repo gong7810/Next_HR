@@ -8,6 +8,7 @@ import kr.co.seoulit.insa.empmgmtsvc.empinfomgmt.to.EmpTO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface SystemMgmtService {
 	//Login Part
@@ -46,4 +47,10 @@ public interface SystemMgmtService {
 	public void modifyAuthority(String empCode, String adminCode);
 
 	public ArrayList<AdminCodeTO> authadminCodeList(String empno);
+
+	// 권한 관리
+	public ArrayList<AuthTO> getAuthList();
+
+	// 코드 관리
+	public ArrayList<DetailCodeTO> getCodeList();
 }

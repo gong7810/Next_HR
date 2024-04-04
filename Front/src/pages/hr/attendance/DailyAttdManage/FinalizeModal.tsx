@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import {ModalTitle, ModalBody, ModalFooter, Button } from 'react-bootstrap';
+import { ModalTitle, ModalBody, ModalFooter, Button } from 'react-bootstrap';
 
 const ModalBg = styled.div`
   display: flex;
@@ -21,8 +21,7 @@ const ModalBox = styled.div`
   background-color: white;
 `;
 
-const Modal = (props: { toggle: () => void; setHandleOk: Dispatch<SetStateAction<boolean>>  }) => {
-
+const Modal = (props: { toggle: () => void; setHandleOk: Dispatch<SetStateAction<boolean>> }) => {
   const [open, setOpen] = React.useState(true);
 
   const modalClose = () => {
@@ -40,14 +39,11 @@ const Modal = (props: { toggle: () => void; setHandleOk: Dispatch<SetStateAction
         <ModalTitle>마감</ModalTitle>
         <ModalBody>마감하시겠습니까?</ModalBody>
         <ModalFooter>
-          <Button onClick={() => modalClose()}>
-            취소
-          </Button>
+          <Button onClick={() => modalClose()}>취소</Button>
           <Button onClick={() => handleOk()}>확인</Button>
         </ModalFooter>
       </ModalBox>
     </ModalBg>
-    
   );
 };
 

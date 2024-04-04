@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.seoulit.insa.sys.mapper.LoginMapper">
+
+    <resultMap id="loginMap" type="kr.co.seoulit.insa.sys.to.LoginTO">
+        <result property="empName" column="EMP_NAME" />
+        <result property="position" column="POSITION" />
+    </resultMap>
+
+    <!-- 회원명 조회 -->
+    <select id="getUserName" parameterType="String"  resultMap="loginMap">
+        <![CDATA[
+            SELECT E.EMP_NAME AS EMP_NAME, P.POSITION AS POSITION
+            FROM EMP E, POSITION P
+            WHERE E.POSITION_CODE = P.POSITION_CODE(+)
+              AND E.EMP_CODE = #{empCode}
+        ]]>
+    </select>
+
+
+    <!-- 사원 권한레벨 조회 -->
+    <select id="getAuthLevel" parameterType="String" resultType="String">
+        <![CDATA[
+            SELECT AUTHORITY
+            FROM EMP
+            WHERE EMP_CODE = #{empCode}
+        ]]>
+    </select>
+
+</mapper>

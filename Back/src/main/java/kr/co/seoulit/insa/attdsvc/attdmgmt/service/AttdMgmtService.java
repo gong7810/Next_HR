@@ -1,6 +1,7 @@
 package kr.co.seoulit.insa.attdsvc.attdmgmt.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import kr.co.seoulit.insa.attdsvc.attdmgmt.to.*;
@@ -13,7 +14,7 @@ public interface AttdMgmtService {
 	   public ResultTO registDayAttd(DayAttdTO dayAttd);
 	   public void removeDayAttdList(ArrayList<DayAttdTO> dayAttdList);
 	   public void insertDayAttd(DailyAttdTO dailyAttdTO);
-	   public List<DailyAttdSearchResTO> searchDayAttd(DailyAttdSearchReqTO dailyAttdSearchReqTO);
+	   public ArrayList<DailyAttdSearchResTO> searchDayAttd(DailyAttdSearchReqTO dailyAttdSearchReqTO);
 	   public ArrayList<RestAttdTO> findRestAttdList(String empCode, String startDate, String endDate, String code);
 	   public void registRestAttd(ModelMap map);
 	   public void removeRestAttdList(ArrayList<RestAttdTO> restAttdList);

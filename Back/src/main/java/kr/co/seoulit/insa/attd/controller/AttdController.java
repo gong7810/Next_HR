@@ -4,17 +4,12 @@ package kr.co.seoulit.insa.attd.controller;
 import kr.co.seoulit.insa.attd.service.AttdService;
 import kr.co.seoulit.insa.attd.to.BreakAttdTO;
 import kr.co.seoulit.insa.attd.to.RestAttdManageTO;
-import kr.co.seoulit.insa.attdsvc.attdmgmt.to.RestAttdTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 @CrossOrigin("*")
 @RestController
@@ -28,12 +23,12 @@ public class AttdController {
     // 근태외 관리 조회
     @GetMapping("/restAttd")
     public HashMap<String, Object> findRestAttdList(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate,
-                                                      @RequestParam("deptCode") String deptCode) {
+                                                    @RequestParam("deptCode") String deptCode, @RequestParam("authLevel") String authLevel) {
 
         HashMap<String, Object> map = new HashMap<>();
-        System.out.println("데이터 도착" + startDate + endDate + deptCode);
+        System.out.println("데이터 도착" + startDate + endDate + deptCode + authLevel);
         try {
-            ArrayList<RestAttdManageTO> restAttdList =  attdService.findRestAttdList(startDate, endDate, deptCode);
+            ArrayList<RestAttdManageTO> restAttdList =  attdService.findRestAttdList(startDate, endDate, deptCode, authLevel);
             map.put("restAttdList", restAttdList);
             map.put("errorCode", "조회 성공");
         } catch (Exception e) {
@@ -98,12 +93,13 @@ public class AttdController {
 
     // 연차 조회
     @GetMapping("breakAttd")
-    public HashMap<String, Object> findBreakAttdList(@RequestParam("selectMonth") String selectMonth) {
+    public HashMap<String, Object> findBreakAttdList(@RequestParam("selectMonth") String selectMonth,
+                                                     @RequestParam("authLevel") String authLevel) {
 
         HashMap<String, Object> map = new HashMap<>();
 
         try {
-            ArrayList<BreakAttdTO> breakAttdList = attdService.findBreakAttdList(selectMonth);
+            ArrayList<BreakAttdTO> breakAttdList = attdService.findBreakAttdList(selectMonth, authLevel);
             map.put("breakAttdList", breakAttdList);
             map.put("errorCode", "조회 성공");
         } catch (Exception e) {

@@ -70,7 +70,7 @@ public class FoudInfoMgmtServiceImpl implements FoudInfoMgmtService {
 					break;
 
 				case "delete":
-					deptMapper.deleteDept(deptBean);
+					deptMapper.deleteDept(deptBean.getDeptCode());
 					detailCodeTO.setDetailCodeNumber(deptBean.getDeptCode());
 					detailCodeTO.setDetailCodeName(deptBean.getDeptName());
 					detailCodeMapper.deleteDetailCode(detailCodeTO);

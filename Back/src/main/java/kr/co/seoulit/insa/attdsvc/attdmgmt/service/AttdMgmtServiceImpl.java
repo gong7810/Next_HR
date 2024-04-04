@@ -62,7 +62,6 @@ public class AttdMgmtServiceImpl implements AttdMgmtService {
 		for (DayAttdTO dayAttd : dayAttdList) {
 			dayAttndMapper.deleteDayAttd(dayAttd);
 		}
-
 	}
 
 	@Override
@@ -72,9 +71,15 @@ public class AttdMgmtServiceImpl implements AttdMgmtService {
 
 
 	@Override
-	public List<DailyAttdSearchResTO> searchDayAttd(DailyAttdSearchReqTO dailyAttdSearchReqTO) {
-		System.out.println("서비스단으로 넘어온 dailyAttdSearchReqTO: " + dailyAttdSearchReqTO);
-		List<DailyAttdSearchResTO> list = dayAttndMapper.selectDayAttd(dailyAttdSearchReqTO);
+	public ArrayList<DailyAttdSearchResTO> searchDayAttd(DailyAttdSearchReqTO dailyAttdSearchReqTO) {
+		System.out.println("서비스단으로 넘어온 searchDayAttdMap: " + dailyAttdSearchReqTO);
+		System.out.println("type : " + dailyAttdSearchReqTO.getType());
+		ArrayList<DailyAttdSearchResTO> list = new ArrayList<>();
+		if(dailyAttdSearchReqTO.getType().equals("less")) {
+			list = dayAttndMapper.selectAllDayAttd(dailyAttdSearchReqTO);
+		} else if (dailyAttdSearchReqTO.getType().equals("under")) {
+			list = dayAttndMapper.selectDayAttd(dailyAttdSearchReqTO);
+		}
 		System.out.println("리스트: " + list);
 		for(DailyAttdSearchResTO bean: list){
 			System.out.println("받아온 사원명: " + bean.getEmpName());
@@ -117,7 +122,6 @@ public class AttdMgmtServiceImpl implements AttdMgmtService {
 
 	@Override
 	public void registRestAttd(ModelMap map) {
-
 		restAttdMapper.insertRestAttd(map);
 
 	}
