@@ -2,6 +2,7 @@ package kr.co.seoulit.insa.attd.controller;
 
 
 import kr.co.seoulit.insa.attd.service.AttdService;
+import kr.co.seoulit.insa.attd.to.BreakAttdTO;
 import kr.co.seoulit.insa.attd.to.RestAttdManageTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,6 @@ public class AttdController {
             map.put("errorCode", "failed");
             map.put("errorMsg", e.getMessage());
         }
-
         return map;
     }
 
@@ -52,7 +52,6 @@ public class AttdController {
             map.put("errorCode", "failed");
             map.put("errorMsg", e.getMessage());
         }
-
         return map;
     }
 
@@ -89,8 +88,8 @@ public class AttdController {
             map.put("errorCode", "failed");
             map.put("errorMsg", e.getMessage());
         }
-
         return map;
+    }
 
     // 연차 조회
     @GetMapping("breakAttd")

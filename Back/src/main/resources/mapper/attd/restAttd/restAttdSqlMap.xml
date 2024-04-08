@@ -57,6 +57,7 @@
         ]]>
     </select>
 
+    <!-- 최상위 근태외일렬번호 조회 -->
     <select id="findRestAttdMaxNo" parameterType="String" resultType="String">
         <![CDATA[
             SELECT MAX(REST_ATTD_NO)
@@ -65,6 +66,7 @@
         ]]>
     </select>
 
+    <!-- 근태외 신청 + 연차 신청 -->
     <insert id="registRestAttd" parameterType="kr.co.seoulit.insa.attd.to.RestAttdManageTO">
         <![CDATA[
             INSERT INTO REST_ATTD_MANAGE
@@ -97,6 +99,7 @@
         ]]>
     </insert>
 
+    <!-- 근태외 승인/취소 -->
     <update id="updateRestAttd" parameterType="kr.co.seoulit.insa.attd.to.RestAttdManageTO">
         <![CDATA[
             UPDATE REST_ATTD_MANAGE
@@ -105,6 +108,7 @@
         ]]>
     </update>
 
+    <!-- 근태외 삭제 -->
     <delete id="deleteRestAttd" parameterType="kr.co.seoulit.insa.attd.to.RestAttdManageTO">
         <![CDATA[
             DELETE FROM REST_ATTD_MANAGE

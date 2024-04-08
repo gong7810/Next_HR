@@ -3,7 +3,7 @@
 
 <mapper namespace="kr.co.seoulit.insa.attdsvc.attdmgmt.mapper.DailyAttndMapper">
 
-	<resultMap type="kr.co.seoulit.insa.attdsvc.attdmgmt.to.DayAttdTO" id="dayAttdResult">
+	<resultMap id="dayAttdResult" type="kr.co.seoulit.insa.attdsvc.attdmgmt.to.DayAttdTO" >
 		<result property="empCode" column="EMP_CODE" />
 		<result property="dayAttdCode" column="DAY_ATTD_CODE" />
 		<result property="applyDay" column="APPLY_DAY" />
@@ -11,6 +11,21 @@
 		<result property="empName" column="EMP_NAME" />
 		<result property="attdTypeName" column="ATTD_TYPE_NAME" />
 		<result property="time" column="TIME" />
+	</resultMap>
+
+	<resultMap id="dailyAttdSearchResult" type="kr.co.seoulit.insa.attdsvc.attdmgmt.to.DailyAttdSearchResTO" >
+		<result property="empName" column="EMP_NAME" />
+		<result property="deptName" column="DEPT_NAME" />
+		<result property="attendTime" column="ATTEND_TIME" />
+		<result property="leaveTime" column="LEAVE_TIME" />
+		<result property="briefLeaveTime" column="BRIEF_LEAVE_TIME" />
+		<result property="workHour" column="WORK_HOUR" />
+		<result property="latenessStatus" column="LATENESS_STATUS" />
+		<result property="overWorkHour" column="OVER_WORK_HOUR" />
+		<result property="nightWorkHour" column="NIGHT_WORK_HOUR" />
+		<result property="finalizeStatus" column="FINALIZE_STATUS" />
+		<result property="earlyLeaveTime" column="EARLY_LEAVE_TIME" />
+
 	</resultMap>
 
    <select id="selectDayAttdList" parameterType="String" resultMap="dayAttdResult">
@@ -29,14 +44,22 @@
       ORDER BY D.TIME
    </select>
 	
-	<insert id="insertDayAttd" parameterType="kr.co.seoulit.insa.attdsvc.attdmgmt.to.DayAttdTO">
+	<insert id="insertDayAttd" parameterType="DailyAttdTO">
 		INSERT INTO DAY_ATTD VALUES (
-		#{empCode}
-		, DAY_ATTD_CODE_SEQ.NEXTVAL
-		, #{applyDay}
-		, #{attdTypeCode}
-		, #{attdTypeName}
-		, #{time})
+		  #{dayAttdCode}
+		, #{empCode}
+		, #{refDay}
+		, #{attendTime}
+		, #{leaveTime}
+		, #{briefLeaveTime}
+		, #{workHour}
+		, #{latenessStatus}
+		, #{overWorkHour}
+		, #{nightWorkHour}
+		, #{finalizeStatus}
+		, #{earlyLeaveTime}
+		, #{deptCode}
+		)
 	</insert>
 
 	<!-- 일근태 등록페이지 조회 -->
@@ -131,7 +154,23 @@
 		<![CDATA[
       {call P_INSERT_DAY_ATTD(?, DAY_ATTD_CODE_SEQ.NEXTVAL, ?, ?, TO_DATE(?, 'YYYY-MM-DD'), ?, ?, ?)}
       ]]>
-
-	</select>	
-	
+	</select>
+	<update id="updateFinalizeStatus" parameterType="DailyAttdSearchResTO">
+	<![CDATA[
+		UPDATE DAY_ATTD
+		SET
+			FINALIZE_STATUS = 'Y'
+		WHERE
+				EMP_CODE = (
+				SELECT EMP_CODE
+				FROM EMP
+				WHERE EMP_NAME = #{empName}
+				)
+				AND DEPT_CODE = (
+				SELECT DEPT_CODE
+				FROM DEPT
+				WHERE DEPT_NAME = #{deptName}
+				)
+		]]>
+	</update>
 </mapper>

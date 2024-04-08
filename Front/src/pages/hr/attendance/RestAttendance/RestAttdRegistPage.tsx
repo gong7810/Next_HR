@@ -67,14 +67,6 @@ const RestAttdRegistPage = () => {
     setEmpList(rawList);
   }, [rawList]);
 
-<<<<<<< HEAD
-  const empLists = empList.map((item: any) => {
-    return (
-      <MenuItem value={item.empCode} key={item.empCode}>
-        {item.empName}
-      </MenuItem>
-    );
-=======
   const empLists = empList.map((item) => {
     if (item.empCode === localStorage.getItem('empCode'))
       return (
@@ -82,7 +74,6 @@ const RestAttdRegistPage = () => {
           {item.empName}
         </MenuItem>
       );
->>>>>>> develop/attd
   });
 
   // 근태코드 세팅
@@ -96,24 +87,20 @@ const RestAttdRegistPage = () => {
 
   // 근태외 등록
   const restAttdRegist = () => {
-    console.log(empCode, attdCode, attdType, requestDate, startDate, endDate);
-    console.log(startTime, endTime);
-    console.log(cause);
-
     if (!empCode || !attdCode) {
       Swal.fire({
         icon: 'warning',
-        title: '신청자와 근태구분은 필수선택입니다.'
+        text: '신청자와 근태구분은 필수선택입니다.'
       });
     } else if (!startDate || !endDate) {
       Swal.fire({
         icon: 'warning',
-        title: '신청날짜를 선택해주세요.'
+        text: '신청날짜를 선택해주세요.'
       });
     } else if (startDate === endDate && startTime === endTime) {
       Swal.fire({
         icon: 'warning',
-        title: '신청 시간이 잘못되었습니다.'
+        text: '신청 시간이 잘못되었습니다.'
       });
     } else {
       const restAttdTO = {

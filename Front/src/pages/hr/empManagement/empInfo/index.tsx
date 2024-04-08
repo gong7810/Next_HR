@@ -161,7 +161,7 @@ function EmpInfo() {
                     }}
                   >
                     <TableCell sx={{ pl: 3 }}></TableCell>
-                    <TableCell>사원번호</TableCell>
+                    <TableCell>사원코드</TableCell>
                     <TableCell>사원명</TableCell>
                     <TableCell>직급코드</TableCell>
                     <TableCell>이메일</TableCell>

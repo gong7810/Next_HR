@@ -16,7 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import kr.co.seoulit.insa.commsvc.foudinfomgmt.service.FoudInfoMgmtService;
 import kr.co.seoulit.insa.commsvc.foudinfomgmt.to.BaseWorkTimeTO;
 
-@RequestMapping("/foudinfomgmt/*")
+@RequestMapping("/hr/foudinfomgmt/*")
 @RestController
 @CrossOrigin
 public class BaseWorkTimeController {

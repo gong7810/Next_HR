@@ -16,7 +16,7 @@ import kr.co.seoulit.insa.salarysvc.salarystdinfomgmt.service.SalaryStdInfoMgmtS
 import kr.co.seoulit.insa.salarysvc.salarystdinfomgmt.to.BaseSalaryTO;
 
 @CrossOrigin
-@RequestMapping("/salarystdinfomgmt/*")
+@RequestMapping("/hr/salarystdinfomgmt/*")
 @RestController
 public class BaseSalaryController {
 

@@ -19,7 +19,11 @@ const columns: ColumnProps[] = [
 
 function StickyHeadTable() {
   useEffect(() => {
-    Axios.get('http://localhost:9101/hr/salarystdinfomgmt/over-sal')
+    Axios.get('http://localhost:9101/hr/salarystdinfomgmt/over-sal', {
+      params: {
+        token: localStorage.getItem('access')
+      }
+    })
       .then((response) => {
         setRowData(response.data.baseExtSalList);
       })
@@ -31,8 +35,8 @@ function StickyHeadTable() {
   const [rowData, setRowData] = useState<BaseExtSalTO[]>([]);
 
   return (
-    <Page title="초과수당관리">
-      <MainCard content={false} title="초과수당관리">
+    <Page title="초과수당 관리">
+      <MainCard content={false} title="초과수당 관리">
         <Grid sx={{ margin: 2 }}>
           <MyMgtTable columns={columns} rowData={rowData} />
         </Grid>

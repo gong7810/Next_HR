@@ -2,12 +2,10 @@ package kr.co.seoulit.insa.salary.controller;
 
 import kr.co.seoulit.insa.salary.service.SalaryService;
 import kr.co.seoulit.insa.salary.to.SeverancePayTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 

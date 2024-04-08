@@ -1,6 +1,8 @@
 package kr.co.seoulit.insa.attd.service;
 
 import kr.co.seoulit.insa.attd.mapper.AttdMapper;
+import kr.co.seoulit.insa.attd.repository.AttdRepository;
+import kr.co.seoulit.insa.attd.to.BreakAttdTO;
 import kr.co.seoulit.insa.attd.to.RestAttdManageTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ public class AttdServiceImpl implements AttdService {
 
     @Autowired
     private AttdMapper attdMapper;
+
+    @Autowired
+    private AttdRepository attdRepository;
 
     // 근태외 조회
     @Override
@@ -30,7 +35,7 @@ public class AttdServiceImpl implements AttdService {
 
     }
 
-    // 근태외 등록
+    // 근태외 신청
     @Override
     public void registRestAttd(RestAttdManageTO restAttdManageTO) {
 

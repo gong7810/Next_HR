@@ -13,6 +13,8 @@ import { Grid } from '@mui/material';
 import MyButton from 'components/hr/salary/atoms/MyButton';
 import { gridSpacing } from 'store/constant';
 import ClipLoader from 'react-spinners/ClipLoader';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import Swal from 'sweetalert2';
 
 // ==============================|| TABLE - STICKY HEADER ||============================== //
 
@@ -33,6 +35,21 @@ function StickyHeadTable() {
   const [rowData, setRowData] = useState<BaseSalaryTO[]>([]);
   const [status, setStatus] = useState(false);
 
+  const [authCheck, setAuthCheck] = useState(false); // 페이지 접근 권한체크
+
+  useEffect(() => {
+    const level = localStorage.getItem('authLevel') as string;
+    if (level && parseInt(level.slice(-1)) >= 2) {
+      setAuthCheck(true);
+    } else {
+      setAuthCheck(false);
+      Swal.fire({
+        icon: 'error',
+        text: `'대리'직급부터 열람이 가능합니다.`
+      });
+    }
+  }, []);
+
   useEffect(() => {
     dispatch(REQUEST_BASE_SALARY());
 
@@ -43,27 +60,39 @@ function StickyHeadTable() {
   }, [status]);
 
   return (
-    <Page title="급여기준관리">
-      <MainCard content={false} title="급여기준관리">
-        <Grid container spacing={gridSpacing}>
-          <Grid item xs={12}>
-            <Grid container alignItems="center" justifyContent="flex-end" spacing={2}>
-              <Grid item>
-                <MyButton
-                  variant="contained"
-                  color="#5F00FF"
-                  onClick={() => {
-                    setStatus(true);
-                  }}
-                  className="button"
-                  inputText="조회하기"
-                />
+    <Page title="급여기준 관리">
+      {authCheck ? (
+        <MainCard content={false} title="급여기준 관리">
+          <Grid container spacing={gridSpacing}>
+            <Grid item xs={12}>
+              <Grid container alignItems="center" justifyContent="flex-end" spacing={2}>
+                <Grid item>
+                  <MyButton
+                    variant="contained"
+                    color="#5F00FF"
+                    onClick={() => {
+                      setStatus(true);
+                    }}
+                    className="button"
+                    inputText="조회하기"
+                  />
+                </Grid>
               </Grid>
+              <Grid sx={{ margin: 2 }}>{status && state.baseSalary.isDone && <MyMgtTable columns={columns} rowData={rowData} />}</Grid>
             </Grid>
-            <Grid sx={{ margin: 2 }}>{status && state.baseSalary.isDone && <MyMgtTable columns={columns} rowData={rowData} />}</Grid>
           </Grid>
-        </Grid>
-      </MainCard>
+        </MainCard>
+      ) : (
+        <MainCard
+          title={
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <DoDisturbIcon style={{ color: 'red', marginRight: '8px' }} /> {/* 아이콘을 title 옆에 추가합니다. */}
+              접근 권한 없음
+            </div>
+          }
+          style={{ textAlign: 'center' }}
+        />
+      )}
       <Grid container justifyContent="center" alignItems="center">
         <ClipLoader color="red" loading={state.baseSalary.isLoading} size={150} aria-label="Loading Spinner" data-testid="loader" />
       </Grid>

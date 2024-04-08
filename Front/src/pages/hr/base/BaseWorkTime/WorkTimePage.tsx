@@ -126,7 +126,7 @@ function WorkTimePage() {
   const findWorkTime = () => {
     setLoading(true);
     axios
-      .get('http://localhost:9101/foudinfomgmt/basetime', {
+      .get('http://localhost:9101/hr/foudinfomgmt/basetime', {
         params: {
           token: localStorage.getItem('access')
         }

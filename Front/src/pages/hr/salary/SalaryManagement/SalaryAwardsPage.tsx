@@ -28,7 +28,11 @@ const columns: ColumnProps[] = [
 function TableBasic() {
   // 부서 selector 띄우기
   useEffect(() => {
-    Axios.get('http://localhost:9101/hr/foudinfomgmt/deptlist')
+    Axios.get('http://localhost:9101/hr/foudinfomgmt/deptlist', {
+      params: {
+        token: localStorage.getItem('access')
+      }
+    })
       .then(({ data }) => {
         console.log(data);
         const dataList = data.list.map((e: any) => {
@@ -77,9 +81,11 @@ function TableBasic() {
     console.log(selectDeptData);
 
     // 사원명
-    Axios.get('http://localhost:9101/hr/empinfomgmt/empreallist', {
+    Axios.get('http://localhost:9101/hr/empinfomgmt/emplist', {
       params: {
-        value: selectValue
+        value: selectValue,
+        authLevel: localStorage.getItem('authLevel'),
+        token: localStorage.getItem('access')
       }
     })
       .then((response) => {
@@ -114,7 +120,8 @@ function TableBasic() {
     // 사원별 성과급 조회
     Axios.get('http://localhost:9101/hr/salaryinfomgmt/awards', {
       params: {
-        empName: selectCode
+        empName: selectCode,
+        token: localStorage.getItem('access')
       }
     }).then((response) => {
       console.log('response ' + response.data);

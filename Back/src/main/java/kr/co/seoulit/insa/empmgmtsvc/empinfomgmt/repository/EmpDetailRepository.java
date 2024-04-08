@@ -12,18 +12,18 @@ import java.util.List;
 public interface EmpDetailRepository extends CrudRepository<EmpDetailEntity, String> {
 
     // 본인 직급 이하 사원 부서별 조회
-    @Query("SELECT e FROM EmpDetailEntity e WHERE e.deptCode = :#{#deptCode} AND e.authority < :#{#authLevel}")
+    @Query("SELECT e FROM EmpDetailEntity e WHERE e.deptCode = :#{#deptCode} AND e.authority < :#{#authLevel} ORDER BY e.empCode")
     List<EmpDetailEntity> findSubAllByDeptCodeOrderByEmpCodeAsc(@Param("deptCode") String deptCode, @Param("authLevel") String authLevel);
 
     // 본인 직급 이하 사원 조회
-    @Query("SELECT e FROM EmpDetailEntity e WHERE e.authority < :#{#authLevel}")
+    @Query("SELECT e FROM EmpDetailEntity e WHERE e.authority < :#{#authLevel} ORDER BY e.empCode")
     List<EmpDetailEntity> findSubAll(@Param("authLevel") String authLevel);
 
     // 사원 전체 부서별 조회
-    @Query("SELECT e FROM EmpDetailEntity e WHERE e.deptCode = :#{#deptCode}")
+    @Query("SELECT e FROM EmpDetailEntity e WHERE e.deptCode = :#{#deptCode} ORDER BY e.empCode")
     List<EmpDetailEntity> findAllByDeptCodeOrderByEmpCodeAsc(@Param("deptCode") String deptCode);
 
     // 사원 전체 조회
-    @Query("SELECT e FROM EmpDetailEntity e")
+    @Query("SELECT e FROM EmpDetailEntity e ORDER BY e.empCode")
     List<EmpDetailEntity> findAll();
 }

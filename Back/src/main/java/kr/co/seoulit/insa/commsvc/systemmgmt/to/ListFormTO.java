@@ -1,11 +1,8 @@
 package kr.co.seoulit.insa.commsvc.systemmgmt.to;
 
-import lombok.Data;
-
 import java.util.List;
 
 // 70기도 어노테이션을 쓰지 않아서 안썼음
-@Data
 public class ListFormTO {
 		private int				endrow=1;		//보여지는 화면의 끝줄
 		private int 			pagenum=1;		//현재페이지번호
@@ -19,11 +16,11 @@ public class ListFormTO {
 		public void setPagenum(int pagenum){
 			this.pagenum=pagenum;
 		}
-
+		
 		public void setDbcount(int dbcount){
 			this.dbcount=dbcount;
 		}
-
+		
 		public void setRowsize(int rowsize){
 			this.rowsize=rowsize;
 		}
@@ -34,8 +31,8 @@ public class ListFormTO {
 			return (getPagenum()-1)*getRowsize()+1;
 		}
 		public int getEndrow(){
-			endrow= getStartrow()+getRowsize()-1;
-
+			endrow= getStartrow()+getRowsize()-1;   
+			
 			if(endrow>getDbcount())
 				endrow = getDbcount();
 			return endrow;
@@ -43,7 +40,7 @@ public class ListFormTO {
 		public int getRowsize(){
 			return rowsize;
 		}
-
+	
 		public int getDbcount(){
 			return dbcount;
 		}
@@ -61,7 +58,7 @@ public class ListFormTO {
 		}
 		public int getPagecount(){
 			pagecount=(getDbcount()-1)/getRowsize()+1;
-			return pagecount;
+			return pagecount;	
 		}
 		public boolean isPrevious(){
 			if(getStartpage()-getPagesize()>0) {

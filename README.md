@@ -1,5 +1,5 @@
 ## Next_HR
 
-main branch
+수정
 
 npm install sweetalert2

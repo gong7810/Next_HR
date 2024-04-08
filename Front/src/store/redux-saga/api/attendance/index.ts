@@ -1,7 +1,18 @@
 import hrApi from '../intercepter';
 
+// hrApi.interceptors.request.use((config: any) => {
+//   const jwtToken = localStorage.getItem('access'); // 로컬 스토리지에서 토큰을 가져옵니다.
+
+//   if (jwtToken) {
+//     config.headers.Authorization = `Bearer ${jwtToken}`; // 가져온 토큰을 헤더에 추가합니다.
+//   }
+
+//   return config;
+// });
+
 const EMPLIST_URL = 'empinfomgmt/empAllList';
 const REST_ATTD_URL = 'attendance/restAttd';
+const BREAK_ATTD_URL = 'attendance/breakAttd';
 
 // 사원 조회
 export const getEmplist = async () => {
@@ -33,7 +44,7 @@ export const getRestAttdList = async (params: any) => {
   }
 };
 
-// 근태외 등록
+// 근태외 신청
 export const insertRestAttd = async (body: any) => {
   try {
     return await hrApi.post(REST_ATTD_URL, body, {
@@ -77,8 +88,6 @@ export const deleteRestAttd = async (body: any) => {
     console.log(error);
   }
 };
-<<<<<<< HEAD
-=======
 
 // 연차 내역 조회
 export const getBreakAttdList = async (param: string) => {
@@ -182,7 +191,7 @@ export const modifyDailyAttend = async (body: any) => {
   }
 };
 
-//일근태 추가할 때 사용자가 입력한 사원명과 부서코드를 이용해 사원코드 얻어오기
+//일근태 추가시 사원조회 (본인 이하 모두 조회))
 export const fetchEmpList = async (param: string) => {
   try {
     return await hrApi.get('empinfomgmt/empAllList', {
@@ -208,4 +217,3 @@ export const finalizeDailyAttend = async (body: any) => {
     console.log(error);
   }
 };
->>>>>>> develop/attd

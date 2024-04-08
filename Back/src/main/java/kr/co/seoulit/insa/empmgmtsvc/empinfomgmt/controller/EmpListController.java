@@ -81,7 +81,6 @@ public class EmpListController {
 	public ModelMap emplist(HttpServletRequest request, HttpServletResponse response) {
 
 		map = new ModelMap();
-
 		try {
 
 			ArrayList<EmpTO> list = empInfoService.findEmprealList();

@@ -15,6 +15,8 @@ import MyTableHead from 'components/hr/salary/molecules/MyTableHead';
 import Buttons from 'components/hr/salary/molecules/Buttons';
 import { SalaryBonusTO } from '../types/types';
 import { formatNumber } from 'utils/hr/lib';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import Swal from 'sweetalert2';
 
 // ==============================|| TABLE - BASIC ||============================== //
 
@@ -36,9 +38,28 @@ const columnsSave: ColumnProps[] = [
 ];
 
 function TableBasic() {
+  const [authCheck, setAuthCheck] = useState(false); // 페이지 접근 권한체크
+
+  useEffect(() => {
+    const level = localStorage.getItem('authLevel') as string;
+    if (level && parseInt(level.slice(-1)) >= 4) {
+      setAuthCheck(true);
+    } else {
+      setAuthCheck(false);
+      Swal.fire({
+        icon: 'error',
+        text: `접근권한이 없습니다.`
+      });
+    }
+  }, []);
+
   // 부서 selector 띄우기
   useEffect(() => {
-    Axios.get('http://localhost:9101/hr/foudinfomgmt/deptlist')
+    Axios.get('http://localhost:9101/hr/foudinfomgmt/deptlist', {
+      params: {
+        token: localStorage.getItem('access')
+      }
+    })
       .then(({ data }) => {
         console.log(data);
         const dataList = data.list.map((e: any) => {
@@ -91,9 +112,11 @@ function TableBasic() {
     console.log(selectDeptData);
 
     // 사원명------------------------------------------------------------------------
-    Axios.get('http://localhost:9101/hr/empinfomgmt/empreallist', {
+    Axios.get('http://localhost:9101/hr/empinfomgmt/emplist', {
       params: {
-        value: selectValue
+        value: selectValue,
+        authLevel: localStorage.getItem('authLevel'),
+        token: localStorage.getItem('access')
       }
     })
       .then((response) => {
@@ -128,7 +151,8 @@ function TableBasic() {
     // 사원별 성과급 조회
     Axios.get('http://localhost:9101/hr/salaryinfomgmt/awards', {
       params: {
-        empName: selectCode
+        empName: selectCode,
+        token: localStorage.getItem('access')
       }
     }).then((response) => {
       console.log('response ' + response.data);
@@ -186,10 +210,18 @@ function TableBasic() {
       grade: empEvalGrade
     });
     //db에 보냄
-    Axios.post('http://localhost:9101/hr/salaryinfomgmt/salaryAward-manage', {
-      empCode: rowData.empCode,
-      grade: empEvalGrade
-    })
+    Axios.post(
+      'http://localhost:9101/hr/salaryinfomgmt/salaryAward-manage',
+      {
+        empCode: rowData.empCode,
+        grade: empEvalGrade
+      },
+      {
+        params: {
+          token: localStorage.getItem('access')
+        }
+      }
+    )
       .then((response) => {
         alert('성과급 등록 완료');
         window.location.reload();
@@ -234,69 +266,81 @@ function TableBasic() {
   ];
 
   return (
-    <Page title="성과급등록">
-      <Grid container spacing={gridSpacing}>
-        <Grid item xs={12}>
-          <MainCard content={false} title="사원조회">
-            <Grid container spacing={gridSpacing}>
-              <Grid item xs={12}>
-                <Grid container alignItems="center" justifyContent="flex-end" spacing={2}>
-                  <Grid item>
-                    <MySelect
-                      deptName={selectDeptData.dept}
-                      empName={selectEmpData.emp}
-                      selectHandleChange={selectHandleChange}
-                      selectSearchEmpChange={selectSearchEmpChange}
-                    />
+    <Page title="성과급 등록">
+      {authCheck ? (
+        <Grid container spacing={gridSpacing}>
+          <Grid item xs={12}>
+            <MainCard content={false} title="사원 조회">
+              <Grid container spacing={gridSpacing}>
+                <Grid item xs={12}>
+                  <Grid container alignItems="center" justifyContent="flex-end" spacing={2}>
+                    <Grid item>
+                      <MySelect
+                        deptName={selectDeptData.dept}
+                        empName={selectEmpData.emp}
+                        selectHandleChange={selectHandleChange}
+                        selectSearchEmpChange={selectSearchEmpChange}
+                      />
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid sx={{ margin: 2 }}>
-              <MyTable columns={columnsSelect} rowData={rowData} />
-            </Grid>
-          </MainCard>
-        </Grid>
-        <Grid item xs={12}>
-          <MainCard content={false} title="성과급등록">
-            <Grid container spacing={gridSpacing}>
-              <Grid item xs={12}>
-                <Grid container alignItems="center" justifyContent="flex-end" spacing={2}>
-                  <Grid item>
-                    <Buttons buttonsInfo={buttonsInfo} />
+              <Grid sx={{ margin: 2 }}>
+                <MyTable columns={columnsSelect} rowData={rowData} />
+              </Grid>
+            </MainCard>
+          </Grid>
+          <Grid item xs={12}>
+            <MainCard content={false} title="성과급 등록">
+              <Grid container spacing={gridSpacing}>
+                <Grid item xs={12}>
+                  <Grid container alignItems="center" justifyContent="flex-end" spacing={2}>
+                    <Grid item>
+                      <Buttons buttonsInfo={buttonsInfo} />
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid sx={{ margin: 2 }}>
-              {updateValue == 1 && (
-                <TableContainer>
-                  <Table sx={{ minWidth: 350 }} aria-label="simple table">
-                    <MyTableHead columns={columnsSave} />
-                    <TableBody>
-                      <TableCell>
-                        <Stack>
-                          <Select
-                            onChange={(e: any) => {
-                              setEmpEvalGrade(e.target.value);
-                            }}
-                          >
-                            <MenuItem value={'S'}>S</MenuItem>
-                            <MenuItem value={'A'}>A</MenuItem>
-                            <MenuItem value={'B'}>B</MenuItem>
-                            <MenuItem value={'C'}>C</MenuItem>
-                          </Select>
-                        </Stack>
-                      </TableCell>
-                      <TableCell align="center">{formatNumber(benefit)}</TableCell>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              )}
-            </Grid>
-          </MainCard>
+              <Grid sx={{ margin: 2 }}>
+                {updateValue == 1 && (
+                  <TableContainer>
+                    <Table sx={{ minWidth: 350 }} aria-label="simple table">
+                      <MyTableHead columns={columnsSave} />
+                      <TableBody>
+                        <TableCell>
+                          <Stack>
+                            <Select
+                              onChange={(e: any) => {
+                                setEmpEvalGrade(e.target.value);
+                              }}
+                            >
+                              <MenuItem value={'S'}>S</MenuItem>
+                              <MenuItem value={'A'}>A</MenuItem>
+                              <MenuItem value={'B'}>B</MenuItem>
+                              <MenuItem value={'C'}>C</MenuItem>
+                            </Select>
+                          </Stack>
+                        </TableCell>
+                        <TableCell align="center">{formatNumber(benefit)}</TableCell>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                )}
+              </Grid>
+            </MainCard>
+          </Grid>
         </Grid>
-      </Grid>
+      ) : (
+        <MainCard
+          title={
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <DoDisturbIcon style={{ color: 'red', marginRight: '8px' }} /> {/* 아이콘을 title 옆에 추가합니다. */}
+              접근 권한 없음
+            </div>
+          }
+          style={{ textAlign: 'center' }}
+        />
+      )}
     </Page>
   );
 }

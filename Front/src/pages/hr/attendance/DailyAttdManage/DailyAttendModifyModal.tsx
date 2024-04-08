@@ -19,7 +19,6 @@ import { useDispatch } from 'react-redux';
 import { dailyAttendAction } from 'store/redux-saga/reducer/attendance/DailyAttendReducer';
 import { useTheme } from '@mui/material/styles';
 
-// 코드가 긴 관계로 각각의 입력값에 따른 유효성 검사 로직은 작성하지 않았습니다.
 export default function DailyAttendModal(props: { toggle: () => void; emp: dailyAttdEntity[] }) {
   console.log('props  : ' + props);
   const dispatch = useDispatch();

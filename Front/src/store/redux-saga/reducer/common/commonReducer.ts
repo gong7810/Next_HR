@@ -40,6 +40,7 @@ const commonSlice = createSlice({
       localStorage.removeItem('authLevel');
       localStorage.removeItem('empName');
       localStorage.removeItem('position');
+      localStorage.clear();
     }
   }
 });

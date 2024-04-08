@@ -25,8 +25,6 @@ function SocialInsurePage() {
     setsearchYear(e.target.value);
   };
 
-  useEffect(() => {}, []);
-
   //columns, values information
   const labelList = ['건강보험', '국민연금', '고용보험', '산재보험'];
 
@@ -43,7 +41,7 @@ function SocialInsurePage() {
   const empValues = ['empinsureRates', 'wrkinsureRates', 'vocacompetencyRates', 'jobstabilRates'];
 
   return (
-    <Page title="사회보험관리">
+    <Page title="사회보험 관리">
       <Grid container spacing={gridSpacing}>
         <Grid item xs={12}>
           <Grid container spacing={gridSpacing}>

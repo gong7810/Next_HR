@@ -12,12 +12,6 @@ import { ColumnProps } from '../types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestHoliday } from 'store/slices/hr/base/holiday';
 import AddHoliday from 'components/hr/base/templates/AddHoliday';
-import Swal from 'sweetalert2';
-
-// table data
-function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
-  return { name, calories, fat, carbs, protein };
-}
 
 export const holidayGrid: ColumnProps[] = [
   // 칼럼정의
@@ -46,7 +40,7 @@ function HolidayPage() {
 
   useEffect(() => {
     const level = localStorage.getItem('authLevel') as string;
-    if (level && parseInt(level.slice(-1)) === 4) {
+    if (level && parseInt(level.slice(-1)) >= 4) {
       setAuthCheck(true);
     } else {
       setAuthCheck(false);

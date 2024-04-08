@@ -8,7 +8,6 @@ import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.mapper.SalaryBonusMapper;
 import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.repository.FullTimeSalaryRepository;
 import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.to.FullTimeSalTO;
 import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.to.PayDayTO;
-import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.to.RegistRetirementTO;
 import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.to.RetirementSalaryTO;
 import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.to.SalaryBonusTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,20 +77,12 @@ public class SalaryInfoMgmtServiceImpl implements SalaryInfoMgmtService{
 		}
 	}
 
-	//퇴직금 조회
 	@Override
 	public ArrayList<RetirementSalaryTO> findretirementSalaryList(String empCode) {
 
 		ArrayList<RetirementSalaryTO> retirementSalaryList = retirementSalMapper.selectretirementSalaryList(empCode);
 		System.out.println("리턴값"+retirementSalaryList);
 		return retirementSalaryList;
-	}
-
-	//퇴직금 등록
-	@Override
-	public void registRetirementPay(RegistRetirementTO registRetirementTO) {
-		// TODO Auto-generated method stub
-		retirementSalMapper.registRetirementPay(registRetirementTO);
 	}
 
 	@Override

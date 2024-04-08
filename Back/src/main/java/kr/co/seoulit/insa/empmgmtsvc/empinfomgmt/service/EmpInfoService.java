@@ -26,6 +26,8 @@ public interface EmpInfoService {
 
     public void modifyEmployee(EmpTO empTO);
 
+    public String findEmpCode(String empName, String deptCode);
+
     public void removeEmployee(List<EmpDetailEntity> empDetailEntities);
 
 

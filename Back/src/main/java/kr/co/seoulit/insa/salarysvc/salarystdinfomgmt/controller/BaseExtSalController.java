@@ -15,7 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import kr.co.seoulit.insa.salarysvc.salarystdinfomgmt.service.SalaryStdInfoMgmtService;
 import kr.co.seoulit.insa.salarysvc.salarystdinfomgmt.to.BaseExtSalTO;
 
-@RequestMapping("/salarystdinfomgmt/*")
+@RequestMapping("/hr/salarystdinfomgmt/*")
 @RestController
 @CrossOrigin
 public class BaseExtSalController

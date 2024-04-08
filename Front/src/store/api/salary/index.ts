@@ -2,7 +2,11 @@ import axios from 'axios';
 
 export const baseSalarySearch = async () => {
   try {
-    let response = await axios.get('http://localhost:9101/salarystdinfomgmt/base-salary');
+    let response = await axios.get('http://localhost:9101/hr/salarystdinfomgmt/base-salary', {
+      params: {
+        token: localStorage.getItem('access')
+      }
+    });
     return response;
   } catch (e) {
     return e;

@@ -48,10 +48,10 @@ const Login = () => {
     dispatch(commonActions.getLoginTokenRequest({ id, pw }));
   };
 
-  const checkToken = () => {
-    console.log(localStorage.getItem('access'));
-    dispatch(commonActions.getTokenCheckRequest(localStorage.getItem('access')));
-  };
+  // const checkToken = () => {
+  //   console.log(localStorage.getItem('access'));
+  //   dispatch(commonActions.getTokenCheckRequest(localStorage.getItem('access')));
+  // };
 
   return (
     <Page title="Login">

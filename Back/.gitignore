@@ -6,7 +6,7 @@
 
 # production
 build/
-.gradle/
-out/
-bin/
 .idea/
+.gradle/
+bin/
+out/

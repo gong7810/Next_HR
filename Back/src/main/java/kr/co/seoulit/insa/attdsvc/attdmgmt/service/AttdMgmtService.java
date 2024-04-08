@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import kr.co.seoulit.insa.attdsvc.attdmgmt.to.DayAttdTO;
-import kr.co.seoulit.insa.attdsvc.attdmgmt.to.RestAttdTO;
+import kr.co.seoulit.insa.attdsvc.attdmgmt.to.*;
 import kr.co.seoulit.insa.commsvc.systemmgmt.to.ResultTO;
 import org.springframework.ui.ModelMap;
 
@@ -19,5 +18,7 @@ public interface AttdMgmtService {
 	   public ArrayList<RestAttdTO> findRestAttdList(String empCode, String startDate, String endDate, String code);
 	   public void registRestAttd(ModelMap map);
 	   public void removeRestAttdList(ArrayList<RestAttdTO> restAttdList);
+	   public void modifyDailyAttd(DailyAttdModifyTO dailyAttdModifyTO);
+	   public void finalizeDailyAttd(List<DailyAttdSearchResTO> selectedAttdList);
 	   
 }

@@ -8,24 +8,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class EmpAppointmentTO extends BaseTO {
 
-	private String empCode;
-	private String hosu;
-	private String deptChangeStatus;
-	private String positionChangeStatus;
-	private String hobongChangeStatus;
-	private String retirementStatus;
-	private String dispatchStatus;
-	private String leaveStatus;
-	private String requestDate;
-	private String approvalStatus;
-	private String empName;
-	private String title;
-	private String appointmentDate;
-	private String appointmentDetail;
-	private String appointmentCount;
-	private String requestStatus;
-	private String beforeChange;
-	private String afterChange;
-	private String type;
-
+	private String empCode, hosu, deptChangeStatus, positionChangeStatus, hobongChangeStatus,
+			retirementStatus, dispatchStatus, leaveStatus, requestDate, approvalStatus,
+			empName, title, appointmentDate, appointmentDetail, appointmentCount, requestStatus,
+			beforeChange, afterChange, type;
 }

@@ -176,10 +176,6 @@ function DailyAttendManage() {
   };
 
   const onCheckAllHandler = () => {
-    // const allCheckboxes = document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
-    // allCheckboxes.forEach((checkbox: HTMLInputElement) => {
-    //   checkbox.checked = true;
-    // });
     const updatedCheckedItems: { [key: string]: boolean } = {};
     dayAttdlist.forEach((emp: dailyAttdEntity) => {
       updatedCheckedItems[emp.empName] = true;

@@ -27,7 +27,7 @@
   "attendanceRegist": "근태 신청 및 등록",
   "dayAttendance": "일근태 등록",
   "restAttendanceRegist": "근태외 신청",
-  "dayoffRegist": "연차 신청",
+  "breakAttendanceRegist": "연차 신청",
   "businessRegist": "출장/교육 신청",
   "overtimeRegist": "초과근무 신청",
 
@@ -35,7 +35,7 @@
   "dayAttendanceManagement": "일근태 관리",
   "monthAttendanceManagement": "월근태 관리",
   "restAttendanceApprovalManagement": "근태외 승인관리",
-  "dayoffManagement": "연차 관리",
+  "breakAttendanceManagement": "연차 관리",
 
   "salaryManagement": "급여 관리",
   "salaryInfo": "급여 조회",

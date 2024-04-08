@@ -2,7 +2,6 @@ package kr.co.seoulit.insa.salary.service;
 
 import kr.co.seoulit.insa.salary.mapper.SeverancePayMapper;
 import kr.co.seoulit.insa.salary.to.SeverancePayTO;
-import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.to.RegistRetirementTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

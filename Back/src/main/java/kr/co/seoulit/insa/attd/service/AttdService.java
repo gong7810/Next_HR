@@ -1,5 +1,6 @@
 package kr.co.seoulit.insa.attd.service;
 
+import kr.co.seoulit.insa.attd.to.BreakAttdTO;
 import kr.co.seoulit.insa.attd.to.RestAttdManageTO;
 
 import java.lang.reflect.Array;
@@ -10,7 +11,7 @@ public interface AttdService{
     // 근태외 조회
     public ArrayList<RestAttdManageTO> findRestAttdList(String startDate, String endDate, String deptCode, String authLevel);
 
-    // 근태외 등록
+    // 근태외 신청
     public void registRestAttd(RestAttdManageTO restAttdManageTO);
 
     // 근태외 승인/취소

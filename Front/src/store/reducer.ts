@@ -21,12 +21,10 @@ import positionReducer from './slices/hr/base/position';
 import holidayReducer from './slices/hr/base/holiday';
 import empManagementReducer from '../pages/hr/empManagement/slices/index';
 import attdReducer from './redux-saga/reducer/attendance/attendanceReducer';
-<<<<<<< HEAD
-import salReducer from './redux-saga/reducer/salary/salaryReducer';
-=======
+import DailyAttendReducer from './redux-saga/reducer/attendance/DailyAttendReducer';
 import commonReducer from './redux-saga/reducer/common/commonReducer';
 import baseReducer from './redux-saga/reducer/base/baseReducer';
->>>>>>> develop/attd
+import salReducer from './redux-saga/reducer/salary/salaryReducer';
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -55,13 +53,10 @@ const reducer = combineReducers({
   holidayList: holidayReducer,
   empManagement: empManagementReducer,
   attdReducer: attdReducer, // 근태리듀서
-<<<<<<< HEAD
-  salReducer: salReducer // 급여리듀서
-=======
-  dailyAttend: dailyAttendReducer, // 일근태등록리듀서
+  dailyAttend: DailyAttendReducer, // 일근태등록리듀서
   baseReducer: baseReducer, // 권한리듀서
-  commonReducer: commonReducer
->>>>>>> develop/attd
+  commonReducer: commonReducer, // 로그인리듀서
+  salReducer: salReducer // 급여리듀서
 });
 
 export default reducer;

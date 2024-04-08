@@ -2,12 +2,13 @@ package kr.co.seoulit.insa.attdsvc.attdmgmt.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import kr.co.seoulit.insa.attdsvc.attdmgmt.to.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import kr.co.seoulit.insa.attdsvc.attdmgmt.mapper.DailyAttndMapper;
 import kr.co.seoulit.insa.attdsvc.attdmgmt.mapper.ExcusedAttndMapper;
-import kr.co.seoulit.insa.attdsvc.attdmgmt.to.DayAttdTO;
-import kr.co.seoulit.insa.attdsvc.attdmgmt.to.RestAttdTO;
 import kr.co.seoulit.insa.commsvc.systemmgmt.to.ResultTO;
 import org.springframework.ui.ModelMap;
 
@@ -15,7 +16,7 @@ import org.springframework.ui.ModelMap;
 public class AttdMgmtServiceImpl implements AttdMgmtService {
 	
 	@Autowired
-	private DailyAttndMapper dayAttdMapper;
+	private DailyAttndMapper dayAttndMapper;
 	@Autowired
 	private ExcusedAttndMapper restAttdMapper;
 
@@ -27,7 +28,7 @@ public class AttdMgmtServiceImpl implements AttdMgmtService {
 		map.put("applyDay", applyDay);
 		
 		ArrayList<DayAttdTO> dayAttdList = null;
-		dayAttdList = dayAttdMapper.selectDayAttdList(map);
+		dayAttdList = dayAttndMapper.selectDayAttdList(map);
 		return dayAttdList;
 
 	}
@@ -41,12 +42,13 @@ public class AttdMgmtServiceImpl implements AttdMgmtService {
 		map.put("attdTypeCode",dayAttd.getAttdTypeCode());
 		map.put("attdTypeName",dayAttd.getAttdTypeName());
 		map.put("applyDay",dayAttd.getApplyDay());
-		map.put("time",dayAttd.getTime());
+		map.
+				put("time",dayAttd.getTime());
 
 		System.out.println("레지스트데이에티드");
 		System.out.println(map);
 
-		dayAttdMapper.batchInsertDayAttd(map);
+		dayAttndMapper.batchInsertDayAttd(map);
 		ResultTO resultTO = new ResultTO();
 		resultTO.setErrorCode((String) map.get("errorCode"));
 		resultTO.setErrorMsg((String) map.get("errorMsg")); 
@@ -58,13 +60,13 @@ public class AttdMgmtServiceImpl implements AttdMgmtService {
 	public void removeDayAttdList(ArrayList<DayAttdTO> dayAttdList) {
 
 		for (DayAttdTO dayAttd : dayAttdList) {
-			dayAttdMapper.deleteDayAttd(dayAttd);
+			dayAttndMapper.deleteDayAttd(dayAttd);
 		}
 	}
 
 	@Override
-	public void insertDayAttd(DayAttdTO dayAttd) {
-		dayAttdMapper.insertDayAttd(dayAttd);
+	public void insertDayAttd(DailyAttdTO dailyAttdTO) {
+		dayAttndMapper.insertDayAttd(dailyAttdTO);
 	}
 
 

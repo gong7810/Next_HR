@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/foudinfomgmt/*")///foudinfomgmt/holiday
+@RequestMapping("/hr/foudinfomgmt/*")///foudinfomgmt/holiday
 @RestController
 @CrossOrigin
 public class HolidayListController {

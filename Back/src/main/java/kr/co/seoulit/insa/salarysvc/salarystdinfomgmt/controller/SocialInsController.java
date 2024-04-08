@@ -20,7 +20,7 @@ import kr.co.seoulit.insa.salarysvc.salarystdinfomgmt.to.SocialInsTO;
 
 
 
-@RequestMapping("/salarystdinfomgmt/*")
+@RequestMapping("/hr/salarystdinfomgmt/*")
 @RestController
 @CrossOrigin
 public class SocialInsController {

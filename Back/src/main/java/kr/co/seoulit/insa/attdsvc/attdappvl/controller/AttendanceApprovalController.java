@@ -26,7 +26,7 @@ public class AttendanceApprovalController {
 	@GetMapping("attnd-approval")
 	public ModelMap findRestAttdListByDept(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate,
 			@RequestParam("deptCode") String deptCode, HttpServletResponse response){
-		System.out.println(" 조회 도착");
+		System.out.println("근태외 조회 도착");
 		System.out.println(startDate);
 		System.out.println(endDate);
 		System.out.println(deptCode);

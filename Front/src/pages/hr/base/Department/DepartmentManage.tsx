@@ -45,7 +45,7 @@ function DepartmentManageCopy() {
 
   useEffect(() => {
     const level = localStorage.getItem('authLevel') as string;
-    if (level && parseInt(level.slice(-1)) === 2) {
+    if (level && parseInt(level.slice(-1)) >= 2) {
       setAuthCheck(true);
     } else {
       setAuthCheck(false);
@@ -54,7 +54,7 @@ function DepartmentManageCopy() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:9101/foudinfomgmt/deptlist', {
+      .get('http://localhost:9101/hr/foudinfomgmt/deptlist', {
         params: {
           token: localStorage.getItem('access')
         }
@@ -118,7 +118,7 @@ function DepartmentManageCopy() {
         const sendData = [sendData1];
         // console.log('타임', sendData);
         axios
-          .put('http://localhost:9101/foudinfomgmt/deptlist', sendData, {
+          .put('http://localhost:9101/hr/foudinfomgmt/deptlist', sendData, {
             params: {
               token: localStorage.getItem('access')
             }
@@ -152,7 +152,7 @@ function DepartmentManageCopy() {
           setDeptList(delData);
           const sendData = [selRow];
           axios
-            .put('http://localhost:9101/foudinfomgmt/deptlist', sendData, {
+            .put('http://localhost:9101/hr/foudinfomgmt/deptlist', sendData, {
               params: {
                 token: localStorage.getItem('access')
               }
@@ -187,7 +187,7 @@ function DepartmentManageCopy() {
             const sendData = [updateList];
             console.log('수정', sendData);
             axios
-              .put('http://localhost:9101/foudinfomgmt/deptlist', sendData, {
+              .put('http://localhost:9101/hr/foudinfomgmt/deptlist', sendData, {
                 params: {
                   token: localStorage.getItem('access')
                 }

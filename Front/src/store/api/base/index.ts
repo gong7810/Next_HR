@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 근무기준시간 조회
 export const getBaseWorkTimeList = () =>
-  axios.get('http://localhost:9101/foudinfomgmt/basetime', {
+  axios.get('http://localhost:9101/hr/foudinfomgmt/basetime', {
     params: {
       token: localStorage.getItem('access')
     }
@@ -11,7 +11,7 @@ export const getBaseWorkTimeList = () =>
 // 근무기준시간 수정
 export const batchBaseWorkTime = (action: any) =>
   axios.put(
-    'http://localhost:9101/foudinfomgmt/react-basetime',
+    'http://localhost:9101/hr/foudinfomgmt/react-basetime',
     { sendData: action.payload },
     {
       params: {
@@ -23,7 +23,7 @@ export const batchBaseWorkTime = (action: any) =>
 // 근무기준시간 삭제
 export const deleteBaseWorkTime = (action: any) =>
   axios.post(
-    'http://localhost:9101/foudinfomgmt/react-deleteBasetime',
+    'http://localhost:9101/hr/foudinfomgmt/react-deleteBasetime',
     { sendData: action.payload },
     {
       params: {
@@ -34,7 +34,7 @@ export const deleteBaseWorkTime = (action: any) =>
 
 // 휴일정보 조회
 export const getHoliday = async () => {
-  const url = 'http://localhost:9101/foudinfomgmt/holiday';
+  const url = 'http://localhost:9101/hr/foudinfomgmt/holiday';
   const response = await axios.get(url, {
     params: {
       token: localStorage.getItem('access')
@@ -48,7 +48,7 @@ export const getHoliday = async () => {
 export const postHoliday = async (sendData: any) => {
   console.log('뒷단 보내기', sendData);
 
-  const url = 'http://localhost:9101/foudinfomgmt/holiday';
+  const url = 'http://localhost:9101/hr/foudinfomgmt/holiday';
   const response = await axios.post(url, sendData, {
     params: {
       token: localStorage.getItem('access')
@@ -61,7 +61,8 @@ export const postHoliday = async (sendData: any) => {
   return response.data;
 };
 
-export const deptListManage = () => axios.get('http://localhost:9101/foudinfomgmt/deptlist');
+// 부서정보 조회
+export const deptListManage = () => axios.get('http://localhost:9101/hr/foudinfomgmt/deptlist');
 
 export const deptListUpdate = (action: any) => {
   console.log('action');
@@ -81,7 +82,7 @@ export const deptMember = (action: any) => {
 
 // 직급정보 조회
 export const getPosition = async () => {
-  let url = 'http://localhost:9101/foudinfomgmt/positionlist';
+  let url = 'http://localhost:9101/hr/foudinfomgmt/positionlist';
   const response = await axios.get(url, {
     params: {
       token: localStorage.getItem('access')
@@ -96,7 +97,7 @@ export const deletePosition = async (updatedSelRow1: any) => {
   console.log('뭐가나오나332', updatedSelRow1);
   const sendData = [updatedSelRow1];
 
-  let url = 'http://localhost:9101/foudinfomgmt/positionlist';
+  let url = 'http://localhost:9101/hr/foudinfomgmt/positionlist';
   const response = await axios.put(url, sendData, {
     params: {
       token: localStorage.getItem('access')

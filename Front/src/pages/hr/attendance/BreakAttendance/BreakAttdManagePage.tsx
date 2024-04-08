@@ -215,22 +215,22 @@ const BreakAttendanceManagePage = () => {
         text: '삭제할 신청을 선택하세요.'
       });
       return;
-    } else {
-      const checkEmpName = localStorage.getItem('empName');
-      for (let i = 0; i < selectedRow.length; i++) {
-        if (selectedRow[i].empName !== checkEmpName) {
-          Swal.fire({
-            icon: 'warning',
-            text: '본인의 근태신청만 삭제할 수 있습니다.'
-          });
-          return;
-        }
-      }
-      dispatch(attdActions.romoveBreakAttdRequest({ selectedRow }));
-
-      alert('삭제되었습니다.');
-      dispatch(attdActions.getBreakAttdListRequest(selectMonth));
     }
+
+    const checkEmpName = localStorage.getItem('empName');
+    for (let i = 0; i < selectedRow.length; i++) {
+      if (selectedRow[i].empName !== checkEmpName) {
+        Swal.fire({
+          icon: 'warning',
+          text: '본인의 근태신청만 삭제할 수 있습니다.'
+        });
+        return;
+      }
+    }
+    dispatch(attdActions.romoveBreakAttdRequest({ selectedRow }));
+
+    alert('삭제되었습니다.');
+    dispatch(attdActions.getBreakAttdListRequest(selectMonth));
   };
 
   return (

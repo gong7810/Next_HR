@@ -34,8 +34,6 @@ export interface RestAttdTO {
   applovalStatus: string;
 }
 
-<<<<<<< HEAD
-=======
 export interface dailyAttdEntity {
   empName: string;
   deptName: string;
@@ -49,7 +47,6 @@ export interface dailyAttdEntity {
   finalizeStatus: string;
   earlyLeaveTime: string;
 }
->>>>>>> develop/attd
 export interface restAttdTO {
   restAttdNo?: string;
   empCode: string;
@@ -65,8 +62,6 @@ export interface restAttdTO {
   approvalStatus?: string;
   authority?: string;
 }
-<<<<<<< HEAD
-=======
 
 export interface breakAttdTO {
   empName: string;
@@ -79,4 +74,3 @@ export interface breakAttdTO {
   remainBreakAttd: string;
   authority?: string;
 }
->>>>>>> develop/attd

@@ -22,7 +22,7 @@ import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.service.SalaryInfoMgmtService
 import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.to.FullTimeSalTO;
 import kr.co.seoulit.insa.salarysvc.salaryinfomgmt.to.PayDayTO;
 
-@RequestMapping("hr/salaryinfomgmt/*")
+@RequestMapping("/hr/salaryinfomgmt/*")
 @RestController
 @CrossOrigin
 public class FullTimeSalaryController

@@ -7,7 +7,6 @@ const hrApi: AxiosInstance = axios.create({
   }
 });
 
-
 // AxiosResponse와 AxiosError의 타입을 지정합니다.
 export type ApiResponse<T> = AxiosResponse<T>;
 export type ApiError = AxiosError;

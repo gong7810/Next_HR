@@ -15,7 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin //Axioserror,CORS에러일때 사용하면 앞단으로 데이터 잘넘어감.
-@RequestMapping("/foudinfomgmt/*")
+@RequestMapping("/hr/foudinfomgmt/*")
 @RestController
 public class PositionListController {
 	

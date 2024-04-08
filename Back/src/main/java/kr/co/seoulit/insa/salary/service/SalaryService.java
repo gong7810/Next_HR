@@ -2,7 +2,6 @@ package kr.co.seoulit.insa.salary.service;
 
 import kr.co.seoulit.insa.salary.to.SeverancePayTO;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public interface SalaryService {

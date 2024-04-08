@@ -2,14 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import { breakAttdTO, restAttdTO } from 'pages/hr/attendance/types/types';
 
 const initialState = {
-<<<<<<< HEAD
-  empList: [],
-  restAttdList: []
-=======
   empList: [], // 사원 목록
   restAttdList: [] as restAttdTO[], // 근태외 내역
   breakAttdList: [] as breakAttdTO[] // 연차 내역
->>>>>>> develop/attd
 };
 
 const attdSlice = createSlice({
@@ -40,14 +35,24 @@ const attdSlice = createSlice({
     approvalRestAttdRequest(state, action) {
       console.warn('근태외 승인 요청', action);
     },
-    approvalRestAttdSuccess(state, action) {
-      console.warn('state 업데이트', action);
-    },
     romoveRestAttdRequest(state, action) {
       console.warn('근태외 삭제 요청', action);
     },
-    removeRestAttdSuccess(state, action) {
-      console.warn('state 업데이트', action);
+    getBreakAttdListRequest(state, action) {
+      console.warn('연차 내역 조회 요청', action);
+    },
+    getBreakAttdListSuccess(state, action) {
+      console.warn('state 업데이트', action.payload);
+      state.breakAttdList = action.payload;
+    },
+    registBreakAttdRequest(state, action) {
+      console.warn('연차 신청 요청', action);
+    },
+    approvalBreakAttdRequest(state, action) {
+      console.warn('연차 승인/반려/취소 요청', action);
+    },
+    romoveBreakAttdRequest(state, action) {
+      console.warn('연차 삭제 요청', action);
     }
   }
 });
